@@ -1,0 +1,3 @@
+- set.train=false
+- set.eval=true
+- eval.ckpt_path=/media/b227/ygw/Dcase2023/baseline/src/check_point

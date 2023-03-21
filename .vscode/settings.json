@@ -1,0 +1,11 @@
+{
+ "python.PYTHONPATH":"/home/b227/anaconda3/envs/ygw/bin/python",
+ "python.autoComplete.extraPaths": [
+    "${workspaceFolder}"
+ ],
+ "python.analysis.extraPaths": [
+    "${workspaceFolder}",
+    "./src",
+    "./evaluation_metrics"
+ ]
+}
