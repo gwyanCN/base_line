@@ -77,7 +77,7 @@ class TIM(object):
                 sample_sep = sample_sep.detach()
             return sample_sep,mask
 
-    def get_logits(self, samples, is_train=False, is_class=False,label=None):
+    def get_logits(self, samples, is_train=False, is_class=False, is_decoder2=False,label=None, m=0.2, embedding=None, get_mask=False, use_cnn1=False,train_together=False):
         """
         inputs:
             samples : torch.Tensor of shape [n_task, shot, feature_dim]
@@ -85,32 +85,57 @@ class TIM(object):
         returns :
             logits : torch.Tensor of shape [n_task, shot, num_class]
         """
-        model = self.model
-        bias = self.bias
-        b_s = 64
+        sample_list = []
+        mask_sample_list =[]
+        mask_list = []
+        if use_cnn1:
+            model = self.model_student
+            # bias = self.bias[:,0]
+            bias = self.bias[:,0]
+        else:
+            model = self.model
+            bias = self.bias[:,0]
+        b_s = 32
         if is_train:
             model.train()
             batch_size,win,ndim = samples.shape
-            outputs_samples_list = []
+            list_vec = []
             for i in np.arange(0, batch_size,b_s):
-                sample = samples[i:i+b_s] # 选取input
-                output=model(sample,step=0) # 获得output  
-                outputs_samples_list.append(output)
-            outputs_samples=torch.cat(outputs_samples_list,dim=0)
+                sample = samples[i:i+b_s]
+                if embedding is not None:
+                    sample_list.append(torch.clone(sample.cpu().detach()))
+                    sample,s_mask = self.process_sep(sample,embedding,train_together)
+                    mask_sample_list.append(torch.clone(sample.cpu().detach()))
+                    mask_list.append(s_mask)
+                list_vec.append(model(sample,step=0))
+                outputs_samples = torch.cat(list_vec,0)
             if is_class:
                 logits = model.fc(outputs_samples)
                 return logits
+            if is_decoder2:
+                logits = model.decoder2(outputs_samples)
+                return logits
         else:
+            list_vec = []
             model.eval()
-            outputs_samples_list = []
             with torch.no_grad():
-                batch_size,win,ndim = samples.shape
+                batch_size, win, ndim = samples.shape
                 for i in np.arange(0,batch_size,b_s):
                     sample = samples[i:i+b_s].reshape(-1,win,ndim)
-                    outputs =model.forward_encoder_test(sample)
-                    outputs_samples_list.append(outputs)
-                outputs_samples=torch.cat(outputs_samples_list,dim=0)
+                    if embedding is not None:
+                        sample_list.append(torch.clone(sample.cpu().detach()))
+                        sample,s_mask = self.process_sep(sample,embedding,train_together)
+                        mask_sample_list.append(torch.clone(sample.cpu().detach()))
+                        mask_list.append(s_mask)
+                    list_vec.append(model.forward_encoder_test(sample))
+                outputs_samples = torch.cat(list_vec,0)
         if None == label:
+            if use_cnn1:
+                self.weights.detach()
+                bias.detach()
+            else:
+                self.weights.requires_grad_()
+                bias.requires_grad_()
             logits0 = outputs_samples.matmul(self.weights[:,0:1].transpose(1,2)) + bias
             logits1 = outputs_samples.matmul(model.fc.weight[0].view(1,-1,1)) + model.fc.bias[0].view(1,1,-1)
             logits = torch.cat((logits0,logits1),-1)
@@ -120,10 +145,11 @@ class TIM(object):
             sine = torch.sqrt((1.0-torch.pow(cosine,2)).clamp(0,1))
             phi = cosine * self.cos_m - sine*self.sin_m
             phi - torch.where(cosine > self.th, phi, cosine-self.mm)
-
             one_hot = label
             output = (one_hot * phi) + ((1.0 - one_hot)*cosine)
             logits = output*self.s
+        if get_mask:
+            return logits, sample_list, mask_sample_list,mask_list
         return logits
 
     def get_preds(self, samples):
@@ -174,10 +200,10 @@ class TIM(object):
         self.weights = weights.sum(0,keepdim=True) / counts.sum(0,keepdim=True)
 
         self.weights = F.normalize(self.weights,dim=2)
-        self.bias  = torch.tensor([0.1]).reshape(1,1, 1).type_as(self.weights)
+        self.bias  = torch.tensor([0.1]).reshape(1,1,1).type_as(self.weights)
 
         self.model.fc.weight[0].data.copy_(self.weights[0,1])
-        self.model_student.fc.weight[0].data.copy_(self.weights[0,1])
+        # self.model_student.fc.weight[0].data.copy_(self.weights[0,1])
         self.weights = self.weights[:,0:1,:]
 
         self.record_info(new_time=time.time()-t0,
@@ -256,8 +282,8 @@ class TIM(object):
 
             logits_q = self.get_logits(query)
             logits_q = logits_q.softmax(2).detach()
-            
             q_probs = logits_q 
+            
             self.timestamps.append(new_time) 
             self.mutual_infos.append(get_mi(probs=q_probs.detach().cpu())) 
             self.entropy.append(get_entropy(probs=q_probs.detach().cpu())) # # H(Y_q)
@@ -312,6 +338,8 @@ class TIM_GD(TIM):
 
             # support
             logits_s = self.get_logits(support,is_train=True)  #
+            
+            # ce = self.dice_loss(logits_s.softmax(2),y_s_one_hot)
             ce = - (y_s_one_hot * torch.log(logits_s.softmax(2) + 1e-12)).sum(2).mean(1).sum(0) 
             
             # query
@@ -324,6 +352,7 @@ class TIM_GD(TIM):
                
                 mask = torch.where(self.torch_q_y==-1,torch.zeros_like(self.torch_q_y),self.torch_q_y)
                 y_qs_one_hot = get_one_hot(self.torch_q_y*mask)
+                
                 logits_qs = self.get_logits(self.torch_q_x,is_train=True)
                 ce_qs = -(mask.unsqueeze(2)*y_qs_one_hot * torch.log(logits_qs.softmax(2)+1e-12)).sum(2).mean(1).sum(0)
 
@@ -336,20 +365,21 @@ class TIM_GD(TIM):
                 self.loss_weights[2]=0 
 
             loss = self.loss_weights[0] * ce  +  self.loss_weights[0]*ce_t + self.loss_weights[1]*ce_qs    #  # + self.loss_weights[0]*ce_t # 不过分离网络  +  self.loss_weights[0]*ce_t + self.loss_weights[0]*ce_t2 
-            self.get_acc(logits_s,y_s)
-            self.get_acc(logits_t.detach(),select_y_t,select_mask_t)      
+                
            
             optimizer.zero_grad()
             loss.backward()
             print(loss)
             optimizer.step()
-            if i>50:
-                step_scheduler.step()
-            if i > 30:
+            self.get_acc(logits_s,y_s)
+            self.get_acc(logits_t.detach(),select_y_t,select_mask_t)  
+            # if i>50:
+            #     step_scheduler.step()
+            if i > 2:
                 self.compute_FB_param(query)
                 l3 += 0.1
             t1 = time.time()
-            # self.model.eval()
+            self.model.eval()
             # if i >150:
             self.record_info(new_time=t1-t0,
                             support=support,
@@ -544,6 +574,15 @@ class TIM_GD(TIM):
         
         log_pos = torch.gather(logsoftmax,1,(targets*mask).long())
         return -(log_pos*mask).sum()/mask.sum()
+
+    def dice_loss(self, preds,gts):
+        preds = preds.permute([0,2,1])
+        gts = gts.permute([0,2,1])
+        num_cls = gts.shape[1]
+        a = torch.sum((preds*gts),dim=-1)
+        b = preds.sum(dim=-1) + gts.sum(dim=-1) #[b,c,H*W]
+        c = a/b #[b,c]
+        return (num_cls-c.sum(dim=-1)).sum()
 
     def update_one_hot(self,support,y_s_one_hot):
         updated_one_hot = torch.zeros_like(y_s_one_hot)

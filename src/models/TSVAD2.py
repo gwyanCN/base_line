@@ -103,121 +103,25 @@ def conv_block(in_channels,out_channels,pooling_size):
         )
 
 class TSVAD2(nn.Module):
-    def __init__(self,num_classes):
+    def __init__(self,PANN_layers,num_classes,IF_pooling=False):
         super(TSVAD2,self).__init__()
-        self.encoder = nn.Sequential(
-            Conv_Block(1,128,pooling_size=2),
-            Conv_Block(128,128,pooling_size=2),
-            Conv_Block(128,128,pooling_size=1),
-            Conv_Block(128,128,pooling_size=1)
-        )
-        # self.attention_bolck = nn.LSTM(128,128,batch_first=True)
-        # self.attention=nn.Sequential(*[
-        #     nn.Conv2d(128,128,kernel_size=3,stride=1,padding=1),
-        # ])
-        self.fc = nn.Linear(128*8, num_classes)
-        self.decoder = nn.Sequential(
-            nn.Linear(128*8*2,2)
-        )
-        self.decoder2 = nn.Sequential(
-            nn.Linear(128*8,2)
-        )
-        self.logsoftmax_fn = nn.LogSoftmax(dim=1)
+        # self.encoder = nn.Sequential(
+        #     conv_block(1,128,pooling_size=2),
+        #     conv_block(128,128,pooling_size=2),
+        #     conv_block(128,128,pooling_size=1),
+        #     conv_block(128,128,pooling_size=1)
+        # )
+        if IF_pooling:
+            in_channel = 64*(2**(PANN_layers-1))* (128//2**(PANN_layers))
+        else:
+            in_channel = 64*2**(PANN_layers-1) * 128
+        self.fc_ = nn.Linear(in_channel,num_classes)
 
     def forward(self,x,step=1):
-        (num_samples,seq_len,mel_bin) = x.shape
-
-        x = x.unsqueeze(1)
-        x1 = x[:,:,:(seq_len//2)]
-        x2 = x[:,:,(seq_len//2):]
-        if step==0:
-            x = torch.cat((x,torch.zeros_like(x[:,:,:1,:])),2)
-            self.encoder[0].eval()
-            self.encoder[1].eval()
-            with torch.no_grad():
-                x = self.encoder[0](x)
-                x = self.encoder[1](x)
-            x = self.encoder[2](x)
-            x = self.encoder[3](x)
-          
-            x = x.repeat_interleave(4,dim=2)[:,:,:seq_len,:]
-            x = x.permute(0,2,1,3).reshape(num_samples,-1,128*8)
-            return x
-        elif step==4:
-            x1 = torch.cat((x,torch.zeros_like(x[:,:,:1,:])),2)
-            x1 = self.encoder(x1)
-            x1 = x1.repeat_interleave(4,dim=2)[:,:,:seq_len,:]
-            x1 = x1.permute(0,2,1,3).reshape(-1,128*8)
-            pre = self.fc(x1)
-        elif step==1:
-            x1 = torch.cat((x1,torch.zeros_like(x1[:,:,:1,:])),2)
-            x1 = self.encoder(x1)
-            x1 = x1.repeat_interleave(4,dim=2)[:,:,:(seq_len//2),:]
-            x1 = x1.permute(0,2,1,3).reshape(-1,128*8)
-            pre = self.fc(x1)
-        elif step==2: 
-            mask = torch.where(x2.sum(-1,keepdim=True)!=0,1,0)
-            x1 = torch.cat((x1,torch.zeros_like(x1[:,:,:1,:])),2)
-            x1 = self.encoder(x1)
-            x1 = x1.repeat_interleave(4,dim=2)[:,:,:seq_len//2,:]
-            x1 = x1.permute(0,2,1,3).reshape(num_samples,-1,128*8)
-
-            x2 = self.forward_mask(x2,mask)
-            x2 = x2.permute(0,2,1,3).reshape(num_samples,-1,128*8)
-
-            vec = (x2*mask[:,0]).sum(1,keepdim=True)/mask[:,0].sum(1,keepdim=True)
-            vec = vec.repeat(1,seq_len//2,1)
-            cat_x = torch.cat((x1,vec),2).reshape(-1,128*8*2).contiguous()
-            pre = self.decoder(cat_x)
-        elif step==3: #
-            # pdb.set_trace()
-            x1 = torch.cat((x1,torch.zeros_like(x[:,:,:1,:])),2)
-            x1 = self.encoder(x1)
-            x1 = x1.repeat_interleave(4,dim=2)[:,:,:seq_len//2,:]
-            x1 = x1.permute(0,2,1,3).flatten(start_dim=-2)
-            # mask = torch.where(x2.sum(-1,keepdim=True)!=0,1,0)
-            # x2 = self.forward_mask(x2,mask)
-            # x2 = x2.permute(0,2,1,3).reshape(num_samples,-1,128*8)
-            # vec = (x2*mask[:,0]).sum(1,keepdim=True)/mask[:,0].sum(1,keepdim=True)
-            # return vec
-            return x1
-        return pre
-
-    def forward_mask(self,x):
-        for i in range(4):
-            x=self.encoder[i][0](x)
-            x=self.encoder[i][1](x)
-            x=self.encoder[i][2](x)
-            if i<2:
-                x = torch.functional.F.max_pool2d(input=x,kernel_size=(1,2))
-        return x
-
-    def forward_encoder_test(self,x):
-        self.encoder.eval()
-        with torch.no_grad():
-            (num_samples,seq_len,mel_bins) = x.shape
-
-            if seq_len<=4:
-                x = torch.tile(x,[1,4//seq_len+1,1])[:,:4]
-            elif seq_len%4==1:
-                x = torch.cat((x,torch.zeros_like(x[:,:3,:])),1)
-            elif seq_len%4==2:
-                x = torch.cat((x,torch.zeros_like(x[:,:2,:])),1)
-            elif seq_len%4==3:
-                x = torch.cat((x,torch.zeros_like(x[:,:1,:])),1)
-            x = x.unsqueeze(1)
-            x = self.encoder(x)
-            x = x.repeat_interleave(4,dim=2)[:,:,:seq_len,:]
-            return x.permute(0,2,1,3).reshape(num_samples,seq_len,-1)
-    
-    def forward_decoder_test(self,vec,x):
-        self.decoder.eval()
-        with torch.no_grad():
-            cat_x = torch.cat((x,vec.repeat(x.shape[0],1)), 1)
-            pre = self.decoder(cat_x)
-            logsoftmax = self.logsoftmax_fn(pre)
-
-            return logsoftmax
+        b,c,seq_len,_ = x.shape
+        x = torch.permute(x,[0,2,1,3]).reshape(b*seq_len,-1)
+        out = self.fc_(x)
+        return out
 
 # model = TSVAD1(num_classes=10)
 # data =torch.randn(64,862,128)

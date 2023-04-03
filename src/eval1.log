@@ -1,121 +1,3193 @@
 nohup: 忽略输入
 Processing audio file : BUK1_20181011_001004.wav
 => Runnning full evaluation with method: tim_gd
-=> Load model from: /media/b227/ygw/Dcase2023/baseline/src/check_point
+=> Load model from: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2
  ==> Beginning feature extraction
 ===> Query feature extraction
-  0%|          | 0/29 [00:00<?, ?it/s] 66%|██████▌   | 19/29 [00:00<00:00, 152.21it/s]100%|██████████| 29/29 [00:02<00:00, 10.79it/s] 
+  0%|          | 0/29 [00:00<?, ?it/s]100%|██████████| 29/29 [00:00<00:00, 354.03it/s]
 ===> Pos feature extraction
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 73.25it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 4044.65it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6096.37it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6605.20it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6842.26it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 58.76it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 5059.47it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 8456.26it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7384.34it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 9279.43it/s]
 ===> Neg feature extraction
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 83.20it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 5165.40it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 88.71it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 84.06it/s]
-  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6000.43it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 899.29it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6316.72it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6043.67it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6278.90it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7307.15it/s]
 ===> extra Neg feature extraction
-  0%|          | 0/5 [00:00<?, ?it/s]100%|██████████| 5/5 [00:00<00:00, 47.53it/s]100%|██████████| 5/5 [00:00<00:00, 47.40it/s]
-  0%|          | 0/1434 [00:00<?, ?it/s]  3%|▎         | 37/1434 [00:00<00:03, 362.91it/s]  5%|▌         | 74/1434 [00:00<00:03, 364.16it/s]  8%|▊         | 111/1434 [00:00<00:03, 340.20it/s] 10%|█         | 146/1434 [00:00<00:03, 341.63it/s] 13%|█▎        | 181/1434 [00:00<00:03, 328.34it/s] 15%|█▌        | 216/1434 [00:00<00:03, 333.13it/s] 18%|█▊        | 251/1434 [00:00<00:03, 337.64it/s] 20%|█▉        | 285/1434 [00:00<00:03, 334.02it/s] 22%|██▏       | 319/1434 [00:00<00:03, 331.67it/s] 25%|██▍       | 354/1434 [00:01<00:03, 336.06it/s] 27%|██▋       | 389/1434 [00:01<00:03, 339.35it/s] 30%|██▉       | 424/1434 [00:01<00:02, 341.60it/s] 32%|███▏      | 459/1434 [00:01<00:02, 343.35it/s] 34%|███▍      | 494/1434 [00:01<00:02, 344.31it/s] 37%|███▋      | 529/1434 [00:01<00:02, 345.01it/s] 39%|███▉      | 564/1434 [00:01<00:02, 345.50it/s] 42%|████▏     | 599/1434 [00:01<00:02, 345.87it/s] 44%|████▍     | 634/1434 [00:01<00:02, 346.09it/s] 47%|████▋     | 669/1434 [00:01<00:02, 346.28it/s] 49%|████▉     | 704/1434 [00:02<00:02, 346.55it/s] 52%|█████▏    | 739/1434 [00:02<00:02, 346.48it/s] 54%|█████▍    | 774/1434 [00:02<00:01, 346.70it/s] 56%|█████▋    | 809/1434 [00:02<00:01, 346.36it/s] 59%|█████▉    | 844/1434 [00:02<00:01, 346.02it/s] 61%|██████▏   | 879/1434 [00:02<00:01, 346.14it/s] 64%|██████▎   | 914/1434 [00:02<00:01, 334.89it/s] 66%|██████▌   | 948/1434 [00:02<00:01, 336.12it/s] 69%|██████▊   | 983/1434 [00:02<00:01, 338.95it/s] 71%|███████   | 1018/1434 [00:02<00:01, 340.89it/s] 73%|███████▎  | 1053/1434 [00:03<00:01, 341.15it/s] 76%|███████▌  | 1088/1434 [00:03<00:01, 341.32it/s] 78%|███████▊  | 1123/1434 [00:03<00:00, 338.12it/s] 81%|████████  | 1158/1434 [00:03<00:00, 338.81it/s] 83%|████████▎ | 1193/1434 [00:03<00:00, 339.49it/s] 86%|████████▌ | 1228/1434 [00:03<00:00, 340.24it/s] 88%|████████▊ | 1263/1434 [00:03<00:00, 340.85it/s] 91%|█████████ | 1298/1434 [00:03<00:00, 341.05it/s] 93%|█████████▎| 1333/1434 [00:03<00:00, 337.75it/s] 95%|█████████▌| 1367/1434 [00:04<00:00, 334.96it/s] 98%|█████████▊| 1403/1434 [00:04<00:00, 339.74it/s]100%|██████████| 1434/1434 [00:04<00:00, 341.08it/s]
- ==> Saving features to /media/b227/ygw/Dcase2023/baseline/src/check_point/best/BUK1_20181011_001004/output.plk
+  0%|          | 0/5 [00:00<?, ?it/s] 20%|██        | 1/5 [00:00<00:01,  3.45it/s]100%|██████████| 5/5 [00:00<00:00, 16.66it/s]
+  0%|          | 0/1434 [00:00<?, ?it/s]  3%|▎         | 45/1434 [00:00<00:03, 442.90it/s]  6%|▋         | 90/1434 [00:00<00:03, 444.43it/s]  9%|▉         | 135/1434 [00:00<00:02, 441.70it/s] 13%|█▎        | 180/1434 [00:00<00:02, 443.78it/s] 16%|█▌        | 225/1434 [00:00<00:02, 445.06it/s] 19%|█▉        | 270/1434 [00:00<00:02, 445.80it/s] 22%|██▏       | 315/1434 [00:00<00:02, 446.05it/s] 25%|██▌       | 360/1434 [00:00<00:02, 445.88it/s] 28%|██▊       | 405/1434 [00:00<00:02, 445.06it/s] 31%|███▏      | 450/1434 [00:01<00:02, 442.92it/s] 35%|███▍      | 495/1434 [00:01<00:02, 442.27it/s] 38%|███▊      | 540/1434 [00:01<00:02, 443.68it/s] 41%|████      | 585/1434 [00:01<00:01, 444.88it/s] 44%|████▍     | 630/1434 [00:01<00:01, 445.45it/s] 47%|████▋     | 675/1434 [00:01<00:01, 445.82it/s] 50%|█████     | 720/1434 [00:01<00:01, 446.39it/s] 53%|█████▎    | 765/1434 [00:01<00:01, 446.47it/s] 56%|█████▋    | 810/1434 [00:01<00:01, 444.66it/s] 60%|█████▉    | 855/1434 [00:01<00:01, 445.36it/s] 63%|██████▎   | 900/1434 [00:02<00:01, 445.34it/s] 66%|██████▌   | 945/1434 [00:02<00:01, 445.65it/s] 69%|██████▉   | 990/1434 [00:02<00:00, 444.66it/s] 72%|███████▏  | 1035/1434 [00:02<00:00, 444.03it/s] 75%|███████▌  | 1080/1434 [00:02<00:00, 443.46it/s] 78%|███████▊  | 1125/1434 [00:02<00:00, 442.40it/s] 82%|████████▏ | 1170/1434 [00:02<00:00, 440.03it/s] 85%|████████▍ | 1215/1434 [00:02<00:00, 440.79it/s] 88%|████████▊ | 1260/1434 [00:02<00:00, 442.29it/s] 91%|█████████ | 1305/1434 [00:02<00:00, 444.28it/s] 94%|█████████▍| 1350/1434 [00:03<00:00, 444.47it/s] 97%|█████████▋| 1395/1434 [00:03<00:00, 445.29it/s]100%|██████████| 1434/1434 [00:03<00:00, 444.36it/s]
+ ==> Saving features to /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2/best/BUK1_20181011_001004/output.plk
 mean_pos_len:17.2
 min_pos_len:12
 ====> Build features
-  0%|          | 0/128 [00:00<?, ?it/s]100%|██████████| 128/128 [00:00<00:00, 10240.74it/s]
+  0%|          | 0/128 [00:00<?, ?it/s]100%|██████████| 128/128 [00:00<00:00, 13689.05it/s]
 tim_builder.loss_weights 0.1
 self.number_task  1434
-thre:0.4307267963886261
+thre:0.47858959436416626
   0%|          | 0/100 [00:00<?, ?it/s]64
-acc:tensor(0.9653, device='cuda:0')
-acc:tensor(0.0570, device='cuda:0')
-tensor(5.9266, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.2636285722255707
-  1%|          | 1/100 [00:06<10:18,  6.25s/it]64
-acc:tensor(0.9706, device='cuda:0')
-acc:tensor(0.0811, device='cuda:0')
-tensor(3.4097, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.1349397748708725
-  2%|▏         | 2/100 [00:11<09:39,  5.92s/it]5
-acc:tensor(0.9562, device='cuda:0')
-acc:tensor(0.0811, device='cuda:0')
-tensor(2.7382, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.0694173201918602
-  3%|▎         | 3/100 [00:17<09:29,  5.87s/it]5
-acc:tensor(0.9458, device='cuda:0')
-acc:tensor(0.0811, device='cuda:0')
-tensor(2.6584, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.04093724489212036
-  4%|▍         | 4/100 [00:23<09:12,  5.75s/it]5
-acc:tensor(0.9446, device='cuda:0')
-acc:tensor(0.0811, device='cuda:0')
-tensor(2.6953, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.028014590963721275
-  5%|▌         | 5/100 [00:29<09:05,  5.74s/it]5
+tensor(11.0336, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8908, device='cuda:0')
+acc:tensor(0.4467, device='cuda:0')
+thre:0.3334059417247772
+  1%|          | 1/100 [00:03<05:07,  3.11s/it]64
+tensor(10.7031, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8051, device='cuda:0')
+acc:tensor(0.4571, device='cuda:0')
+thre:0.43107888102531433
+  2%|▏         | 2/100 [00:06<05:04,  3.11s/it]64
+tensor(9.2060, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8800, device='cuda:0')
+acc:tensor(0.4567, device='cuda:0')
+thre:0.5599719285964966
+  3%|▎         | 3/100 [00:09<04:51,  3.01s/it]64
+tensor(8.3946, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9173, device='cuda:0')
+acc:tensor(0.4467, device='cuda:0')
+thre:0.6361523270606995
+  4%|▍         | 4/100 [00:12<05:19,  3.33s/it]64
+tensor(7.9192, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9182, device='cuda:0')
+acc:tensor(0.4787, device='cuda:0')
+thre:0.6496543288230896
+  5%|▌         | 5/100 [00:16<05:38,  3.56s/it]64
+tensor(7.2885, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9242, device='cuda:0')
+acc:tensor(0.4467, device='cuda:0')
+thre:0.6338546276092529
+  6%|▌         | 6/100 [00:20<05:43,  3.65s/it]64
+tensor(6.5441, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9328, device='cuda:0')
+acc:tensor(0.4467, device='cuda:0')
+thre:0.6131033301353455
+  7%|▋         | 7/100 [00:24<05:45,  3.71s/it]64
+tensor(6.0390, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9370, device='cuda:0')
+acc:tensor(0.4467, device='cuda:0')
+thre:0.607973575592041
+  8%|▊         | 8/100 [00:28<05:45,  3.76s/it]64
+tensor(5.7170, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9365, device='cuda:0')
+acc:tensor(0.4467, device='cuda:0')
+thre:0.6258295774459839
+  9%|▉         | 9/100 [00:32<05:44,  3.78s/it]64
+tensor(5.3871, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9378, device='cuda:0')
+acc:tensor(0.4567, device='cuda:0')
+thre:0.6589428782463074
+ 10%|█         | 10/100 [00:36<05:42,  3.80s/it]64
+tensor(5.0258, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9410, device='cuda:0')
+acc:tensor(0.4467, device='cuda:0')
+thre:0.7025904059410095
+ 11%|█         | 11/100 [00:39<05:39,  3.82s/it]64
+tensor(4.6812, device='cuda:0', grad_fn=<AddBackward0>)
 acc:tensor(0.9445, device='cuda:0')
-acc:tensor(0.0680, device='cuda:0')
-tensor(2.7097, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.022038394585251808
-  6%|▌         | 6/100 [00:34<08:57,  5.71s/it]5
+acc:tensor(0.4467, device='cuda:0')
+thre:0.743529736995697
+ 12%|█▏        | 12/100 [00:43<05:36,  3.82s/it]64
+tensor(4.3961, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9471, device='cuda:0')
+acc:tensor(0.4571, device='cuda:0')
+thre:0.7729651927947998
+ 13%|█▎        | 13/100 [00:47<05:33,  3.83s/it]64
+tensor(4.2500, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9483, device='cuda:0')
+acc:tensor(0.4467, device='cuda:0')
+thre:0.7985883355140686
+ 14%|█▍        | 14/100 [00:51<05:29,  3.84s/it]64
+tensor(4.1095, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9490, device='cuda:0')
+acc:tensor(0.4567, device='cuda:0')
+thre:0.8109660744667053
+ 15%|█▌        | 15/100 [00:55<05:26,  3.84s/it]64
+tensor(3.9343, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9500, device='cuda:0')
+acc:tensor(0.4787, device='cuda:0')
+thre:0.8170900344848633
+ 16%|█▌        | 16/100 [00:59<05:26,  3.88s/it]64
+tensor(3.7702, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9512, device='cuda:0')
+acc:tensor(0.4787, device='cuda:0')
+thre:0.8178641200065613
+ 17%|█▋        | 17/100 [01:03<05:21,  3.88s/it]64
+tensor(3.6321, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9519, device='cuda:0')
+acc:tensor(0.4787, device='cuda:0')
+thre:0.8057559132575989
+ 18%|█▊        | 18/100 [01:07<05:17,  3.88s/it]64
+tensor(3.5482, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9517, device='cuda:0')
+acc:tensor(0.4576, device='cuda:0')
+thre:0.7969667315483093
+ 19%|█▉        | 19/100 [01:11<05:20,  3.95s/it]64
+tensor(3.4527, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9519, device='cuda:0')
+acc:tensor(0.4578, device='cuda:0')
+thre:0.7921590805053711
+ 20%|██        | 20/100 [01:15<05:14,  3.93s/it]64
+tensor(3.3919, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9520, device='cuda:0')
+acc:tensor(0.4581, device='cuda:0')
+thre:0.7956493496894836
+ 21%|██        | 21/100 [01:18<05:09,  3.92s/it]64
+tensor(3.3261, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9522, device='cuda:0')
+acc:tensor(0.4493, device='cuda:0')
+thre:0.8097434043884277
+ 22%|██▏       | 22/100 [01:22<05:04,  3.91s/it]64
+tensor(3.2468, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9528, device='cuda:0')
+acc:tensor(0.4651, device='cuda:0')
+thre:0.8184606432914734
+ 23%|██▎       | 23/100 [01:26<04:59,  3.90s/it]64
+tensor(3.2125, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9532, device='cuda:0')
+acc:tensor(0.4677, device='cuda:0')
+thre:0.8319596648216248
+ 24%|██▍       | 24/100 [01:30<04:55,  3.89s/it]64
+tensor(3.1559, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9535, device='cuda:0')
+acc:tensor(0.4857, device='cuda:0')
+thre:0.8412578105926514
+ 25%|██▌       | 25/100 [01:34<04:54,  3.93s/it]64
+tensor(3.1095, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9537, device='cuda:0')
+acc:tensor(0.4758, device='cuda:0')
+thre:0.8398212790489197
+ 26%|██▌       | 26/100 [01:38<04:52,  3.95s/it]64
+tensor(3.0928, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9538, device='cuda:0')
+acc:tensor(0.4937, device='cuda:0')
+thre:0.8379711508750916
+ 27%|██▋       | 27/100 [01:42<04:46,  3.93s/it]64
+tensor(3.0427, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9539, device='cuda:0')
+acc:tensor(0.4861, device='cuda:0')
+thre:0.8298592567443848
+ 28%|██▊       | 28/100 [01:46<04:47,  4.00s/it]64
+tensor(3.0041, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9539, device='cuda:0')
+acc:tensor(0.4811, device='cuda:0')
+thre:0.8242495656013489
+ 29%|██▉       | 29/100 [01:50<04:41,  3.96s/it]64
+tensor(2.9907, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9540, device='cuda:0')
+acc:tensor(0.4927, device='cuda:0')
+thre:0.8161516189575195
+ 30%|███       | 30/100 [01:54<04:38,  3.98s/it]64
+tensor(2.9429, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9540, device='cuda:0')
+acc:tensor(0.4949, device='cuda:0')
+thre:0.8098636269569397
+ 31%|███       | 31/100 [01:58<04:35,  3.99s/it]64
+tensor(2.9223, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9540, device='cuda:0')
+acc:tensor(0.5052, device='cuda:0')
+thre:0.8063040375709534
+ 32%|███▏      | 32/100 [02:02<04:29,  3.96s/it]64
+tensor(2.9084, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9541, device='cuda:0')
+acc:tensor(0.5411, device='cuda:0')
+thre:0.8048251271247864
+ 33%|███▎      | 33/100 [02:06<04:23,  3.94s/it]64
+tensor(2.8825, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9542, device='cuda:0')
+acc:tensor(0.5564, device='cuda:0')
+thre:0.8067033290863037
+ 34%|███▍      | 34/100 [02:10<04:21,  3.96s/it]64
+tensor(2.8480, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9544, device='cuda:0')
+acc:tensor(0.5408, device='cuda:0')
+thre:0.8107607960700989
+ 35%|███▌      | 35/100 [02:14<04:18,  3.98s/it]64
+tensor(2.8233, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9544, device='cuda:0')
+acc:tensor(0.5511, device='cuda:0')
+thre:0.8138665556907654
+ 36%|███▌      | 36/100 [02:18<04:15,  3.99s/it]64
+tensor(2.8082, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9544, device='cuda:0')
+acc:tensor(0.5922, device='cuda:0')
+thre:0.814013659954071
+ 37%|███▋      | 37/100 [02:22<04:09,  3.96s/it]64
+tensor(2.7899, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9545, device='cuda:0')
+acc:tensor(0.5617, device='cuda:0')
+thre:0.8095772862434387
+ 38%|███▊      | 38/100 [02:26<04:04,  3.94s/it]64
+tensor(2.7667, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9545, device='cuda:0')
+acc:tensor(0.5835, device='cuda:0')
+thre:0.8079442381858826
+ 39%|███▉      | 39/100 [02:30<03:59,  3.93s/it]64
+tensor(2.7593, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9545, device='cuda:0')
+acc:tensor(0.5932, device='cuda:0')
+thre:0.8017600178718567
+ 40%|████      | 40/100 [02:33<03:54,  3.92s/it]64
+tensor(2.7223, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9546, device='cuda:0')
+acc:tensor(0.6035, device='cuda:0')
+thre:0.7948842644691467
+ 41%|████      | 41/100 [02:37<03:50,  3.91s/it]64
+tensor(2.7156, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9545, device='cuda:0')
+acc:tensor(0.6086, device='cuda:0')
+thre:0.7880525588989258
+ 42%|████▏     | 42/100 [02:41<03:46,  3.91s/it]64
+tensor(2.6975, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9545, device='cuda:0')
+acc:tensor(0.6217, device='cuda:0')
+thre:0.7831892967224121
+ 43%|████▎     | 43/100 [02:45<03:42,  3.90s/it]64
+tensor(2.6796, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9546, device='cuda:0')
+acc:tensor(0.6337, device='cuda:0')
+thre:0.7809417843818665
+ 44%|████▍     | 44/100 [02:49<03:38,  3.90s/it]64
+tensor(2.6602, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9546, device='cuda:0')
+acc:tensor(0.6448, device='cuda:0')
+thre:0.7809392809867859
+ 45%|████▌     | 45/100 [02:53<03:34,  3.89s/it]64
+tensor(2.6399, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9546, device='cuda:0')
+acc:tensor(0.6544, device='cuda:0')
+thre:0.7823032736778259
+ 46%|████▌     | 46/100 [02:57<03:30,  3.89s/it]64
+tensor(2.6185, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9547, device='cuda:0')
+acc:tensor(0.6933, device='cuda:0')
+thre:0.7832826972007751
+ 47%|████▋     | 47/100 [03:01<03:26,  3.89s/it]64
+tensor(2.6126, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9547, device='cuda:0')
+acc:tensor(0.6553, device='cuda:0')
+thre:0.7814919948577881
+ 48%|████▊     | 48/100 [03:05<03:22,  3.89s/it]64
+tensor(2.5978, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9548, device='cuda:0')
+acc:tensor(0.6755, device='cuda:0')
+thre:0.7835349440574646
+ 49%|████▉     | 49/100 [03:08<03:18,  3.89s/it]64
+tensor(2.5793, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9549, device='cuda:0')
+acc:tensor(0.7157, device='cuda:0')
+thre:0.7816179394721985
+ 50%|█████     | 50/100 [03:12<03:14,  3.89s/it]64
+tensor(2.5756, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9549, device='cuda:0')
+acc:tensor(0.6843, device='cuda:0')
+thre:0.7762607932090759
+ 51%|█████     | 51/100 [03:16<03:10,  3.89s/it]64
+tensor(2.5530, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9548, device='cuda:0')
+acc:tensor(0.7331, device='cuda:0')
+thre:0.7755979895591736
+ 52%|█████▏    | 52/100 [03:20<03:06,  3.89s/it]64
+tensor(2.5420, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9548, device='cuda:0')
+acc:tensor(0.7276, device='cuda:0')
+thre:0.7752690315246582
+ 53%|█████▎    | 53/100 [03:24<03:02,  3.89s/it]64
+tensor(2.5324, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9549, device='cuda:0')
+acc:tensor(0.7357, device='cuda:0')
+thre:0.7754979133605957
+ 54%|█████▍    | 54/100 [03:28<02:58,  3.89s/it]64
+tensor(2.5215, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9549, device='cuda:0')
+acc:tensor(0.7565, device='cuda:0')
+thre:0.7763828635215759
+ 55%|█████▌    | 55/100 [03:32<02:55,  3.89s/it]64
+tensor(2.5125, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9549, device='cuda:0')
+acc:tensor(0.7516, device='cuda:0')
+thre:0.7791566252708435
+ 56%|█████▌    | 56/100 [03:36<02:51,  3.89s/it]64
+tensor(2.5009, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9549, device='cuda:0')
+acc:tensor(0.7702, device='cuda:0')
+thre:0.7808120846748352
+ 57%|█████▋    | 57/100 [03:40<02:47,  3.89s/it]64
+tensor(2.5058, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9549, device='cuda:0')
+acc:tensor(0.7336, device='cuda:0')
+thre:0.7791879773139954
+ 58%|█████▊    | 58/100 [03:43<02:43,  3.89s/it]64
+tensor(2.4996, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.7333, device='cuda:0')
+thre:0.7814938426017761
+ 59%|█████▉    | 59/100 [03:47<02:39,  3.89s/it]64
+tensor(2.4905, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.7444, device='cuda:0')
+thre:0.7807960510253906
+ 60%|██████    | 60/100 [03:51<02:35,  3.89s/it]64
+tensor(2.4668, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.8056, device='cuda:0')
+thre:0.7788047194480896
+ 61%|██████    | 61/100 [03:55<02:31,  3.88s/it]64
+tensor(2.4640, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.7856, device='cuda:0')
+thre:0.7779770493507385
+ 62%|██████▏   | 62/100 [03:59<02:27,  3.88s/it]64
+tensor(2.4574, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.7926, device='cuda:0')
+thre:0.7775877118110657
+ 63%|██████▎   | 63/100 [04:03<02:23,  3.88s/it]64
+tensor(2.4508, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.7996, device='cuda:0')
+thre:0.7784942984580994
+ 64%|██████▍   | 64/100 [04:07<02:19,  3.89s/it]64
+tensor(2.4500, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.7845, device='cuda:0')
+thre:0.7802127003669739
+ 65%|██████▌   | 65/100 [04:11<02:15,  3.88s/it]64
+tensor(2.4330, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.8371, device='cuda:0')
+thre:0.7819633483886719
+ 66%|██████▌   | 66/100 [04:15<02:12,  3.88s/it]64
+tensor(2.4382, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.7969, device='cuda:0')
+thre:0.7809062004089355
+ 67%|██████▋   | 67/100 [04:18<02:08,  3.88s/it]64
+tensor(2.4304, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.8037, device='cuda:0')
+thre:0.7843475341796875
+ 68%|██████▊   | 68/100 [04:22<02:04,  3.89s/it]64
+tensor(2.4242, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.8130, device='cuda:0')
+thre:0.7850896716117859
+ 69%|██████▉   | 69/100 [04:26<02:00,  3.89s/it]64
+tensor(2.4110, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8552, device='cuda:0')
+thre:0.7844982743263245
+ 70%|███████   | 70/100 [04:30<01:56,  3.89s/it]64
+tensor(2.4057, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8587, device='cuda:0')
+thre:0.7841184139251709
+ 71%|███████   | 71/100 [04:34<01:52,  3.88s/it]64
+tensor(2.4060, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8370, device='cuda:0')
+thre:0.7849647998809814
+ 72%|███████▏  | 72/100 [04:38<01:48,  3.89s/it]64
+tensor(2.4020, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8331, device='cuda:0')
+thre:0.785834550857544
+ 73%|███████▎  | 73/100 [04:42<01:44,  3.89s/it]64
+tensor(2.3904, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8731, device='cuda:0')
+thre:0.7866764664649963
+ 74%|███████▍  | 74/100 [04:46<01:41,  3.89s/it]64
+tensor(2.3916, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8457, device='cuda:0')
+thre:0.7886932492256165
+ 75%|███████▌  | 75/100 [04:49<01:37,  3.89s/it]64
+tensor(2.3906, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8371, device='cuda:0')
+thre:0.786634624004364
+ 76%|███████▌  | 76/100 [04:53<01:33,  3.89s/it]64
+tensor(2.3862, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8427, device='cuda:0')
+thre:0.7863298058509827
+ 77%|███████▋  | 77/100 [04:57<01:29,  3.89s/it]64
+tensor(2.3715, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8926, device='cuda:0')
+thre:0.7886059284210205
+ 78%|███████▊  | 78/100 [05:01<01:25,  3.89s/it]64
+tensor(2.3751, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8531, device='cuda:0')
+thre:0.7892618775367737
+ 79%|███████▉  | 79/100 [05:05<01:21,  3.89s/it]64
+tensor(2.3694, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8657, device='cuda:0')
+thre:0.789499819278717
+ 80%|████████  | 80/100 [05:09<01:17,  3.89s/it]64
+tensor(2.3673, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8601, device='cuda:0')
+thre:0.7896471619606018
+ 81%|████████  | 81/100 [05:13<01:13,  3.89s/it]64
+tensor(2.3634, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8651, device='cuda:0')
+thre:0.7903261184692383
+ 82%|████████▏ | 82/100 [05:17<01:09,  3.89s/it]64
+tensor(2.3593, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9551, device='cuda:0')
+acc:tensor(0.8681, device='cuda:0')
+thre:0.7911419868469238
+ 83%|████████▎ | 83/100 [05:21<01:06,  3.89s/it]64
+tensor(2.3552, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9552, device='cuda:0')
+acc:tensor(0.8709, device='cuda:0')
+thre:0.7920153737068176
+ 84%|████████▍ | 84/100 [05:24<01:02,  3.89s/it]64
+tensor(2.3444, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9552, device='cuda:0')
+acc:tensor(0.9108, device='cuda:0')
+thre:0.791933536529541
+ 85%|████████▌ | 85/100 [05:28<00:58,  3.88s/it]64
+tensor(2.3473, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9552, device='cuda:0')
+acc:tensor(0.8815, device='cuda:0')
+thre:0.7921314239501953
+ 86%|████████▌ | 86/100 [05:32<00:54,  3.89s/it]64
+tensor(2.3446, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9552, device='cuda:0')
+acc:tensor(0.8847, device='cuda:0')
+thre:0.7996492981910706
+ 87%|████████▋ | 87/100 [05:36<00:50,  3.90s/it]64
+tensor(2.3359, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9552, device='cuda:0')
+acc:tensor(0.9147, device='cuda:0')
+thre:0.8007428050041199
+ 88%|████████▊ | 88/100 [05:40<00:46,  3.91s/it]64
+tensor(2.3327, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9552, device='cuda:0')
+acc:tensor(0.9162, device='cuda:0')
+thre:0.8010461330413818
+ 89%|████████▉ | 89/100 [05:44<00:43,  3.92s/it]64
+tensor(2.3376, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.8820, device='cuda:0')
+thre:0.7990698218345642
+ 90%|█████████ | 90/100 [05:48<00:39,  3.92s/it]64
+tensor(2.3332, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.8905, device='cuda:0')
+thre:0.8019564151763916
+ 91%|█████████ | 91/100 [05:52<00:35,  3.93s/it]64
+tensor(2.3298, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.8951, device='cuda:0')
+thre:0.8029120564460754
+ 92%|█████████▏| 92/100 [05:56<00:31,  3.93s/it]64
+tensor(2.3280, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.8893, device='cuda:0')
+thre:0.8005351424217224
+ 93%|█████████▎| 93/100 [06:00<00:27,  3.93s/it]64
+tensor(2.3218, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.9043, device='cuda:0')
+thre:0.8025237917900085
+ 94%|█████████▍| 94/100 [06:04<00:23,  3.93s/it]64
+tensor(2.3140, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.9267, device='cuda:0')
+thre:0.802654504776001
+ 95%|█████████▌| 95/100 [06:08<00:19,  3.93s/it]64
+tensor(2.3160, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.9064, device='cuda:0')
+thre:0.8028333783149719
+ 96%|█████████▌| 96/100 [06:12<00:15,  3.93s/it]64
+tensor(2.3131, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.9080, device='cuda:0')
+thre:0.8030703663825989
+ 97%|█████████▋| 97/100 [06:16<00:11,  3.94s/it]64
+tensor(2.3104, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.9102, device='cuda:0')
+thre:0.8034716248512268
+ 98%|█████████▊| 98/100 [06:19<00:07,  3.94s/it]64
+tensor(2.3087, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.9143, device='cuda:0')
+thre:0.8043883442878723
+ 99%|█████████▉| 99/100 [06:23<00:03,  3.94s/it]64
+tensor(2.3001, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9553, device='cuda:0')
+acc:tensor(0.9306, device='cuda:0')
+thre:0.8037557601928711
+100%|██████████| 100/100 [06:27<00:00,  3.93s/it]100%|██████████| 100/100 [06:27<00:00,  3.88s/it]
+start_index_query 362.7305215419501
+onset_frames (27,)
+Processing audio file : BUK1_20181013_023504.wav
+=> Runnning full evaluation with method: tim_gd
+=> Load model from: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2
+ ==> Beginning feature extraction
+===> Query feature extraction
+  0%|          | 0/32 [00:00<?, ?it/s]100%|██████████| 32/32 [00:00<00:00, 427.75it/s]
+===> Pos feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 1532.45it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 2557.50it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 2884.67it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 2953.74it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 2995.93it/s]
+===> Neg feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 3685.68it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 1882.54it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6288.31it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7667.83it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6186.29it/s]
+===> extra Neg feature extraction
+  0%|          | 0/5 [00:00<?, ?it/s]100%|██████████| 5/5 [00:00<00:00, 379.02it/s]
+  0%|          | 0/1565 [00:00<?, ?it/s]  3%|▎         | 40/1565 [00:00<00:03, 398.97it/s]  5%|▌         | 85/1565 [00:00<00:03, 423.98it/s]  8%|▊         | 130/1565 [00:00<00:03, 434.53it/s] 11%|█         | 175/1565 [00:00<00:03, 440.15it/s] 14%|█▍        | 220/1565 [00:00<00:03, 442.47it/s] 17%|█▋        | 265/1565 [00:00<00:02, 444.19it/s] 20%|█▉        | 310/1565 [00:00<00:02, 445.31it/s] 23%|██▎       | 355/1565 [00:00<00:02, 446.01it/s] 26%|██▌       | 400/1565 [00:00<00:02, 446.65it/s] 28%|██▊       | 445/1565 [00:01<00:02, 445.28it/s] 31%|███▏      | 490/1565 [00:01<00:02, 445.95it/s] 34%|███▍      | 535/1565 [00:01<00:02, 446.84it/s] 37%|███▋      | 581/1565 [00:01<00:02, 447.85it/s] 40%|████      | 626/1565 [00:01<00:02, 448.21it/s] 43%|████▎     | 671/1565 [00:01<00:01, 448.13it/s] 46%|████▌     | 717/1565 [00:01<00:01, 448.69it/s] 49%|████▊     | 762/1565 [00:01<00:01, 447.82it/s] 52%|█████▏    | 807/1565 [00:01<00:01, 445.52it/s] 54%|█████▍    | 852/1565 [00:01<00:01, 446.02it/s] 57%|█████▋    | 897/1565 [00:02<00:01, 446.42it/s] 60%|██████    | 942/1565 [00:02<00:01, 447.26it/s] 63%|██████▎   | 987/1565 [00:02<00:01, 446.93it/s] 66%|██████▌   | 1032/1565 [00:02<00:01, 447.06it/s] 69%|██████▉   | 1077/1565 [00:02<00:01, 447.20it/s] 72%|███████▏  | 1122/1565 [00:02<00:00, 447.09it/s] 75%|███████▍  | 1167/1565 [00:02<00:00, 446.55it/s] 77%|███████▋  | 1212/1565 [00:02<00:00, 444.72it/s] 80%|████████  | 1257/1565 [00:02<00:00, 444.34it/s] 83%|████████▎ | 1302/1565 [00:02<00:00, 444.54it/s] 86%|████████▌ | 1347/1565 [00:03<00:00, 444.98it/s] 89%|████████▉ | 1392/1565 [00:03<00:00, 444.68it/s] 92%|█████████▏| 1437/1565 [00:03<00:00, 444.86it/s] 95%|█████████▍| 1482/1565 [00:03<00:00, 444.68it/s] 98%|█████████▊| 1527/1565 [00:03<00:00, 444.53it/s]100%|██████████| 1565/1565 [00:03<00:00, 444.64it/s]
+ ==> Saving features to /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2/best/BUK1_20181013_023504/output.plk
+mean_pos_len:7.4
+min_pos_len:6
+====> Build features
+  0%|          | 0/128 [00:00<?, ?it/s]100%|██████████| 128/128 [00:00<00:00, 13694.29it/s]
+tim_builder.loss_weights 0.1
+self.number_task  1565
+thre:0.06721596419811249
+  0%|          | 0/100 [00:00<?, ?it/s]5
+tensor(13.8077, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8110, device='cuda:0')
+acc:tensor(0.4489, device='cuda:0')
+thre:0.03558104857802391
+  1%|          | 1/100 [00:03<05:08,  3.12s/it]5
+tensor(11.9625, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.7954, device='cuda:0')
+acc:tensor(0.4489, device='cuda:0')
+thre:0.04243822768330574
+  2%|▏         | 2/100 [00:06<05:05,  3.12s/it]5
+tensor(10.5222, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8120, device='cuda:0')
+acc:tensor(0.4489, device='cuda:0')
+thre:0.06770806759595871
+  3%|▎         | 3/100 [00:09<05:02,  3.12s/it]5
+tensor(9.2615, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8517, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.112165667116642
+  4%|▍         | 4/100 [00:13<05:38,  3.53s/it]5
+tensor(8.6733, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8728, device='cuda:0')
+acc:tensor(0.4363, device='cuda:0')
+thre:0.15734870731830597
+  5%|▌         | 5/100 [00:17<05:57,  3.76s/it]5
+tensor(8.4199, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8760, device='cuda:0')
+acc:tensor(0.4671, device='cuda:0')
+thre:0.18083937466144562
+  6%|▌         | 6/100 [00:21<06:06,  3.90s/it]5
+tensor(8.3460, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8745, device='cuda:0')
+acc:tensor(0.4363, device='cuda:0')
+thre:0.18495652079582214
+  7%|▋         | 7/100 [00:26<06:10,  3.99s/it]5
+tensor(8.1005, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8722, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.1790112406015396
+  8%|▊         | 8/100 [00:30<06:12,  4.05s/it]5
+tensor(7.8033, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8742, device='cuda:0')
+acc:tensor(0.4671, device='cuda:0')
+thre:0.1705283373594284
+  9%|▉         | 9/100 [00:34<06:11,  4.09s/it]5
+tensor(7.4746, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8790, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.15816137194633484
+ 10%|█         | 10/100 [00:38<06:10,  4.11s/it]5
+tensor(7.1658, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8835, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.1503911167383194
+ 11%|█         | 11/100 [00:42<06:07,  4.13s/it]5
+tensor(6.9669, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8863, device='cuda:0')
+acc:tensor(0.4363, device='cuda:0')
+thre:0.14611348509788513
+ 12%|█▏        | 12/100 [00:46<06:05,  4.15s/it]5
+tensor(6.7667, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8878, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.13879048824310303
+ 13%|█▎        | 13/100 [00:51<06:01,  4.16s/it]5
+tensor(6.6556, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8897, device='cuda:0')
+acc:tensor(0.4489, device='cuda:0')
+thre:0.12635211646556854
+ 14%|█▍        | 14/100 [00:55<05:58,  4.17s/it]5
+tensor(6.5032, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8924, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.11403343826532364
+ 15%|█▌        | 15/100 [00:59<05:54,  4.17s/it]5
+tensor(6.3813, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8951, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.10485970973968506
+ 16%|█▌        | 16/100 [01:03<05:51,  4.18s/it]5
+tensor(6.2699, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8968, device='cuda:0')
+acc:tensor(0.4386, device='cuda:0')
+thre:0.09965594857931137
+ 17%|█▋        | 17/100 [01:07<05:47,  4.18s/it]5
+tensor(6.1959, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8982, device='cuda:0')
+acc:tensor(0.4363, device='cuda:0')
+thre:0.09987758100032806
+ 18%|█▊        | 18/100 [01:12<05:42,  4.18s/it]5
+tensor(6.1039, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8990, device='cuda:0')
+acc:tensor(0.4370, device='cuda:0')
+thre:0.10351532697677612
+ 19%|█▉        | 19/100 [01:16<05:38,  4.18s/it]5
+tensor(6.0183, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8996, device='cuda:0')
+acc:tensor(0.4378, device='cuda:0')
+thre:0.1103505939245224
+ 20%|██        | 20/100 [01:20<05:34,  4.19s/it]5
+tensor(5.9594, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9004, device='cuda:0')
+acc:tensor(0.4529, device='cuda:0')
+thre:0.11946839839220047
+ 21%|██        | 21/100 [01:24<05:30,  4.19s/it]5
+tensor(5.8605, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9006, device='cuda:0')
+acc:tensor(0.4396, device='cuda:0')
+thre:0.13087345659732819
+ 22%|██▏       | 22/100 [01:28<05:26,  4.19s/it]5
+tensor(5.7825, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9012, device='cuda:0')
+acc:tensor(0.4418, device='cuda:0')
+thre:0.1431654840707779
+ 23%|██▎       | 23/100 [01:32<05:22,  4.19s/it]5
+tensor(5.7365, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9019, device='cuda:0')
+acc:tensor(0.4648, device='cuda:0')
+thre:0.15622444450855255
+ 24%|██▍       | 24/100 [01:37<05:18,  4.19s/it]5
+tensor(5.6496, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9025, device='cuda:0')
+acc:tensor(0.4734, device='cuda:0')
+thre:0.16998934745788574
+ 25%|██▌       | 25/100 [01:41<05:14,  4.19s/it]5
+tensor(5.5826, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9031, device='cuda:0')
+acc:tensor(0.4768, device='cuda:0')
+thre:0.186907097697258
+ 26%|██▌       | 26/100 [01:45<05:10,  4.20s/it]5
+tensor(5.5036, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9034, device='cuda:0')
+acc:tensor(0.4657, device='cuda:0')
+thre:0.20529165863990784
+ 27%|██▋       | 27/100 [01:49<05:06,  4.20s/it]64
+tensor(5.4527, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9039, device='cuda:0')
+acc:tensor(0.4712, device='cuda:0')
+thre:0.22683967649936676
+ 28%|██▊       | 28/100 [01:53<05:01,  4.19s/it]64
+tensor(5.4214, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9044, device='cuda:0')
+acc:tensor(0.4950, device='cuda:0')
+thre:0.25122639536857605
+ 29%|██▉       | 29/100 [01:58<04:57,  4.19s/it]64
+tensor(5.3610, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9048, device='cuda:0')
+acc:tensor(0.4827, device='cuda:0')
+thre:0.271259069442749
+ 30%|███       | 30/100 [02:02<04:53,  4.19s/it]64
+tensor(5.3308, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9053, device='cuda:0')
+acc:tensor(0.5105, device='cuda:0')
+thre:0.2913987934589386
+ 31%|███       | 31/100 [02:06<04:49,  4.19s/it]64
+tensor(5.2748, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9056, device='cuda:0')
+acc:tensor(0.4956, device='cuda:0')
+thre:0.3073691427707672
+ 32%|███▏      | 32/100 [02:10<04:45,  4.19s/it]64
+tensor(5.2683, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9059, device='cuda:0')
+acc:tensor(0.5171, device='cuda:0')
+thre:0.3189522325992584
+ 33%|███▎      | 33/100 [02:14<04:40,  4.19s/it]64
+tensor(5.1998, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9062, device='cuda:0')
+acc:tensor(0.5166, device='cuda:0')
+thre:0.32922059297561646
+ 34%|███▍      | 34/100 [02:19<04:36,  4.19s/it]64
+tensor(5.1758, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9063, device='cuda:0')
+acc:tensor(0.5638, device='cuda:0')
+thre:0.3380706310272217
+ 35%|███▌      | 35/100 [02:23<04:32,  4.19s/it]64
+tensor(5.1382, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9065, device='cuda:0')
+acc:tensor(0.5339, device='cuda:0')
+thre:0.3457012176513672
+ 36%|███▌      | 36/100 [02:27<04:28,  4.19s/it]64
+tensor(5.1249, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9066, device='cuda:0')
+acc:tensor(0.5603, device='cuda:0')
+thre:0.3595965802669525
+ 37%|███▋      | 37/100 [02:31<04:24,  4.19s/it]64
+tensor(5.0718, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9068, device='cuda:0')
+acc:tensor(0.5998, device='cuda:0')
+thre:0.3699677288532257
+ 38%|███▊      | 38/100 [02:35<04:19,  4.19s/it]64
+tensor(5.0414, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9069, device='cuda:0')
+acc:tensor(0.6125, device='cuda:0')
+thre:0.3793940246105194
+ 39%|███▉      | 39/100 [02:40<04:15,  4.19s/it]64
+tensor(5.0146, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9069, device='cuda:0')
+acc:tensor(0.5689, device='cuda:0')
+thre:0.388247549533844
+ 40%|████      | 40/100 [02:44<04:11,  4.19s/it]64
+tensor(4.9950, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9070, device='cuda:0')
+acc:tensor(0.5767, device='cuda:0')
+thre:0.39634329080581665
+ 41%|████      | 41/100 [02:48<04:07,  4.19s/it]64
+tensor(4.9771, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9070, device='cuda:0')
+acc:tensor(0.5840, device='cuda:0')
+thre:0.4046161472797394
+ 42%|████▏     | 42/100 [02:52<04:02,  4.19s/it]64
+tensor(4.9586, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9071, device='cuda:0')
+acc:tensor(0.5923, device='cuda:0')
+thre:0.41457128524780273
+ 43%|████▎     | 43/100 [02:56<03:58,  4.19s/it]64
+tensor(4.9534, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9072, device='cuda:0')
+acc:tensor(0.6078, device='cuda:0')
+thre:0.42571133375167847
+ 44%|████▍     | 44/100 [03:01<03:54,  4.19s/it]64
+tensor(4.9299, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9074, device='cuda:0')
+acc:tensor(0.6162, device='cuda:0')
+thre:0.43653324246406555
+ 45%|████▌     | 45/100 [03:05<03:50,  4.19s/it]64
+tensor(4.8888, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9075, device='cuda:0')
+acc:tensor(0.6647, device='cuda:0')
+thre:0.44310861825942993
+ 46%|████▌     | 46/100 [03:09<03:46,  4.19s/it]64
+tensor(4.8850, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9076, device='cuda:0')
+acc:tensor(0.6337, device='cuda:0')
+thre:0.448913037776947
+ 47%|████▋     | 47/100 [03:13<03:41,  4.19s/it]64
+tensor(4.8557, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9077, device='cuda:0')
+acc:tensor(0.6163, device='cuda:0')
+thre:0.45415157079696655
+ 48%|████▊     | 48/100 [03:17<03:37,  4.19s/it]64
+tensor(4.8510, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9077, device='cuda:0')
+acc:tensor(0.6477, device='cuda:0')
+thre:0.4573809802532196
+ 49%|████▉     | 49/100 [03:21<03:33,  4.19s/it]64
+tensor(4.8275, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9077, device='cuda:0')
+acc:tensor(0.6304, device='cuda:0')
+thre:0.4617564082145691
+ 50%|█████     | 50/100 [03:26<03:29,  4.19s/it]64
+tensor(4.8202, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9078, device='cuda:0')
+acc:tensor(0.6640, device='cuda:0')
+thre:0.46500930190086365
+ 51%|█████     | 51/100 [03:30<03:25,  4.19s/it]64
+tensor(4.8044, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9078, device='cuda:0')
+acc:tensor(0.6399, device='cuda:0')
+thre:0.4666736423969269
+ 52%|█████▏    | 52/100 [03:34<03:21,  4.19s/it]64
+tensor(4.7867, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9079, device='cuda:0')
+acc:tensor(0.6747, device='cuda:0')
+thre:0.47196319699287415
+ 53%|█████▎    | 53/100 [03:38<03:16,  4.19s/it]64
+tensor(4.7668, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9080, device='cuda:0')
+acc:tensor(0.6651, device='cuda:0')
+thre:0.4758515954017639
+ 54%|█████▍    | 54/100 [03:42<03:12,  4.19s/it]64
+tensor(4.7567, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9080, device='cuda:0')
+acc:tensor(0.6942, device='cuda:0')
+thre:0.47687533497810364
+ 55%|█████▌    | 55/100 [03:47<03:08,  4.19s/it]64
+tensor(4.7406, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9080, device='cuda:0')
+acc:tensor(0.6783, device='cuda:0')
+thre:0.4783737063407898
+ 56%|█████▌    | 56/100 [03:51<03:04,  4.18s/it]64
+tensor(4.7364, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9080, device='cuda:0')
+acc:tensor(0.6818, device='cuda:0')
+thre:0.47582384943962097
+ 57%|█████▋    | 57/100 [03:55<02:59,  4.18s/it]64
+tensor(4.7242, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9080, device='cuda:0')
+acc:tensor(0.6887, device='cuda:0')
+thre:0.4760165810585022
+ 58%|█████▊    | 58/100 [03:59<02:55,  4.18s/it]64
+tensor(4.7118, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9081, device='cuda:0')
+acc:tensor(0.6976, device='cuda:0')
+thre:0.47703641653060913
+ 59%|█████▉    | 59/100 [04:03<02:51,  4.19s/it]64
+tensor(4.6997, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9081, device='cuda:0')
+acc:tensor(0.7098, device='cuda:0')
+thre:0.47839856147766113
+ 60%|██████    | 60/100 [04:07<02:47,  4.19s/it]64
+tensor(4.6814, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9081, device='cuda:0')
+acc:tensor(0.7293, device='cuda:0')
+thre:0.4831499755382538
+ 61%|██████    | 61/100 [04:12<02:43,  4.19s/it]64
+tensor(4.6787, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9081, device='cuda:0')
+acc:tensor(0.7390, device='cuda:0')
+thre:0.48482242226600647
+ 62%|██████▏   | 62/100 [04:16<02:39,  4.19s/it]64
+tensor(4.6671, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9081, device='cuda:0')
+acc:tensor(0.7476, device='cuda:0')
+thre:0.48449379205703735
+ 63%|██████▎   | 63/100 [04:20<02:34,  4.19s/it]64
+tensor(4.6571, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9081, device='cuda:0')
+acc:tensor(0.7571, device='cuda:0')
+thre:0.48690325021743774
+ 64%|██████▍   | 64/100 [04:24<02:30,  4.19s/it]64
+tensor(4.6437, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9082, device='cuda:0')
+acc:tensor(0.7733, device='cuda:0')
+thre:0.4940827488899231
+ 65%|██████▌   | 65/100 [04:28<02:26,  4.19s/it]64
+tensor(4.6350, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9082, device='cuda:0')
+acc:tensor(0.7821, device='cuda:0')
+thre:0.49965015053749084
+ 66%|██████▌   | 66/100 [04:33<02:22,  4.19s/it]64
+tensor(4.6369, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9082, device='cuda:0')
+acc:tensor(0.7678, device='cuda:0')
+thre:0.5037354230880737
+ 67%|██████▋   | 67/100 [04:37<02:18,  4.19s/it]64
+tensor(4.6213, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.7883, device='cuda:0')
+thre:0.5052960515022278
+ 68%|██████▊   | 68/100 [04:41<02:13,  4.19s/it]64
+tensor(4.6134, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.7984, device='cuda:0')
+thre:0.5078997015953064
+ 69%|██████▉   | 69/100 [04:45<02:09,  4.19s/it]64
+tensor(4.6057, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8053, device='cuda:0')
+thre:0.5101197361946106
+ 70%|███████   | 70/100 [04:49<02:05,  4.19s/it]64
+tensor(4.6066, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.7903, device='cuda:0')
+thre:0.5144001841545105
+ 71%|███████   | 71/100 [04:54<02:01,  4.19s/it]64
+tensor(4.5905, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8201, device='cuda:0')
+thre:0.5172334313392639
+ 72%|███████▏  | 72/100 [04:58<01:57,  4.19s/it]64
+tensor(4.5916, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8183, device='cuda:0')
+thre:0.5175947546958923
+ 73%|███████▎  | 73/100 [05:02<01:53,  4.19s/it]64
+tensor(4.5845, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8229, device='cuda:0')
+thre:0.51799476146698
+ 74%|███████▍  | 74/100 [05:06<01:48,  4.19s/it]64
+tensor(4.5713, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8348, device='cuda:0')
+thre:0.5161567330360413
+ 75%|███████▌  | 75/100 [05:10<01:44,  4.19s/it]64
+tensor(4.5655, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.8414, device='cuda:0')
+thre:0.5160996317863464
+ 76%|███████▌  | 76/100 [05:14<01:40,  4.19s/it]64
+tensor(4.5612, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.8450, device='cuda:0')
+thre:0.5205056071281433
+ 77%|███████▋  | 77/100 [05:19<01:36,  4.19s/it]64
+tensor(4.5560, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8476, device='cuda:0')
+thre:0.5233800411224365
+ 78%|███████▊  | 78/100 [05:23<01:32,  4.19s/it]64
+tensor(4.5488, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8577, device='cuda:0')
+thre:0.5229927897453308
+ 79%|███████▉  | 79/100 [05:27<01:28,  4.19s/it]64
+tensor(4.5487, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8452, device='cuda:0')
+thre:0.5271238088607788
+ 80%|████████  | 80/100 [05:31<01:23,  4.19s/it]64
+tensor(4.5435, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8490, device='cuda:0')
+thre:0.5302173495292664
+ 81%|████████  | 81/100 [05:35<01:19,  4.19s/it]64
+tensor(4.5408, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8484, device='cuda:0')
+thre:0.5325587391853333
+ 82%|████████▏ | 82/100 [05:40<01:15,  4.19s/it]64
+tensor(4.5288, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8787, device='cuda:0')
+thre:0.5323818922042847
+ 83%|████████▎ | 83/100 [05:44<01:11,  4.20s/it]64
+tensor(4.5270, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8680, device='cuda:0')
+thre:0.5369478464126587
+ 84%|████████▍ | 84/100 [05:48<01:07,  4.19s/it]64
+tensor(4.5241, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8640, device='cuda:0')
+thre:0.5384372472763062
+ 85%|████████▌ | 85/100 [05:52<01:02,  4.19s/it]64
+tensor(4.5182, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8728, device='cuda:0')
+thre:0.5410419702529907
+ 86%|████████▌ | 86/100 [05:56<00:58,  4.19s/it]64
+tensor(4.5186, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.8658, device='cuda:0')
+thre:0.5529690384864807
+ 87%|████████▋ | 87/100 [06:01<00:54,  4.20s/it]64
+tensor(4.5069, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.8988, device='cuda:0')
+thre:0.5549637079238892
+ 88%|████████▊ | 88/100 [06:05<00:50,  4.21s/it]64
+tensor(4.5057, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.8818, device='cuda:0')
+thre:0.5589969158172607
+ 89%|████████▉ | 89/100 [06:09<00:46,  4.22s/it]64
+tensor(4.4989, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9083, device='cuda:0')
+acc:tensor(0.9028, device='cuda:0')
+thre:0.5593258142471313
+ 90%|█████████ | 90/100 [06:13<00:42,  4.22s/it]64
+tensor(4.4995, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.8860, device='cuda:0')
+thre:0.5627302527427673
+ 91%|█████████ | 91/100 [06:18<00:38,  4.23s/it]64
+tensor(4.4937, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.8940, device='cuda:0')
+thre:0.5657665729522705
+ 92%|█████████▏| 92/100 [06:22<00:33,  4.23s/it]64
+tensor(4.4874, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.9067, device='cuda:0')
+thre:0.5659088492393494
+ 93%|█████████▎| 93/100 [06:26<00:29,  4.23s/it]64
+tensor(4.4924, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.8793, device='cuda:0')
+thre:0.5691778063774109
+ 94%|█████████▍| 94/100 [06:30<00:25,  4.23s/it]64
+tensor(4.4803, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.9122, device='cuda:0')
+thre:0.5698733925819397
+ 95%|█████████▌| 95/100 [06:35<00:21,  4.24s/it]64
+tensor(4.4768, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.9150, device='cuda:0')
+thre:0.5719440579414368
+ 96%|█████████▌| 96/100 [06:39<00:16,  4.24s/it]64
+tensor(4.4786, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.8929, device='cuda:0')
+thre:0.5755701661109924
+ 97%|█████████▋| 97/100 [06:43<00:12,  4.24s/it]64
+tensor(4.4789, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.8876, device='cuda:0')
+thre:0.5782317519187927
+ 98%|█████████▊| 98/100 [06:47<00:08,  4.24s/it]64
+tensor(4.4667, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.9240, device='cuda:0')
+thre:0.5787249803543091
+ 99%|█████████▉| 99/100 [06:52<00:04,  4.24s/it]64
+tensor(4.4686, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9084, device='cuda:0')
+acc:tensor(0.9006, device='cuda:0')
+thre:0.5816583633422852
+100%|██████████| 100/100 [06:56<00:00,  4.24s/it]100%|██████████| 100/100 [06:56<00:00,  4.16s/it]
+start_index_query 232.10666666666665
+onset_frames (24,)
+Processing audio file : BUK4_20161011_000804.wav
+=> Runnning full evaluation with method: tim_gd
+=> Load model from: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2
+ ==> Beginning feature extraction
+===> Query feature extraction
+  0%|          | 0/31 [00:00<?, ?it/s]100%|██████████| 31/31 [00:00<00:00, 397.30it/s]
+===> Pos feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 3533.53it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7219.11it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7884.03it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7767.23it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7013.89it/s]
+===> Neg feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 2568.47it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 5309.25it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 3659.95it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 4373.62it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 3492.34it/s]
+===> extra Neg feature extraction
+  0%|          | 0/5 [00:00<?, ?it/s]100%|██████████| 5/5 [00:00<00:00, 354.82it/s]
+  0%|          | 0/1532 [00:00<?, ?it/s]  3%|▎         | 45/1532 [00:00<00:03, 444.74it/s]  6%|▌         | 90/1532 [00:00<00:03, 445.16it/s]  9%|▉         | 135/1532 [00:00<00:03, 444.22it/s] 12%|█▏        | 180/1532 [00:00<00:03, 441.51it/s] 15%|█▍        | 225/1532 [00:00<00:02, 442.62it/s] 18%|█▊        | 270/1532 [00:00<00:02, 443.44it/s] 21%|██        | 315/1532 [00:00<00:02, 444.25it/s] 23%|██▎       | 360/1532 [00:00<00:02, 444.61it/s] 26%|██▋       | 405/1532 [00:00<00:02, 445.49it/s] 29%|██▉       | 450/1532 [00:01<00:02, 445.98it/s] 32%|███▏      | 495/1532 [00:01<00:02, 445.06it/s] 35%|███▌      | 540/1532 [00:01<00:02, 442.98it/s] 38%|███▊      | 585/1532 [00:01<00:02, 443.29it/s] 41%|████      | 630/1532 [00:01<00:02, 443.54it/s] 44%|████▍     | 675/1532 [00:01<00:01, 443.61it/s] 47%|████▋     | 720/1532 [00:01<00:01, 444.16it/s] 50%|████▉     | 765/1532 [00:01<00:01, 444.54it/s] 53%|█████▎    | 810/1532 [00:01<00:01, 444.77it/s] 56%|█████▌    | 855/1532 [00:01<00:01, 444.48it/s] 59%|█████▊    | 900/1532 [00:02<00:01, 442.34it/s] 62%|██████▏   | 945/1532 [00:02<00:01, 443.03it/s] 65%|██████▍   | 990/1532 [00:02<00:01, 443.42it/s] 68%|██████▊   | 1035/1532 [00:02<00:01, 444.10it/s] 70%|███████   | 1080/1532 [00:02<00:01, 444.59it/s] 73%|███████▎  | 1125/1532 [00:02<00:00, 444.58it/s] 76%|███████▋  | 1170/1532 [00:02<00:00, 444.17it/s] 79%|███████▉  | 1215/1532 [00:02<00:00, 441.87it/s] 82%|████████▏ | 1260/1532 [00:02<00:00, 442.80it/s] 85%|████████▌ | 1305/1532 [00:02<00:00, 443.04it/s] 88%|████████▊ | 1350/1532 [00:03<00:00, 443.53it/s] 91%|█████████ | 1395/1532 [00:03<00:00, 444.19it/s] 94%|█████████▍| 1440/1532 [00:03<00:00, 428.15it/s] 97%|█████████▋| 1484/1532 [00:03<00:00, 430.91it/s]100%|█████████▉| 1528/1532 [00:03<00:00, 431.87it/s]100%|██████████| 1532/1532 [00:03<00:00, 441.72it/s]
+ ==> Saving features to /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2/best/BUK4_20161011_000804/output.plk
+mean_pos_len:6.6
+min_pos_len:6
+====> Build features
+  0%|          | 0/128 [00:00<?, ?it/s]100%|██████████| 128/128 [00:00<00:00, 11724.38it/s]
+tim_builder.loss_weights 0.1
+self.number_task  1532
+thre:0.10729969292879105
+  0%|          | 0/100 [00:00<?, ?it/s]5
+tensor(13.5438, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8580, device='cuda:0')
+acc:tensor(0.4332, device='cuda:0')
+thre:0.04123735427856445
+  1%|          | 1/100 [00:03<05:04,  3.07s/it]5
+tensor(10.5856, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8234, device='cuda:0')
+acc:tensor(0.4456, device='cuda:0')
+thre:0.0231230016797781
+  2%|▏         | 2/100 [00:06<05:00,  3.07s/it]5
+tensor(10.4028, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.7907, device='cuda:0')
+acc:tensor(0.4366, device='cuda:0')
+thre:0.028394049033522606
+  3%|▎         | 3/100 [00:09<04:57,  3.07s/it]5
+tensor(9.9258, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.7981, device='cuda:0')
+acc:tensor(0.4640, device='cuda:0')
+thre:0.052162665873765945
+  4%|▍         | 4/100 [00:13<05:33,  3.47s/it]5
+tensor(8.7771, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8432, device='cuda:0')
+acc:tensor(0.4366, device='cuda:0')
+thre:0.10349616408348083
+  5%|▌         | 5/100 [00:17<05:51,  3.70s/it]5
+tensor(8.0538, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8711, device='cuda:0')
+acc:tensor(0.4332, device='cuda:0')
+thre:0.18292462825775146
+  6%|▌         | 6/100 [00:21<06:00,  3.83s/it]5
+tensor(7.9075, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8736, device='cuda:0')
+acc:tensor(0.4640, device='cuda:0')
+thre:0.25401008129119873
+  7%|▋         | 7/100 [00:25<06:04,  3.92s/it]64
+tensor(7.9791, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8729, device='cuda:0')
+acc:tensor(0.4366, device='cuda:0')
+thre:0.28360459208488464
+  8%|▊         | 8/100 [00:29<06:06,  3.98s/it]64
+tensor(7.8499, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8746, device='cuda:0')
+acc:tensor(0.4456, device='cuda:0')
+thre:0.264763742685318
+  9%|▉         | 9/100 [00:33<06:05,  4.02s/it]64
+tensor(7.5113, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8814, device='cuda:0')
+acc:tensor(0.4366, device='cuda:0')
+thre:0.22688810527324677
+ 10%|█         | 10/100 [00:37<06:04,  4.05s/it]64
+tensor(7.3075, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8864, device='cuda:0')
+acc:tensor(0.4332, device='cuda:0')
+thre:0.19448454678058624
+ 11%|█         | 11/100 [00:42<06:01,  4.06s/it]5
+tensor(7.2116, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8851, device='cuda:0')
+acc:tensor(0.4332, device='cuda:0')
+thre:0.1796581894159317
+ 12%|█▏        | 12/100 [00:46<05:58,  4.08s/it]5
+tensor(7.1326, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8848, device='cuda:0')
+acc:tensor(0.4332, device='cuda:0')
+thre:0.18324321508407593
+ 13%|█▎        | 13/100 [00:50<05:55,  4.09s/it]5
+tensor(6.9408, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8864, device='cuda:0')
+acc:tensor(0.4456, device='cuda:0')
+thre:0.20169450342655182
+ 14%|█▍        | 14/100 [00:54<05:52,  4.09s/it]64
+tensor(6.6467, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8894, device='cuda:0')
+acc:tensor(0.4366, device='cuda:0')
+thre:0.21162386238574982
+ 15%|█▌        | 15/100 [00:58<05:48,  4.10s/it]64
+tensor(6.4401, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8913, device='cuda:0')
+acc:tensor(0.4332, device='cuda:0')
+thre:0.22360451519489288
+ 16%|█▌        | 16/100 [01:02<05:44,  4.10s/it]64
+tensor(6.3045, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8922, device='cuda:0')
+acc:tensor(0.4460, device='cuda:0')
+thre:0.22811971604824066
+ 17%|█▋        | 17/100 [01:06<05:40,  4.10s/it]64
+tensor(6.2109, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8929, device='cuda:0')
+acc:tensor(0.4332, device='cuda:0')
+thre:0.22674061357975006
+ 18%|█▊        | 18/100 [01:10<05:36,  4.11s/it]64
+tensor(6.1323, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8940, device='cuda:0')
+acc:tensor(0.4332, device='cuda:0')
+thre:0.21727842092514038
+ 19%|█▉        | 19/100 [01:14<05:32,  4.11s/it]64
+tensor(6.0537, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8959, device='cuda:0')
+acc:tensor(0.4470, device='cuda:0')
+thre:0.20284587144851685
+ 20%|██        | 20/100 [01:19<05:28,  4.11s/it]64
+tensor(5.9535, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8975, device='cuda:0')
+acc:tensor(0.4477, device='cuda:0')
+thre:0.1893128603696823
+ 21%|██        | 21/100 [01:23<05:24,  4.10s/it]5
+tensor(5.8712, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8986, device='cuda:0')
+acc:tensor(0.4640, device='cuda:0')
+thre:0.18019644916057587
+ 22%|██▏       | 22/100 [01:27<05:20,  4.11s/it]5
+tensor(5.8069, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8989, device='cuda:0')
+acc:tensor(0.4396, device='cuda:0')
+thre:0.17616881430149078
+ 23%|██▎       | 23/100 [01:31<05:16,  4.11s/it]5
+tensor(5.8009, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8990, device='cuda:0')
+acc:tensor(0.4644, device='cuda:0')
+thre:0.1855161339044571
+ 24%|██▍       | 24/100 [01:35<05:12,  4.11s/it]5
+tensor(5.7366, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8993, device='cuda:0')
+acc:tensor(0.4392, device='cuda:0')
+thre:0.2033642679452896
+ 25%|██▌       | 25/100 [01:39<05:08,  4.11s/it]64
+tensor(5.6771, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8998, device='cuda:0')
+acc:tensor(0.4510, device='cuda:0')
+thre:0.22547847032546997
+ 26%|██▌       | 26/100 [01:43<05:04,  4.11s/it]64
+tensor(5.6288, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9005, device='cuda:0')
+acc:tensor(0.4737, device='cuda:0')
+thre:0.2566812336444855
+ 27%|██▋       | 27/100 [01:47<05:00,  4.11s/it]64
+tensor(5.5852, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9007, device='cuda:0')
+acc:tensor(0.4693, device='cuda:0')
+thre:0.284869521856308
+ 28%|██▊       | 28/100 [01:51<04:56,  4.11s/it]64
+tensor(5.5227, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9010, device='cuda:0')
+acc:tensor(0.4628, device='cuda:0')
+thre:0.3092438578605652
+ 29%|██▉       | 29/100 [01:55<04:52,  4.11s/it]64
+tensor(5.5006, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9013, device='cuda:0')
+acc:tensor(0.4706, device='cuda:0')
+thre:0.3211275339126587
+ 30%|███       | 30/100 [02:00<04:47,  4.11s/it]64
+tensor(5.4761, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9015, device='cuda:0')
+acc:tensor(0.4979, device='cuda:0')
+thre:0.3316842317581177
+ 31%|███       | 31/100 [02:04<04:43,  4.11s/it]64
+tensor(5.4325, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9015, device='cuda:0')
+acc:tensor(0.5091, device='cuda:0')
+thre:0.3342476785182953
+ 32%|███▏      | 32/100 [02:08<04:39,  4.11s/it]64
+tensor(5.3773, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9015, device='cuda:0')
+acc:tensor(0.4989, device='cuda:0')
+thre:0.3342278301715851
+ 33%|███▎      | 33/100 [02:12<04:35,  4.11s/it]64
+tensor(5.3492, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9015, device='cuda:0')
+acc:tensor(0.5104, device='cuda:0')
+thre:0.33446916937828064
+ 34%|███▍      | 34/100 [02:16<04:31,  4.11s/it]64
+tensor(5.3301, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9013, device='cuda:0')
+acc:tensor(0.5194, device='cuda:0')
+thre:0.33796632289886475
+ 35%|███▌      | 35/100 [02:20<04:27,  4.11s/it]64
+tensor(5.3229, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9014, device='cuda:0')
+acc:tensor(0.5623, device='cuda:0')
+thre:0.34586378931999207
+ 36%|███▌      | 36/100 [02:24<04:22,  4.11s/it]64
+tensor(5.2994, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9015, device='cuda:0')
+acc:tensor(0.5238, device='cuda:0')
+thre:0.35286760330200195
+ 37%|███▋      | 37/100 [02:28<04:18,  4.11s/it]64
+tensor(5.2674, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9016, device='cuda:0')
+acc:tensor(0.5926, device='cuda:0')
+thre:0.3688732385635376
+ 38%|███▊      | 38/100 [02:32<04:14,  4.11s/it]64
+tensor(5.2534, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9017, device='cuda:0')
+acc:tensor(0.5694, device='cuda:0')
+thre:0.3807326853275299
+ 39%|███▉      | 39/100 [02:37<04:10,  4.11s/it]64
+tensor(5.2082, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9018, device='cuda:0')
+acc:tensor(0.5635, device='cuda:0')
+thre:0.3899642527103424
+ 40%|████      | 40/100 [02:41<04:06,  4.11s/it]64
+tensor(5.2005, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9020, device='cuda:0')
+acc:tensor(0.5537, device='cuda:0')
+thre:0.3906960189342499
+ 41%|████      | 41/100 [02:45<04:02,  4.11s/it]64
+tensor(5.1693, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9022, device='cuda:0')
+acc:tensor(0.6384, device='cuda:0')
+thre:0.3940190374851227
+ 42%|████▏     | 42/100 [02:49<03:58,  4.11s/it]64
+tensor(5.1416, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9022, device='cuda:0')
+acc:tensor(0.6438, device='cuda:0')
+thre:0.39250651001930237
+ 43%|████▎     | 43/100 [02:53<03:54,  4.11s/it]64
+tensor(5.1149, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9022, device='cuda:0')
+acc:tensor(0.6508, device='cuda:0')
+thre:0.39005112648010254
+ 44%|████▍     | 44/100 [02:57<03:50,  4.11s/it]64
+tensor(5.0930, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9023, device='cuda:0')
+acc:tensor(0.6594, device='cuda:0')
+thre:0.3891652524471283
+ 45%|████▌     | 45/100 [03:01<03:45,  4.11s/it]64
+tensor(5.0816, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9023, device='cuda:0')
+acc:tensor(0.6053, device='cuda:0')
+thre:0.3916414976119995
+ 46%|████▌     | 46/100 [03:05<03:41,  4.11s/it]64
+tensor(5.0798, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9024, device='cuda:0')
+acc:tensor(0.6240, device='cuda:0')
+thre:0.3969741761684418
+ 47%|████▋     | 47/100 [03:09<03:37,  4.11s/it]64
+tensor(5.0384, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9025, device='cuda:0')
+acc:tensor(0.6797, device='cuda:0')
+thre:0.4060976505279541
+ 48%|████▊     | 48/100 [03:14<03:33,  4.11s/it]64
+tensor(5.0191, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9025, device='cuda:0')
+acc:tensor(0.6847, device='cuda:0')
+thre:0.4149107038974762
+ 49%|████▉     | 49/100 [03:18<03:29,  4.11s/it]64
+tensor(5.0186, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9025, device='cuda:0')
+acc:tensor(0.6192, device='cuda:0')
+thre:0.421716570854187
+ 50%|█████     | 50/100 [03:22<03:25,  4.11s/it]64
+tensor(5.0094, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9025, device='cuda:0')
+acc:tensor(0.6263, device='cuda:0')
+thre:0.4219701290130615
+ 51%|█████     | 51/100 [03:26<03:21,  4.11s/it]64
+tensor(5.0012, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9025, device='cuda:0')
+acc:tensor(0.6519, device='cuda:0')
+thre:0.42666518688201904
+ 52%|█████▏    | 52/100 [03:30<03:17,  4.11s/it]64
+tensor(4.9608, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9025, device='cuda:0')
+acc:tensor(0.7183, device='cuda:0')
+thre:0.42853662371635437
+ 53%|█████▎    | 53/100 [03:34<03:12,  4.10s/it]64
+tensor(4.9691, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9025, device='cuda:0')
+acc:tensor(0.6505, device='cuda:0')
+thre:0.42461976408958435
+ 54%|█████▍    | 54/100 [03:38<03:08,  4.10s/it]64
+tensor(4.9577, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9025, device='cuda:0')
+acc:tensor(0.6622, device='cuda:0')
+thre:0.4260820150375366
+ 55%|█████▌    | 55/100 [03:42<03:04,  4.11s/it]64
+tensor(4.9475, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9026, device='cuda:0')
+acc:tensor(0.6704, device='cuda:0')
+thre:0.4309091866016388
+ 56%|█████▌    | 56/100 [03:46<03:00,  4.11s/it]64
+tensor(4.9367, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9026, device='cuda:0')
+acc:tensor(0.6842, device='cuda:0')
+thre:0.4385859966278076
+ 57%|█████▋    | 57/100 [03:51<02:56,  4.11s/it]64
+tensor(4.9249, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9026, device='cuda:0')
+acc:tensor(0.6947, device='cuda:0')
+thre:0.4478108882904053
+ 58%|█████▊    | 58/100 [03:55<02:52,  4.11s/it]64
+tensor(4.8980, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9026, device='cuda:0')
+acc:tensor(0.7670, device='cuda:0')
+thre:0.46090468764305115
+ 59%|█████▉    | 59/100 [03:59<02:48,  4.11s/it]64
+tensor(4.8894, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9026, device='cuda:0')
+acc:tensor(0.7757, device='cuda:0')
+thre:0.46891888976097107
+ 60%|██████    | 60/100 [04:03<02:44,  4.11s/it]64
+tensor(4.9080, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9026, device='cuda:0')
+acc:tensor(0.7085, device='cuda:0')
+thre:0.473052054643631
+ 61%|██████    | 61/100 [04:07<02:40,  4.11s/it]64
+tensor(4.8889, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9027, device='cuda:0')
+acc:tensor(0.7211, device='cuda:0')
+thre:0.4756108820438385
+ 62%|██████▏   | 62/100 [04:11<02:36,  4.11s/it]64
+tensor(4.8797, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9027, device='cuda:0')
+acc:tensor(0.7271, device='cuda:0')
+thre:0.4770541191101074
+ 63%|██████▎   | 63/100 [04:15<02:32,  4.11s/it]64
+tensor(4.8556, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9027, device='cuda:0')
+acc:tensor(0.8050, device='cuda:0')
+thre:0.4792715013027191
+ 64%|██████▍   | 64/100 [04:19<02:28,  4.11s/it]64
+tensor(4.8742, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9027, device='cuda:0')
+acc:tensor(0.7385, device='cuda:0')
+thre:0.4812467396259308
+ 65%|██████▌   | 65/100 [04:23<02:24,  4.11s/it]64
+tensor(4.8559, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9027, device='cuda:0')
+acc:tensor(0.7530, device='cuda:0')
+thre:0.4851398169994354
+ 66%|██████▌   | 66/100 [04:28<02:19,  4.11s/it]64
+tensor(4.8482, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9027, device='cuda:0')
+acc:tensor(0.7616, device='cuda:0')
+thre:0.4901982545852661
+ 67%|██████▋   | 67/100 [04:32<02:15,  4.11s/it]64
+tensor(4.8276, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9027, device='cuda:0')
+acc:tensor(0.8293, device='cuda:0')
+thre:0.49583855271339417
+ 68%|██████▊   | 68/100 [04:36<02:11,  4.11s/it]64
+tensor(4.8436, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9027, device='cuda:0')
+acc:tensor(0.7623, device='cuda:0')
+thre:0.4992782175540924
+ 69%|██████▉   | 69/100 [04:40<02:07,  4.11s/it]64
+tensor(4.8274, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9028, device='cuda:0')
+acc:tensor(0.7811, device='cuda:0')
+thre:0.5027719140052795
+ 70%|███████   | 70/100 [04:44<02:03,  4.11s/it]64
+tensor(4.8209, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9028, device='cuda:0')
+acc:tensor(0.7877, device='cuda:0')
+thre:0.5053725242614746
+ 71%|███████   | 71/100 [04:48<01:59,  4.11s/it]64
+tensor(4.8036, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9028, device='cuda:0')
+acc:tensor(0.8507, device='cuda:0')
+thre:0.5084792971611023
+ 72%|███████▏  | 72/100 [04:52<01:55,  4.11s/it]64
+tensor(4.8091, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9028, device='cuda:0')
+acc:tensor(0.8013, device='cuda:0')
+thre:0.507987916469574
+ 73%|███████▎  | 73/100 [04:56<01:51,  4.11s/it]64
+tensor(4.8025, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9028, device='cuda:0')
+acc:tensor(0.8076, device='cuda:0')
+thre:0.5150031447410583
+ 74%|███████▍  | 74/100 [05:00<01:46,  4.11s/it]64
+tensor(4.7982, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8146, device='cuda:0')
+thre:0.5176708102226257
+ 75%|███████▌  | 75/100 [05:05<01:42,  4.11s/it]64
+tensor(4.8004, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8046, device='cuda:0')
+thre:0.5259409546852112
+ 76%|███████▌  | 76/100 [05:09<01:38,  4.11s/it]64
+tensor(4.7781, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8712, device='cuda:0')
+thre:0.5325021743774414
+ 77%|███████▋  | 77/100 [05:13<01:34,  4.11s/it]64
+tensor(4.7827, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9028, device='cuda:0')
+acc:tensor(0.8340, device='cuda:0')
+thre:0.533305823802948
+ 78%|███████▊  | 78/100 [05:17<01:30,  4.11s/it]64
+tensor(4.7691, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9028, device='cuda:0')
+acc:tensor(0.8805, device='cuda:0')
+thre:0.5391876101493835
+ 79%|███████▉  | 79/100 [05:21<01:26,  4.11s/it]64
+tensor(4.7729, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8462, device='cuda:0')
+thre:0.5384659171104431
+ 80%|████████  | 80/100 [05:25<01:22,  4.11s/it]64
+tensor(4.7599, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8874, device='cuda:0')
+thre:0.5434390306472778
+ 81%|████████  | 81/100 [05:29<01:18,  4.11s/it]64
+tensor(4.7634, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8585, device='cuda:0')
+thre:0.5430000424385071
+ 82%|████████▏ | 82/100 [05:33<01:13,  4.11s/it]64
+tensor(4.7588, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8634, device='cuda:0')
+thre:0.5454074740409851
+ 83%|████████▎ | 83/100 [05:37<01:09,  4.11s/it]64
+tensor(4.7474, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8997, device='cuda:0')
+thre:0.5519595742225647
+ 84%|████████▍ | 84/100 [05:42<01:05,  4.11s/it]64
+tensor(4.7501, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8748, device='cuda:0')
+thre:0.5526185631752014
+ 85%|████████▌ | 85/100 [05:46<01:01,  4.11s/it]64
+tensor(4.7397, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.9069, device='cuda:0')
+thre:0.5584222078323364
+ 86%|████████▌ | 86/100 [05:50<00:57,  4.11s/it]64
+tensor(4.7465, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8691, device='cuda:0')
+thre:0.5787556767463684
+ 87%|████████▋ | 87/100 [05:54<00:53,  4.12s/it]64
+tensor(4.7539, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8442, device='cuda:0')
+thre:0.584203839302063
+ 88%|████████▊ | 88/100 [05:58<00:49,  4.14s/it]64
+tensor(4.7395, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8724, device='cuda:0')
+thre:0.5872198343276978
+ 89%|████████▉ | 89/100 [06:02<00:45,  4.14s/it]64
+tensor(4.7358, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8755, device='cuda:0')
+thre:0.589813768863678
+ 90%|█████████ | 90/100 [06:06<00:41,  4.15s/it]64
+tensor(4.7276, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8978, device='cuda:0')
+thre:0.5901089310646057
+ 91%|█████████ | 91/100 [06:11<00:37,  4.15s/it]64
+tensor(4.7380, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8612, device='cuda:0')
+thre:0.594437301158905
+ 92%|█████████▏| 92/100 [06:15<00:33,  4.16s/it]64
+tensor(4.7160, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.9235, device='cuda:0')
+thre:0.5978497862815857
+ 93%|█████████▎| 93/100 [06:19<00:29,  4.16s/it]64
+tensor(4.7215, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8887, device='cuda:0')
+thre:0.6002615094184875
+ 94%|█████████▍| 94/100 [06:23<00:24,  4.16s/it]64
+tensor(4.7147, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.9067, device='cuda:0')
+thre:0.5999751687049866
+ 95%|█████████▌| 95/100 [06:27<00:20,  4.16s/it]64
+tensor(4.7224, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.8741, device='cuda:0')
+thre:0.6029253602027893
+ 96%|█████████▌| 96/100 [06:31<00:16,  4.16s/it]64
+tensor(4.7090, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.9100, device='cuda:0')
+thre:0.6030423045158386
+ 97%|█████████▋| 97/100 [06:36<00:12,  4.16s/it]64
+tensor(4.7020, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.9254, device='cuda:0')
+thre:0.6068872809410095
+ 98%|█████████▊| 98/100 [06:40<00:08,  4.16s/it]64
+tensor(4.7033, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.9130, device='cuda:0')
+thre:0.6070089340209961
+ 99%|█████████▉| 99/100 [06:44<00:04,  4.16s/it]64
+tensor(4.7034, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9029, device='cuda:0')
+acc:tensor(0.9030, device='cuda:0')
+thre:0.6109049916267395
+100%|██████████| 100/100 [06:48<00:00,  4.16s/it]100%|██████████| 100/100 [06:48<00:00,  4.09s/it]
+start_index_query 264.68426303854875
+onset_frames (40,)
+Processing audio file : BUK4_20171022_004304a.wav
+=> Runnning full evaluation with method: tim_gd
+=> Load model from: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2
+ ==> Beginning feature extraction
+===> Query feature extraction
+  0%|          | 0/23 [00:00<?, ?it/s]100%|██████████| 23/23 [00:00<00:00, 621.65it/s]
+===> Pos feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 3483.64it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6743.25it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7653.84it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7752.87it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 8208.03it/s]
+===> Neg feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 5405.03it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 913.59it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 3172.70it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 8019.70it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 2024.28it/s]
+===> extra Neg feature extraction
+  0%|          | 0/5 [00:00<?, ?it/s]100%|██████████| 5/5 [00:00<00:00, 384.93it/s]
+  0%|          | 0/1115 [00:00<?, ?it/s]  4%|▍         | 45/1115 [00:00<00:02, 440.36it/s]  8%|▊         | 90/1115 [00:00<00:02, 444.25it/s] 12%|█▏        | 135/1115 [00:00<00:02, 445.13it/s] 16%|█▌        | 180/1115 [00:00<00:02, 445.95it/s] 20%|██        | 225/1115 [00:00<00:01, 445.65it/s] 24%|██▍       | 270/1115 [00:00<00:01, 446.36it/s] 28%|██▊       | 315/1115 [00:00<00:01, 444.90it/s] 32%|███▏      | 360/1115 [00:00<00:01, 443.09it/s] 36%|███▋      | 405/1115 [00:00<00:01, 444.16it/s] 40%|████      | 450/1115 [00:01<00:01, 444.78it/s] 44%|████▍     | 495/1115 [00:01<00:01, 444.88it/s] 48%|████▊     | 540/1115 [00:01<00:01, 445.37it/s] 52%|█████▏    | 585/1115 [00:01<00:01, 445.82it/s] 57%|█████▋    | 630/1115 [00:01<00:01, 446.39it/s] 61%|██████    | 675/1115 [00:01<00:00, 445.38it/s] 65%|██████▍   | 720/1115 [00:01<00:00, 443.72it/s] 69%|██████▊   | 765/1115 [00:01<00:00, 444.28it/s] 73%|███████▎  | 810/1115 [00:01<00:00, 444.33it/s] 77%|███████▋  | 855/1115 [00:01<00:00, 444.59it/s] 81%|████████  | 900/1115 [00:02<00:00, 444.98it/s] 85%|████████▍ | 945/1115 [00:02<00:00, 445.11it/s] 89%|████████▉ | 990/1115 [00:02<00:00, 445.02it/s] 93%|█████████▎| 1035/1115 [00:02<00:00, 443.96it/s] 97%|█████████▋| 1080/1115 [00:02<00:00, 442.71it/s]100%|██████████| 1115/1115 [00:02<00:00, 444.63it/s]
+ ==> Saving features to /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2/best/BUK4_20171022_004304a/output.plk
+mean_pos_len:21.0
+min_pos_len:12
+====> Build features
+  0%|          | 0/128 [00:00<?, ?it/s]100%|██████████| 128/128 [00:00<00:00, 11163.18it/s]
+tim_builder.loss_weights 0.1
+self.number_task  1115
+thre:0.34942513704299927
+  0%|          | 0/100 [00:00<?, ?it/s]64
+tensor(10.3603, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8428, device='cuda:0')
+acc:tensor(0.4850, device='cuda:0')
+thre:0.25800639390945435
+  1%|          | 1/100 [00:02<03:54,  2.37s/it]64
+tensor(9.4279, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8368, device='cuda:0')
+acc:tensor(0.4634, device='cuda:0')
+thre:0.34793639183044434
+  2%|▏         | 2/100 [00:04<03:52,  2.37s/it]64
+tensor(8.4304, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8651, device='cuda:0')
+acc:tensor(0.4634, device='cuda:0')
+thre:0.5045945048332214
+  3%|▎         | 3/100 [00:07<03:50,  2.37s/it]64
+tensor(7.3828, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9034, device='cuda:0')
+acc:tensor(0.4634, device='cuda:0')
+thre:0.6502343416213989
+  4%|▍         | 4/100 [00:10<04:15,  2.67s/it]64
+tensor(6.8022, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9181, device='cuda:0')
+acc:tensor(0.4562, device='cuda:0')
+thre:0.7369690537452698
+  5%|▌         | 5/100 [00:13<04:28,  2.83s/it]64
+tensor(6.4117, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9244, device='cuda:0')
+acc:tensor(0.4562, device='cuda:0')
+thre:0.7763074636459351
+  6%|▌         | 6/100 [00:16<04:35,  2.93s/it]64
+tensor(5.9539, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9317, device='cuda:0')
+acc:tensor(0.4634, device='cuda:0')
+thre:0.7917789220809937
+  7%|▋         | 7/100 [00:19<04:37,  2.99s/it]64
+tensor(5.5268, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9372, device='cuda:0')
+acc:tensor(0.4569, device='cuda:0')
+thre:0.7913910746574402
+  8%|▊         | 8/100 [00:22<04:38,  3.03s/it]64
+tensor(5.1328, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9407, device='cuda:0')
+acc:tensor(0.4850, device='cuda:0')
+thre:0.778346061706543
+  9%|▉         | 9/100 [00:25<04:38,  3.06s/it]64
+tensor(4.8964, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9420, device='cuda:0')
+acc:tensor(0.4562, device='cuda:0')
+thre:0.7684080600738525
+ 10%|█         | 10/100 [00:28<04:37,  3.08s/it]64
+tensor(4.6638, device='cuda:0', grad_fn=<AddBackward0>)
 acc:tensor(0.9445, device='cuda:0')
-acc:tensor(0.0570, device='cuda:0')
-tensor(2.7060, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.020021477714180946
-  7%|▋         | 7/100 [00:40<08:50,  5.71s/it]5
-acc:tensor(0.9450, device='cuda:0')
-acc:tensor(0.0817, device='cuda:0')
-tensor(2.5363, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.02027149312198162
-  8%|▊         | 8/100 [00:46<08:54,  5.81s/it]5
-acc:tensor(0.9458, device='cuda:0')
-acc:tensor(0.0570, device='cuda:0')
-tensor(2.4239, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.02265549637377262
-  9%|▉         | 9/100 [00:52<08:48,  5.81s/it]5
+acc:tensor(0.4562, device='cuda:0')
+thre:0.7684313654899597
+ 11%|█         | 11/100 [00:32<04:35,  3.09s/it]64
+tensor(4.4493, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9471, device='cuda:0')
+acc:tensor(0.4569, device='cuda:0')
+thre:0.7774942517280579
+ 12%|█▏        | 12/100 [00:35<04:33,  3.10s/it]64
+tensor(4.1987, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9500, device='cuda:0')
+acc:tensor(0.4634, device='cuda:0')
+thre:0.7881429195404053
+ 13%|█▎        | 13/100 [00:38<04:30,  3.11s/it]64
+tensor(4.0010, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9510, device='cuda:0')
+acc:tensor(0.4850, device='cuda:0')
+thre:0.7981052398681641
+ 14%|█▍        | 14/100 [00:41<04:27,  3.11s/it]64
+tensor(3.8971, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9520, device='cuda:0')
+acc:tensor(0.4569, device='cuda:0')
+thre:0.8025333881378174
+ 15%|█▌        | 15/100 [00:44<04:24,  3.12s/it]64
+tensor(3.7712, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9522, device='cuda:0')
+acc:tensor(0.4562, device='cuda:0')
+thre:0.8008108139038086
+ 16%|█▌        | 16/100 [00:47<04:22,  3.12s/it]64
+tensor(3.6743, device='cuda:0', grad_fn=<AddBackward0>)
 acc:tensor(0.9527, device='cuda:0')
-acc:tensor(0.0496, device='cuda:0')
-tensor(2.1878, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.026569673791527748
- 10%|█         | 10/100 [00:58<08:52,  5.91s/it]5
-acc:tensor(0.9593, device='cuda:0')
-acc:tensor(0.0680, device='cuda:0')
-tensor(1.9628, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.03393213823437691
- 11%|█         | 11/100 [01:03<08:37,  5.82s/it]5
-acc:tensor(0.9657, device='cuda:0')
-acc:tensor(0.0526, device='cuda:0')
-tensor(1.7609, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.04490050673484802
- 12%|█▏        | 12/100 [01:09<08:35,  5.86s/it]5
-acc:tensor(0.9707, device='cuda:0')
-acc:tensor(0.0680, device='cuda:0')
-tensor(1.5598, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.06271684169769287
- 13%|█▎        | 13/100 [01:15<08:29,  5.85s/it]5
-acc:tensor(0.9741, device='cuda:0')
-acc:tensor(0.0680, device='cuda:0')
-tensor(1.3981, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.0871843621134758
- 14%|█▍        | 14/100 [01:21<08:20,  5.82s/it]5
-acc:tensor(0.9767, device='cuda:0')
-acc:tensor(0.0645, device='cuda:0')
-tensor(1.2804, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.11820104718208313
- 15%|█▌        | 15/100 [01:27<08:16,  5.84s/it]5
-acc:tensor(0.9805, device='cuda:0')
-acc:tensor(0.0687, device='cuda:0')
-tensor(1.1812, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.15898460149765015
- 16%|█▌        | 16/100 [01:33<08:10,  5.84s/it]5
-acc:tensor(0.9844, device='cuda:0')
-acc:tensor(0.0694, device='cuda:0')
-tensor(1.1214, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.2045125812292099
- 17%|█▋        | 17/100 [01:39<08:11,  5.92s/it]64
-acc:tensor(0.9864, device='cuda:0')
-acc:tensor(0.0971, device='cuda:0')
-tensor(1.0922, device='cuda:0', grad_fn=<AddBackward0>)
-thre:0.25246816873550415
- 18%|█▊        | 18/100 [01:45<08:05,  5.92s/it]
+acc:tensor(0.4562, device='cuda:0')
+thre:0.7945046424865723
+ 17%|█▋        | 17/100 [00:50<04:19,  3.12s/it]64
+tensor(3.5724, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9530, device='cuda:0')
+acc:tensor(0.4562, device='cuda:0')
+thre:0.7852255702018738
+ 18%|█▊        | 18/100 [00:53<04:16,  3.12s/it]64
+tensor(3.4737, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9533, device='cuda:0')
+acc:tensor(0.4562, device='cuda:0')
+thre:0.7757086753845215
+ 19%|█▉        | 19/100 [00:57<04:13,  3.13s/it]64
+tensor(3.3891, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9534, device='cuda:0')
+acc:tensor(0.4566, device='cuda:0')
+thre:0.7685546875
+ 20%|██        | 20/100 [01:00<04:10,  3.13s/it]64
+tensor(3.3208, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9535, device='cuda:0')
+acc:tensor(0.4571, device='cuda:0')
+thre:0.7654035687446594
+ 21%|██        | 21/100 [01:03<04:07,  3.13s/it]64
+tensor(3.2763, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9535, device='cuda:0')
+acc:tensor(0.4860, device='cuda:0')
+thre:0.7677945494651794
+ 22%|██▏       | 22/100 [01:06<04:03,  3.13s/it]64
+tensor(3.2337, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9537, device='cuda:0')
+acc:tensor(0.4748, device='cuda:0')
+thre:0.7737920880317688
+ 23%|██▎       | 23/100 [01:09<04:00,  3.13s/it]64
+tensor(3.1581, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9538, device='cuda:0')
+acc:tensor(0.4685, device='cuda:0')
+thre:0.7835919857025146
+ 24%|██▍       | 24/100 [01:12<03:57,  3.13s/it]64
+tensor(3.0900, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9540, device='cuda:0')
+acc:tensor(0.4796, device='cuda:0')
+thre:0.7943894267082214
+ 25%|██▌       | 25/100 [01:15<03:54,  3.13s/it]64
+tensor(3.0766, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9542, device='cuda:0')
+acc:tensor(0.4888, device='cuda:0')
+thre:0.8046709895133972
+ 26%|██▌       | 26/100 [01:18<03:51,  3.13s/it]64
+tensor(3.0400, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9542, device='cuda:0')
+acc:tensor(0.4927, device='cuda:0')
+thre:0.8121951222419739
+ 27%|██▋       | 27/100 [01:22<03:48,  3.13s/it]64
+tensor(2.9841, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9543, device='cuda:0')
+acc:tensor(0.4887, device='cuda:0')
+thre:0.8158369064331055
+ 28%|██▊       | 28/100 [01:25<03:44,  3.12s/it]64
+tensor(2.9427, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9544, device='cuda:0')
+acc:tensor(0.5043, device='cuda:0')
+thre:0.8144164085388184
+ 29%|██▉       | 29/100 [01:28<03:41,  3.12s/it]64
+tensor(2.9107, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9546, device='cuda:0')
+acc:tensor(0.5018, device='cuda:0')
+thre:0.8101367950439453
+ 30%|███       | 30/100 [01:31<03:38,  3.12s/it]64
+tensor(2.8707, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9546, device='cuda:0')
+acc:tensor(0.5136, device='cuda:0')
+thre:0.8036625385284424
+ 31%|███       | 31/100 [01:34<03:35,  3.12s/it]64
+tensor(2.8495, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9547, device='cuda:0')
+acc:tensor(0.5499, device='cuda:0')
+thre:0.7973095774650574
+ 32%|███▏      | 32/100 [01:37<03:32,  3.12s/it]64
+tensor(2.8019, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9548, device='cuda:0')
+acc:tensor(0.5448, device='cuda:0')
+thre:0.7922719120979309
+ 33%|███▎      | 33/100 [01:40<03:29,  3.12s/it]64
+tensor(2.7964, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9547, device='cuda:0')
+acc:tensor(0.5579, device='cuda:0')
+thre:0.7898074984550476
+ 34%|███▍      | 34/100 [01:43<03:26,  3.12s/it]64
+tensor(2.7662, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9548, device='cuda:0')
+acc:tensor(0.5698, device='cuda:0')
+thre:0.7903420329093933
+ 35%|███▌      | 35/100 [01:47<03:23,  3.13s/it]64
+tensor(2.7320, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9550, device='cuda:0')
+acc:tensor(0.6069, device='cuda:0')
+thre:0.7934040427207947
+ 36%|███▌      | 36/100 [01:50<03:20,  3.13s/it]64
+tensor(2.7027, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9552, device='cuda:0')
+acc:tensor(0.6143, device='cuda:0')
+thre:0.7973888516426086
+ 37%|███▋      | 37/100 [01:53<03:16,  3.13s/it]64
+tensor(2.6612, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9555, device='cuda:0')
+acc:tensor(0.5887, device='cuda:0')
+thre:0.8008715510368347
+ 38%|███▊      | 38/100 [01:56<03:13,  3.13s/it]64
+tensor(2.6415, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9556, device='cuda:0')
+acc:tensor(0.5867, device='cuda:0')
+thre:0.8027815818786621
+ 39%|███▉      | 39/100 [01:59<03:10,  3.13s/it]64
+tensor(2.6144, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9559, device='cuda:0')
+acc:tensor(0.6080, device='cuda:0')
+thre:0.803692638874054
+ 40%|████      | 40/100 [02:02<03:07,  3.13s/it]64
+tensor(2.5895, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9559, device='cuda:0')
+acc:tensor(0.6200, device='cuda:0')
+thre:0.8031366467475891
+ 41%|████      | 41/100 [02:05<03:04,  3.13s/it]64
+tensor(2.5746, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9561, device='cuda:0')
+acc:tensor(0.6598, device='cuda:0')
+thre:0.8020069003105164
+ 42%|████▏     | 42/100 [02:08<03:01,  3.13s/it]64
+tensor(2.5508, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9562, device='cuda:0')
+acc:tensor(0.6683, device='cuda:0')
+thre:0.801263153553009
+ 43%|████▎     | 43/100 [02:12<02:58,  3.13s/it]64
+tensor(2.5327, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9563, device='cuda:0')
+acc:tensor(0.6455, device='cuda:0')
+thre:0.8017745018005371
+ 44%|████▍     | 44/100 [02:15<02:54,  3.12s/it]64
+tensor(2.5085, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9564, device='cuda:0')
+acc:tensor(0.6546, device='cuda:0')
+thre:0.8037276268005371
+ 45%|████▌     | 45/100 [02:18<02:51,  3.12s/it]62
+tensor(2.4870, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9565, device='cuda:0')
+acc:tensor(0.6631, device='cuda:0')
+thre:0.8078916668891907
+ 46%|████▌     | 46/100 [02:21<02:48,  3.12s/it]62
+tensor(2.4696, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9567, device='cuda:0')
+acc:tensor(0.6756, device='cuda:0')
+thre:0.8121182322502136
+ 47%|████▋     | 47/100 [02:24<02:45,  3.12s/it]62
+tensor(2.4571, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9568, device='cuda:0')
+acc:tensor(0.6838, device='cuda:0')
+thre:0.8130548596382141
+ 48%|████▊     | 48/100 [02:27<02:42,  3.12s/it]59
+tensor(2.4393, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9569, device='cuda:0')
+acc:tensor(0.6955, device='cuda:0')
+thre:0.8126192688941956
+ 49%|████▉     | 49/100 [02:30<02:39,  3.12s/it]59
+tensor(2.4371, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9570, device='cuda:0')
+acc:tensor(0.6922, device='cuda:0')
+thre:0.8084292411804199
+ 50%|█████     | 50/100 [02:33<02:36,  3.12s/it]59
+tensor(2.4167, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9571, device='cuda:0')
+acc:tensor(0.7127, device='cuda:0')
+thre:0.8021626472473145
+ 51%|█████     | 51/100 [02:37<02:33,  3.13s/it]59
+tensor(2.4007, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9571, device='cuda:0')
+acc:tensor(0.7249, device='cuda:0')
+thre:0.7976440787315369
+ 52%|█████▏    | 52/100 [02:40<02:30,  3.13s/it]59
+tensor(2.3892, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9571, device='cuda:0')
+acc:tensor(0.7326, device='cuda:0')
+thre:0.7929801940917969
+ 53%|█████▎    | 53/100 [02:43<02:27,  3.13s/it]59
+tensor(2.3845, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9573, device='cuda:0')
+acc:tensor(0.7550, device='cuda:0')
+thre:0.7894236445426941
+ 54%|█████▍    | 54/100 [02:46<02:23,  3.13s/it]59
+tensor(2.3747, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9573, device='cuda:0')
+acc:tensor(0.7609, device='cuda:0')
+thre:0.7886156439781189
+ 55%|█████▌    | 55/100 [02:49<02:20,  3.13s/it]59
+tensor(2.3621, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9573, device='cuda:0')
+acc:tensor(0.7578, device='cuda:0')
+thre:0.7886166572570801
+ 56%|█████▌    | 56/100 [02:52<02:17,  3.13s/it]59
+tensor(2.3487, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9575, device='cuda:0')
+acc:tensor(0.7690, device='cuda:0')
+thre:0.7918834090232849
+ 57%|█████▋    | 57/100 [02:55<02:14,  3.13s/it]59
+tensor(2.3427, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9575, device='cuda:0')
+acc:tensor(0.7692, device='cuda:0')
+thre:0.792053759098053
+ 58%|█████▊    | 58/100 [02:59<02:11,  3.13s/it]59
+tensor(2.3450, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9576, device='cuda:0')
+acc:tensor(0.7503, device='cuda:0')
+thre:0.7928163409233093
+ 59%|█████▉    | 59/100 [03:02<02:08,  3.13s/it]59
+tensor(2.3268, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9576, device='cuda:0')
+acc:tensor(0.7921, device='cuda:0')
+thre:0.7924549579620361
+ 60%|██████    | 60/100 [03:05<02:05,  3.13s/it]59
+tensor(2.3176, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9576, device='cuda:0')
+acc:tensor(0.7984, device='cuda:0')
+thre:0.7913090586662292
+ 61%|██████    | 61/100 [03:08<02:02,  3.13s/it]59
+tensor(2.3059, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9576, device='cuda:0')
+acc:tensor(0.8040, device='cuda:0')
+thre:0.7911927103996277
+ 62%|██████▏   | 62/100 [03:11<01:58,  3.13s/it]59
+tensor(2.3002, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9576, device='cuda:0')
+acc:tensor(0.8117, device='cuda:0')
+thre:0.790738582611084
+ 63%|██████▎   | 63/100 [03:14<01:55,  3.13s/it]59
+tensor(2.2913, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9577, device='cuda:0')
+acc:tensor(0.8107, device='cuda:0')
+thre:0.7925414443016052
+ 64%|██████▍   | 64/100 [03:17<01:52,  3.13s/it]59
+tensor(2.2865, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9577, device='cuda:0')
+acc:tensor(0.8067, device='cuda:0')
+thre:0.79293292760849
+ 65%|██████▌   | 65/100 [03:20<01:49,  3.12s/it]59
+tensor(2.2794, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9577, device='cuda:0')
+acc:tensor(0.8141, device='cuda:0')
+thre:0.7942616939544678
+ 66%|██████▌   | 66/100 [03:24<01:46,  3.12s/it]59
+tensor(2.2725, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8172, device='cuda:0')
+thre:0.7951979041099548
+ 67%|██████▋   | 67/100 [03:27<01:43,  3.12s/it]59
+tensor(2.2657, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8234, device='cuda:0')
+thre:0.7951905131340027
+ 68%|██████▊   | 68/100 [03:30<01:39,  3.12s/it]59
+tensor(2.2569, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8481, device='cuda:0')
+thre:0.7953946590423584
+ 69%|██████▉   | 69/100 [03:33<01:36,  3.13s/it]59
+tensor(2.2521, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8377, device='cuda:0')
+thre:0.795708179473877
+ 70%|███████   | 70/100 [03:36<01:33,  3.12s/it]59
+tensor(2.2466, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8417, device='cuda:0')
+thre:0.7939846515655518
+ 71%|███████   | 71/100 [03:39<01:30,  3.12s/it]59
+tensor(2.2537, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9577, device='cuda:0')
+acc:tensor(0.8148, device='cuda:0')
+thre:0.7948639392852783
+ 72%|███████▏  | 72/100 [03:42<01:27,  3.12s/it]59
+tensor(2.2480, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8193, device='cuda:0')
+thre:0.7960493564605713
+ 73%|███████▎  | 73/100 [03:45<01:24,  3.13s/it]59
+tensor(2.2291, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8688, device='cuda:0')
+thre:0.7978265881538391
+ 74%|███████▍  | 74/100 [03:49<01:21,  3.13s/it]59
+tensor(2.2362, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8316, device='cuda:0')
+thre:0.7984750270843506
+ 75%|███████▌  | 75/100 [03:52<01:18,  3.13s/it]59
+tensor(2.2204, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8626, device='cuda:0')
+thre:0.7977474331855774
+ 76%|███████▌  | 76/100 [03:55<01:15,  3.13s/it]59
+tensor(2.2159, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8664, device='cuda:0')
+thre:0.796783447265625
+ 77%|███████▋  | 77/100 [03:58<01:11,  3.13s/it]59
+tensor(2.2126, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8652, device='cuda:0')
+thre:0.7974390983581543
+ 78%|███████▊  | 78/100 [04:01<01:08,  3.13s/it]59
+tensor(2.2082, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8691, device='cuda:0')
+thre:0.7972521781921387
+ 79%|███████▉  | 79/100 [04:04<01:05,  3.13s/it]59
+tensor(2.2108, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8521, device='cuda:0')
+thre:0.7962934970855713
+ 80%|████████  | 80/100 [04:07<01:02,  3.13s/it]56
+tensor(2.1982, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8806, device='cuda:0')
+thre:0.796334981918335
+ 81%|████████  | 81/100 [04:10<00:59,  3.13s/it]56
+tensor(2.1940, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8823, device='cuda:0')
+thre:0.7972812056541443
+ 82%|████████▏ | 82/100 [04:14<00:56,  3.13s/it]56
+tensor(2.1897, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.8897, device='cuda:0')
+thre:0.7983797192573547
+ 83%|████████▎ | 83/100 [04:17<00:53,  3.13s/it]54
+tensor(2.1855, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8943, device='cuda:0')
+thre:0.7990588545799255
+ 84%|████████▍ | 84/100 [04:20<00:50,  3.13s/it]54
+tensor(2.1812, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8975, device='cuda:0')
+thre:0.7993109822273254
+ 85%|████████▌ | 85/100 [04:23<00:46,  3.12s/it]54
+tensor(2.1793, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8971, device='cuda:0')
+thre:0.8011996150016785
+ 86%|████████▌ | 86/100 [04:26<00:43,  3.12s/it]54
+tensor(2.1839, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8990, device='cuda:0')
+thre:0.8051937222480774
+ 87%|████████▋ | 87/100 [04:29<00:40,  3.14s/it]54
+tensor(2.1896, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8679, device='cuda:0')
+thre:0.8071853518486023
+ 88%|████████▊ | 88/100 [04:32<00:37,  3.15s/it]54
+tensor(2.1859, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8686, device='cuda:0')
+thre:0.8084470629692078
+ 89%|████████▉ | 89/100 [04:36<00:34,  3.16s/it]54
+tensor(2.1732, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.9039, device='cuda:0')
+thre:0.8100554347038269
+ 90%|█████████ | 90/100 [04:39<00:31,  3.16s/it]54
+tensor(2.1782, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8762, device='cuda:0')
+thre:0.8086099028587341
+ 91%|█████████ | 91/100 [04:42<00:28,  3.17s/it]54
+tensor(2.1677, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.9099, device='cuda:0')
+thre:0.8077252507209778
+ 92%|█████████▏| 92/100 [04:45<00:25,  3.17s/it]54
+tensor(2.1710, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8856, device='cuda:0')
+thre:0.8069480061531067
+ 93%|█████████▎| 93/100 [04:48<00:22,  3.17s/it]56
+tensor(2.1672, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.8889, device='cuda:0')
+thre:0.8068110346794128
+ 94%|█████████▍| 94/100 [04:51<00:19,  3.17s/it]59
+tensor(2.1588, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.9151, device='cuda:0')
+thre:0.8078436851501465
+ 95%|█████████▌| 95/100 [04:55<00:15,  3.17s/it]59
+tensor(2.1572, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.9070, device='cuda:0')
+thre:0.8101330399513245
+ 96%|█████████▌| 96/100 [04:58<00:12,  3.17s/it]59
+tensor(2.1512, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.9212, device='cuda:0')
+thre:0.8099322319030762
+ 97%|█████████▋| 97/100 [05:01<00:09,  3.17s/it]59
+tensor(2.1496, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9579, device='cuda:0')
+acc:tensor(0.9175, device='cuda:0')
+thre:0.8109520077705383
+ 98%|█████████▊| 98/100 [05:04<00:06,  3.17s/it]59
+tensor(2.1495, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9580, device='cuda:0')
+acc:tensor(0.9123, device='cuda:0')
+thre:0.8121259212493896
+ 99%|█████████▉| 99/100 [05:07<00:03,  3.17s/it]59
+tensor(2.1437, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9580, device='cuda:0')
+acc:tensor(0.9232, device='cuda:0')
+thre:0.8116629719734192
+100%|██████████| 100/100 [05:10<00:00,  3.17s/it]100%|██████████| 100/100 [05:10<00:00,  3.11s/it]
+start_index_query 680.8555102040816
+onset_frames (15,)
+Processing audio file : BUK5_20161101_002104a.wav
+=> Runnning full evaluation with method: tim_gd
+=> Load model from: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2
+ ==> Beginning feature extraction
+===> Query feature extraction
+  0%|          | 0/30 [00:00<?, ?it/s]100%|██████████| 30/30 [00:00<00:00, 505.03it/s]
+===> Pos feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 3688.92it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7073.03it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7810.62it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7194.35it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 8224.13it/s]
+===> Neg feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 2352.39it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 2216.86it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 4032.98it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 5801.25it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6668.21it/s]
+===> extra Neg feature extraction
+  0%|          | 0/5 [00:00<?, ?it/s]100%|██████████| 5/5 [00:00<00:00, 382.77it/s]
+  0%|          | 0/1453 [00:00<?, ?it/s]  3%|▎         | 44/1453 [00:00<00:03, 436.81it/s]  6%|▌         | 88/1453 [00:00<00:03, 437.05it/s]  9%|▉         | 132/1453 [00:00<00:03, 436.04it/s] 12%|█▏        | 176/1453 [00:00<00:02, 436.00it/s] 15%|█▌        | 220/1453 [00:00<00:02, 436.47it/s] 18%|█▊        | 264/1453 [00:00<00:02, 436.42it/s] 21%|██        | 308/1453 [00:00<00:02, 434.17it/s] 24%|██▍       | 352/1453 [00:00<00:02, 434.47it/s] 27%|██▋       | 396/1453 [00:00<00:02, 435.73it/s] 30%|███       | 440/1453 [00:01<00:02, 436.39it/s] 33%|███▎      | 484/1453 [00:01<00:02, 437.28it/s] 36%|███▋      | 528/1453 [00:01<00:02, 437.64it/s] 39%|███▉      | 572/1453 [00:01<00:02, 437.22it/s] 42%|████▏     | 616/1453 [00:01<00:01, 437.46it/s] 45%|████▌     | 660/1453 [00:01<00:01, 436.52it/s] 48%|████▊     | 704/1453 [00:01<00:01, 433.97it/s] 51%|█████▏    | 748/1453 [00:01<00:01, 434.36it/s] 55%|█████▍    | 792/1453 [00:01<00:01, 434.48it/s] 58%|█████▊    | 836/1453 [00:01<00:01, 434.99it/s] 61%|██████    | 880/1453 [00:02<00:01, 435.04it/s] 64%|██████▎   | 924/1453 [00:02<00:01, 435.00it/s] 67%|██████▋   | 968/1453 [00:02<00:01, 434.77it/s] 70%|██████▉   | 1012/1453 [00:02<00:01, 431.55it/s] 73%|███████▎  | 1056/1453 [00:02<00:00, 433.14it/s] 76%|███████▌  | 1100/1453 [00:02<00:00, 433.88it/s] 79%|███████▊  | 1144/1453 [00:02<00:00, 434.44it/s] 82%|████████▏ | 1188/1453 [00:02<00:00, 435.13it/s] 85%|████████▍ | 1232/1453 [00:02<00:00, 435.38it/s] 88%|████████▊ | 1276/1453 [00:02<00:00, 434.86it/s] 91%|█████████ | 1320/1453 [00:03<00:00, 432.40it/s] 94%|█████████▍| 1364/1453 [00:03<00:00, 433.57it/s] 97%|█████████▋| 1408/1453 [00:03<00:00, 434.57it/s]100%|█████████▉| 1452/1453 [00:03<00:00, 434.96it/s]100%|██████████| 1453/1453 [00:03<00:00, 435.08it/s]
+ ==> Saving features to /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2/best/BUK5_20161101_002104a/output.plk
+mean_pos_len:20.8
+min_pos_len:17
+====> Build features
+  0%|          | 0/128 [00:00<?, ?it/s]100%|██████████| 128/128 [00:00<00:00, 13667.79it/s]
+tim_builder.loss_weights 0.1
+self.number_task  1453
+thre:0.40913060307502747
+  0%|          | 0/100 [00:00<?, ?it/s]64
+tensor(10.5407, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8859, device='cuda:0')
+acc:tensor(0.4457, device='cuda:0')
+thre:0.28936073184013367
+  1%|          | 1/100 [00:02<04:51,  2.94s/it]64
+tensor(10.0654, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8136, device='cuda:0')
+acc:tensor(0.4457, device='cuda:0')
+thre:0.40807271003723145
+  2%|▏         | 2/100 [00:05<04:48,  2.94s/it]64
+tensor(8.5313, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8993, device='cuda:0')
+acc:tensor(0.4490, device='cuda:0')
+thre:0.5496938228607178
+  3%|▎         | 3/100 [00:08<04:45,  2.94s/it]64
+tensor(7.8620, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9262, device='cuda:0')
+acc:tensor(0.4490, device='cuda:0')
+thre:0.6190792322158813
+  4%|▍         | 4/100 [00:12<05:18,  3.32s/it]64
+tensor(7.3522, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9313, device='cuda:0')
+acc:tensor(0.4490, device='cuda:0')
+thre:0.6271007657051086
+  5%|▌         | 5/100 [00:16<05:35,  3.53s/it]64
+tensor(6.6411, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9355, device='cuda:0')
+acc:tensor(0.4457, device='cuda:0')
+thre:0.6135683059692383
+  6%|▌         | 6/100 [00:20<05:44,  3.66s/it]64
+tensor(6.0312, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9353, device='cuda:0')
+acc:tensor(0.4457, device='cuda:0')
+thre:0.603473961353302
+  7%|▋         | 7/100 [00:24<05:48,  3.75s/it]64
+tensor(5.6545, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9333, device='cuda:0')
+acc:tensor(0.4574, device='cuda:0')
+thre:0.614567756652832
+  8%|▊         | 8/100 [00:28<05:49,  3.80s/it]64
+tensor(5.3632, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9347, device='cuda:0')
+acc:tensor(0.4457, device='cuda:0')
+thre:0.6473615169525146
+  9%|▉         | 9/100 [00:32<05:49,  3.84s/it]64
+tensor(5.0061, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9385, device='cuda:0')
+acc:tensor(0.4574, device='cuda:0')
+thre:0.6914965510368347
+ 10%|█         | 10/100 [00:36<05:47,  3.86s/it]64
+tensor(4.6446, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9434, device='cuda:0')
+acc:tensor(0.4754, device='cuda:0')
+thre:0.7342916131019592
+ 11%|█         | 11/100 [00:40<05:45,  3.88s/it]64
+tensor(4.3838, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9471, device='cuda:0')
+acc:tensor(0.4490, device='cuda:0')
+thre:0.7681074738502502
+ 12%|█▏        | 12/100 [00:44<05:42,  3.89s/it]64
+tensor(4.2302, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9491, device='cuda:0')
+acc:tensor(0.4574, device='cuda:0')
+thre:0.7930038571357727
+ 13%|█▎        | 13/100 [00:47<05:39,  3.90s/it]64
+tensor(4.0742, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9501, device='cuda:0')
+acc:tensor(0.4457, device='cuda:0')
+thre:0.7989886999130249
+ 14%|█▍        | 14/100 [00:51<05:36,  3.91s/it]64
+tensor(3.9009, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9513, device='cuda:0')
+acc:tensor(0.4574, device='cuda:0')
+thre:0.7968952059745789
+ 15%|█▌        | 15/100 [00:55<05:32,  3.92s/it]64
+tensor(3.7085, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9523, device='cuda:0')
+acc:tensor(0.4754, device='cuda:0')
+thre:0.7900336980819702
+ 16%|█▌        | 16/100 [00:59<05:29,  3.92s/it]64
+tensor(3.5673, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9533, device='cuda:0')
+acc:tensor(0.4574, device='cuda:0')
+thre:0.7847741842269897
+ 17%|█▋        | 17/100 [01:03<05:25,  3.92s/it]64
+tensor(3.4417, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9538, device='cuda:0')
+acc:tensor(0.4490, device='cuda:0')
+thre:0.7802950739860535
+ 18%|█▊        | 18/100 [01:07<05:21,  3.92s/it]64
+tensor(3.3713, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9542, device='cuda:0')
+acc:tensor(0.4575, device='cuda:0')
+thre:0.7843729853630066
+ 19%|█▉        | 19/100 [01:11<05:17,  3.92s/it]64
+tensor(3.2777, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9548, device='cuda:0')
+acc:tensor(0.4464, device='cuda:0')
+thre:0.7920681238174438
+ 20%|██        | 20/100 [01:15<05:14,  3.93s/it]64
+tensor(3.1789, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9555, device='cuda:0')
+acc:tensor(0.4480, device='cuda:0')
+thre:0.8026001453399658
+ 21%|██        | 21/100 [01:19<05:09,  3.92s/it]64
+tensor(3.0844, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9567, device='cuda:0')
+acc:tensor(0.4507, device='cuda:0')
+thre:0.8142687082290649
+ 22%|██▏       | 22/100 [01:23<05:06,  3.92s/it]64
+tensor(3.0088, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9571, device='cuda:0')
+acc:tensor(0.4580, device='cuda:0')
+thre:0.8218429684638977
+ 23%|██▎       | 23/100 [01:27<05:02,  3.92s/it]64
+tensor(2.9568, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9575, device='cuda:0')
+acc:tensor(0.4613, device='cuda:0')
+thre:0.8277710676193237
+ 24%|██▍       | 24/100 [01:31<04:58,  3.92s/it]64
+tensor(2.9218, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9578, device='cuda:0')
+acc:tensor(0.4760, device='cuda:0')
+thre:0.8323936462402344
+ 25%|██▌       | 25/100 [01:35<04:54,  3.92s/it]64
+tensor(2.8593, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9584, device='cuda:0')
+acc:tensor(0.4736, device='cuda:0')
+thre:0.8297078013420105
+ 26%|██▌       | 26/100 [01:39<04:50,  3.92s/it]64
+tensor(2.8039, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9590, device='cuda:0')
+acc:tensor(0.4796, device='cuda:0')
+thre:0.8263775706291199
+ 27%|██▋       | 27/100 [01:42<04:46,  3.92s/it]64
+tensor(2.7665, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9596, device='cuda:0')
+acc:tensor(0.5104, device='cuda:0')
+thre:0.8249489068984985
+ 28%|██▊       | 28/100 [01:46<04:42,  3.92s/it]64
+tensor(2.7275, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9600, device='cuda:0')
+acc:tensor(0.5177, device='cuda:0')
+thre:0.8235066533088684
+ 29%|██▉       | 29/100 [01:50<04:38,  3.92s/it]64
+tensor(2.6941, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9600, device='cuda:0')
+acc:tensor(0.5241, device='cuda:0')
+thre:0.8241435885429382
+ 30%|███       | 30/100 [01:54<04:34,  3.92s/it]64
+tensor(2.6603, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9604, device='cuda:0')
+acc:tensor(0.5396, device='cuda:0')
+thre:0.8280232548713684
+ 31%|███       | 31/100 [01:58<04:30,  3.92s/it]64
+tensor(2.6110, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9607, device='cuda:0')
+acc:tensor(0.5241, device='cuda:0')
+thre:0.8333103060722351
+ 32%|███▏      | 32/100 [02:02<04:26,  3.93s/it]64
+tensor(2.5743, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9610, device='cuda:0')
+acc:tensor(0.5319, device='cuda:0')
+thre:0.8394372463226318
+ 33%|███▎      | 33/100 [02:06<04:22,  3.93s/it]64
+tensor(2.5550, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9612, device='cuda:0')
+acc:tensor(0.5835, device='cuda:0')
+thre:0.8417646288871765
+ 34%|███▍      | 34/100 [02:10<04:19,  3.93s/it]64
+tensor(2.5292, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9614, device='cuda:0')
+acc:tensor(0.5942, device='cuda:0')
+thre:0.8432366251945496
+ 35%|███▌      | 35/100 [02:14<04:15,  3.93s/it]64
+tensor(2.5041, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9616, device='cuda:0')
+acc:tensor(0.6040, device='cuda:0')
+thre:0.8438277244567871
+ 36%|███▌      | 36/100 [02:18<04:11,  3.93s/it]64
+tensor(2.4775, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9617, device='cuda:0')
+acc:tensor(0.5654, device='cuda:0')
+thre:0.8429868817329407
+ 37%|███▋      | 37/100 [02:22<04:07,  3.93s/it]64
+tensor(2.4420, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9618, device='cuda:0')
+acc:tensor(0.5787, device='cuda:0')
+thre:0.8428818583488464
+ 38%|███▊      | 38/100 [02:26<04:03,  3.93s/it]64
+tensor(2.4169, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9620, device='cuda:0')
+acc:tensor(0.5858, device='cuda:0')
+thre:0.8424851298332214
+ 39%|███▉      | 39/100 [02:30<03:59,  3.93s/it]64
+tensor(2.4031, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9621, device='cuda:0')
+acc:tensor(0.6139, device='cuda:0')
+thre:0.8425449728965759
+ 40%|████      | 40/100 [02:33<03:55,  3.93s/it]64
+tensor(2.3839, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9622, device='cuda:0')
+acc:tensor(0.6182, device='cuda:0')
+thre:0.8431795835494995
+ 41%|████      | 41/100 [02:37<03:51,  3.93s/it]64
+tensor(2.3655, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9624, device='cuda:0')
+acc:tensor(0.6024, device='cuda:0')
+thre:0.8436430096626282
+ 42%|████▏     | 42/100 [02:41<03:47,  3.93s/it]64
+tensor(2.3363, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9625, device='cuda:0')
+acc:tensor(0.6156, device='cuda:0')
+thre:0.8458244204521179
+ 43%|████▎     | 43/100 [02:45<03:43,  3.93s/it]64
+tensor(2.3161, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9626, device='cuda:0')
+acc:tensor(0.6251, device='cuda:0')
+thre:0.8477670550346375
+ 44%|████▍     | 44/100 [02:49<03:39,  3.92s/it]64
+tensor(2.3060, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9626, device='cuda:0')
+acc:tensor(0.6345, device='cuda:0')
+thre:0.8486211895942688
+ 45%|████▌     | 45/100 [02:53<03:35,  3.92s/it]64
+tensor(2.2893, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9627, device='cuda:0')
+acc:tensor(0.6530, device='cuda:0')
+thre:0.850253164768219
+ 46%|████▌     | 46/100 [02:57<03:31,  3.92s/it]64
+tensor(2.2735, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9628, device='cuda:0')
+acc:tensor(0.6642, device='cuda:0')
+thre:0.8507665395736694
+ 47%|████▋     | 47/100 [03:01<03:27,  3.92s/it]64
+tensor(2.2508, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9629, device='cuda:0')
+acc:tensor(0.6687, device='cuda:0')
+thre:0.8506064414978027
+ 48%|████▊     | 48/100 [03:05<03:23,  3.92s/it]64
+tensor(2.2415, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9629, device='cuda:0')
+acc:tensor(0.6692, device='cuda:0')
+thre:0.8495480418205261
+ 49%|████▉     | 49/100 [03:09<03:20,  3.92s/it]64
+tensor(2.2260, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9630, device='cuda:0')
+acc:tensor(0.6888, device='cuda:0')
+thre:0.8500882983207703
+ 50%|█████     | 50/100 [03:13<03:16,  3.92s/it]64
+tensor(2.2094, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9631, device='cuda:0')
+acc:tensor(0.6946, device='cuda:0')
+thre:0.8503812551498413
+ 51%|█████     | 51/100 [03:17<03:12,  3.92s/it]64
+tensor(2.2002, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9631, device='cuda:0')
+acc:tensor(0.7085, device='cuda:0')
+thre:0.8512591123580933
+ 52%|█████▏    | 52/100 [03:21<03:08,  3.92s/it]64
+tensor(2.1897, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9631, device='cuda:0')
+acc:tensor(0.6993, device='cuda:0')
+thre:0.85149747133255
+ 53%|█████▎    | 53/100 [03:24<03:04,  3.92s/it]64
+tensor(2.1765, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9632, device='cuda:0')
+acc:tensor(0.7397, device='cuda:0')
+thre:0.8533033132553101
+ 54%|█████▍    | 54/100 [03:28<03:00,  3.92s/it]64
+tensor(2.1630, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9633, device='cuda:0')
+acc:tensor(0.7349, device='cuda:0')
+thre:0.8545564413070679
+ 55%|█████▌    | 55/100 [03:32<02:56,  3.92s/it]64
+tensor(2.1562, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9633, device='cuda:0')
+acc:tensor(0.7243, device='cuda:0')
+thre:0.8542847633361816
+ 56%|█████▌    | 56/100 [03:36<02:52,  3.92s/it]64
+tensor(2.1420, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9633, device='cuda:0')
+acc:tensor(0.7520, device='cuda:0')
+thre:0.8551254272460938
+ 57%|█████▋    | 57/100 [03:40<02:48,  3.92s/it]64
+tensor(2.1313, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9634, device='cuda:0')
+acc:tensor(0.7593, device='cuda:0')
+thre:0.8550871014595032
+ 58%|█████▊    | 58/100 [03:44<02:44,  3.92s/it]64
+tensor(2.1252, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9633, device='cuda:0')
+acc:tensor(0.7545, device='cuda:0')
+thre:0.8546929359436035
+ 59%|█████▉    | 59/100 [03:48<02:40,  3.92s/it]64
+tensor(2.1183, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9634, device='cuda:0')
+acc:tensor(0.7539, device='cuda:0')
+thre:0.853735089302063
+ 60%|██████    | 60/100 [03:52<02:36,  3.92s/it]64
+tensor(2.1096, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9634, device='cuda:0')
+acc:tensor(0.7603, device='cuda:0')
+thre:0.8537513613700867
+ 61%|██████    | 61/100 [03:56<02:33,  3.92s/it]64
+tensor(2.1007, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9634, device='cuda:0')
+acc:tensor(0.7686, device='cuda:0')
+thre:0.854311466217041
+ 62%|██████▏   | 62/100 [04:00<02:29,  3.92s/it]64
+tensor(2.0914, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9634, device='cuda:0')
+acc:tensor(0.7789, device='cuda:0')
+thre:0.8551064729690552
+ 63%|██████▎   | 63/100 [04:04<02:25,  3.92s/it]64
+tensor(2.0824, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9634, device='cuda:0')
+acc:tensor(0.7890, device='cuda:0')
+thre:0.8559306263923645
+ 64%|██████▍   | 64/100 [04:08<02:21,  3.92s/it]64
+tensor(2.0778, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9634, device='cuda:0')
+acc:tensor(0.8056, device='cuda:0')
+thre:0.8574013710021973
+ 65%|██████▌   | 65/100 [04:12<02:17,  3.92s/it]64
+tensor(2.0662, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9634, device='cuda:0')
+acc:tensor(0.8151, device='cuda:0')
+thre:0.8569693565368652
+ 66%|██████▌   | 66/100 [04:15<02:13,  3.92s/it]64
+tensor(2.0638, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.8205, device='cuda:0')
+thre:0.8577075004577637
+ 67%|██████▋   | 67/100 [04:19<02:09,  3.92s/it]64
+tensor(2.0548, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.8161, device='cuda:0')
+thre:0.8576912879943848
+ 68%|██████▊   | 68/100 [04:23<02:05,  3.92s/it]64
+tensor(2.0519, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.8171, device='cuda:0')
+thre:0.8578046560287476
+ 69%|██████▉   | 69/100 [04:27<02:01,  3.92s/it]64
+tensor(2.0383, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.8446, device='cuda:0')
+thre:0.8570063710212708
+ 70%|███████   | 70/100 [04:31<01:57,  3.92s/it]64
+tensor(2.0321, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.8511, device='cuda:0')
+thre:0.8572534322738647
+ 71%|███████   | 71/100 [04:35<01:53,  3.92s/it]64
+tensor(2.0311, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8337, device='cuda:0')
+thre:0.8586623668670654
+ 72%|███████▏  | 72/100 [04:39<01:49,  3.92s/it]64
+tensor(2.0254, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8373, device='cuda:0')
+thre:0.8594307899475098
+ 73%|███████▎  | 73/100 [04:43<01:45,  3.92s/it]64
+tensor(2.0209, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8535, device='cuda:0')
+thre:0.8599187135696411
+ 74%|███████▍  | 74/100 [04:47<01:41,  3.92s/it]64
+tensor(2.0092, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8755, device='cuda:0')
+thre:0.8591142892837524
+ 75%|███████▌  | 75/100 [04:51<01:37,  3.92s/it]64
+tensor(2.0143, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8351, device='cuda:0')
+thre:0.8598597645759583
+ 76%|███████▌  | 76/100 [04:55<01:34,  3.92s/it]64
+tensor(2.0050, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8662, device='cuda:0')
+thre:0.8598682284355164
+ 77%|███████▋  | 77/100 [04:59<01:30,  3.92s/it]64
+tensor(1.9940, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8925, device='cuda:0')
+thre:0.8589704632759094
+ 78%|███████▊  | 78/100 [05:02<01:26,  3.92s/it]64
+tensor(1.9950, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8641, device='cuda:0')
+thre:0.8598847389221191
+ 79%|███████▉  | 79/100 [05:06<01:22,  3.92s/it]64
+tensor(1.9905, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8683, device='cuda:0')
+thre:0.8604413270950317
+ 80%|████████  | 80/100 [05:10<01:18,  3.92s/it]64
+tensor(1.9859, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8697, device='cuda:0')
+thre:0.8609331250190735
+ 81%|████████  | 81/100 [05:14<01:14,  3.92s/it]64
+tensor(1.9842, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8588, device='cuda:0')
+thre:0.8615084290504456
+ 82%|████████▏ | 82/100 [05:18<01:10,  3.92s/it]64
+tensor(1.9721, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.9067, device='cuda:0')
+thre:0.8606963157653809
+ 83%|████████▎ | 83/100 [05:22<01:06,  3.92s/it]64
+tensor(1.9681, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.9090, device='cuda:0')
+thre:0.8605595827102661
+ 84%|████████▍ | 84/100 [05:26<01:02,  3.92s/it]64
+tensor(1.9641, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.9112, device='cuda:0')
+thre:0.8605535626411438
+ 85%|████████▌ | 85/100 [05:30<00:58,  3.92s/it]64
+tensor(1.9671, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.8726, device='cuda:0')
+thre:0.8618314862251282
+ 86%|████████▌ | 86/100 [05:34<00:54,  3.92s/it]64
+tensor(1.9571, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.9147, device='cuda:0')
+thre:0.8637239336967468
+ 87%|████████▋ | 87/100 [05:38<00:51,  3.94s/it]64
+tensor(1.9602, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9635, device='cuda:0')
+acc:tensor(0.8778, device='cuda:0')
+thre:0.865513265132904
+ 88%|████████▊ | 88/100 [05:42<00:47,  3.95s/it]64
+tensor(1.9562, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8840, device='cuda:0')
+thre:0.8663475513458252
+ 89%|████████▉ | 89/100 [05:46<00:43,  3.96s/it]64
+tensor(1.9523, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8884, device='cuda:0')
+thre:0.8669328093528748
+ 90%|█████████ | 90/100 [05:50<00:39,  3.96s/it]64
+tensor(1.9488, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8952, device='cuda:0')
+thre:0.867266833782196
+ 91%|█████████ | 91/100 [05:54<00:35,  3.97s/it]64
+tensor(1.9443, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8985, device='cuda:0')
+thre:0.8675782084465027
+ 92%|█████████▏| 92/100 [05:58<00:31,  3.98s/it]64
+tensor(1.9405, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.9047, device='cuda:0')
+thre:0.8678123354911804
+ 93%|█████████▎| 93/100 [06:02<00:27,  3.98s/it]64
+tensor(1.9413, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8898, device='cuda:0')
+thre:0.8680052757263184
+ 94%|█████████▍| 94/100 [06:06<00:23,  3.98s/it]64
+tensor(1.9381, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.8907, device='cuda:0')
+thre:0.8684184551239014
+ 95%|█████████▌| 95/100 [06:10<00:19,  3.98s/it]64
+tensor(1.9299, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.9151, device='cuda:0')
+thre:0.8689751029014587
+ 96%|█████████▌| 96/100 [06:14<00:15,  3.98s/it]64
+tensor(1.9257, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9636, device='cuda:0')
+acc:tensor(0.9184, device='cuda:0')
+thre:0.8685142397880554
+ 97%|█████████▋| 97/100 [06:18<00:11,  3.98s/it]64
+tensor(1.9279, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9637, device='cuda:0')
+acc:tensor(0.8985, device='cuda:0')
+thre:0.8696771860122681
+ 98%|█████████▊| 98/100 [06:22<00:07,  3.98s/it]64
+tensor(1.9194, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9637, device='cuda:0')
+acc:tensor(0.9231, device='cuda:0')
+thre:0.8692286610603333
+ 99%|█████████▉| 99/100 [06:26<00:03,  3.98s/it]64
+tensor(1.9208, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9637, device='cuda:0')
+acc:tensor(0.9052, device='cuda:0')
+thre:0.870236337184906
+100%|██████████| 100/100 [06:30<00:00,  3.98s/it]100%|██████████| 100/100 [06:30<00:00,  3.90s/it]
+start_index_query 343.8178684807256
+onset_frames (56,)
+Processing audio file : BUK5_20180921_015906a.wav
+=> Runnning full evaluation with method: tim_gd
+=> Load model from: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2
+ ==> Beginning feature extraction
+===> Query feature extraction
+  0%|          | 0/32 [00:00<?, ?it/s]100%|██████████| 32/32 [00:00<00:00, 367.02it/s]
+===> Pos feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 3615.78it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7256.58it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 7884.03it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 8144.28it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 8144.28it/s]
+===> Neg feature extraction
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 4563.99it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6502.80it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 6967.28it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 3672.77it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]100%|██████████| 1/1 [00:00<00:00, 2727.12it/s]
+===> extra Neg feature extraction
+  0%|          | 0/5 [00:00<?, ?it/s]100%|██████████| 5/5 [00:00<00:00, 386.89it/s]
+  0%|          | 0/1557 [00:00<?, ?it/s]  3%|▎         | 44/1557 [00:00<00:03, 430.72it/s]  6%|▌         | 88/1557 [00:00<00:03, 434.65it/s]  8%|▊         | 132/1557 [00:00<00:03, 435.17it/s] 11%|█▏        | 176/1557 [00:00<00:03, 435.55it/s] 14%|█▍        | 220/1557 [00:00<00:03, 435.58it/s] 17%|█▋        | 264/1557 [00:00<00:02, 435.78it/s] 20%|█▉        | 308/1557 [00:00<00:02, 435.61it/s] 23%|██▎       | 352/1557 [00:00<00:02, 433.20it/s] 25%|██▌       | 396/1557 [00:00<00:02, 434.73it/s] 28%|██▊       | 440/1557 [00:01<00:02, 435.09it/s] 31%|███       | 484/1557 [00:01<00:02, 435.38it/s] 34%|███▍      | 528/1557 [00:01<00:02, 435.24it/s] 37%|███▋      | 572/1557 [00:01<00:02, 435.30it/s] 40%|███▉      | 616/1557 [00:01<00:02, 434.86it/s] 42%|████▏     | 660/1557 [00:01<00:02, 434.13it/s] 45%|████▌     | 704/1557 [00:01<00:01, 432.68it/s] 48%|████▊     | 748/1557 [00:01<00:01, 433.35it/s] 51%|█████     | 792/1557 [00:01<00:01, 433.35it/s] 54%|█████▎    | 836/1557 [00:01<00:01, 433.79it/s] 57%|█████▋    | 880/1557 [00:02<00:01, 434.09it/s] 59%|█████▉    | 924/1557 [00:02<00:01, 434.57it/s] 62%|██████▏   | 968/1557 [00:02<00:01, 434.80it/s] 65%|██████▍   | 1012/1557 [00:02<00:01, 433.45it/s] 68%|██████▊   | 1056/1557 [00:02<00:01, 432.98it/s] 71%|███████   | 1100/1557 [00:02<00:01, 433.91it/s] 73%|███████▎  | 1144/1557 [00:02<00:00, 434.15it/s] 76%|███████▋  | 1188/1557 [00:02<00:00, 433.90it/s] 79%|███████▉  | 1232/1557 [00:02<00:00, 434.22it/s] 82%|████████▏ | 1276/1557 [00:02<00:00, 434.27it/s] 85%|████████▍ | 1320/1557 [00:03<00:00, 434.26it/s] 88%|████████▊ | 1364/1557 [00:03<00:00, 433.67it/s] 90%|█████████ | 1408/1557 [00:03<00:00, 431.97it/s] 93%|█████████▎| 1452/1557 [00:03<00:00, 432.85it/s] 96%|█████████▌| 1496/1557 [00:03<00:00, 433.46it/s] 99%|█████████▉| 1540/1557 [00:03<00:00, 433.57it/s]100%|██████████| 1557/1557 [00:03<00:00, 434.10it/s]
+ ==> Saving features to /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2/best/BUK5_20180921_015906a/output.plk
+mean_pos_len:12.8
+min_pos_len:6
+====> Build features
+  0%|          | 0/128 [00:00<?, ?it/s]100%|██████████| 128/128 [00:00<00:00, 12534.63it/s]
+tim_builder.loss_weights 0.1
+self.number_task  1557
+thre:0.20493464171886444
+  0%|          | 0/100 [00:00<?, ?it/s]5
+tensor(12.9065, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8431, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.11107499152421951
+  1%|          | 1/100 [00:03<05:08,  3.11s/it]5
+tensor(10.8091, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8011, device='cuda:0')
+acc:tensor(0.4718, device='cuda:0')
+thre:0.11229067295789719
+  2%|▏         | 2/100 [00:06<05:05,  3.12s/it]5
+tensor(10.4896, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8054, device='cuda:0')
+acc:tensor(0.4528, device='cuda:0')
+thre:0.16050319373607635
+  3%|▎         | 3/100 [00:09<05:02,  3.12s/it]5
+tensor(9.4236, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8553, device='cuda:0')
+acc:tensor(0.4528, device='cuda:0')
+thre:0.2252989262342453
+  4%|▍         | 4/100 [00:13<05:38,  3.53s/it]64
+tensor(8.4582, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8830, device='cuda:0')
+acc:tensor(0.4528, device='cuda:0')
+thre:0.2852286398410797
+  5%|▌         | 5/100 [00:17<05:56,  3.75s/it]64
+tensor(8.1535, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8900, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.3226146399974823
+  6%|▌         | 6/100 [00:21<06:05,  3.89s/it]64
+tensor(7.9953, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8915, device='cuda:0')
+acc:tensor(0.4528, device='cuda:0')
+thre:0.3194151222705841
+  7%|▋         | 7/100 [00:25<06:09,  3.98s/it]64
+tensor(7.7055, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.8961, device='cuda:0')
+acc:tensor(0.4528, device='cuda:0')
+thre:0.28578177094459534
+  8%|▊         | 8/100 [00:30<06:11,  4.04s/it]64
+tensor(7.2476, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9016, device='cuda:0')
+acc:tensor(0.4718, device='cuda:0')
+thre:0.24261558055877686
+  9%|▉         | 9/100 [00:34<06:11,  4.08s/it]64
+tensor(6.8707, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9042, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.20730994641780853
+ 10%|█         | 10/100 [00:38<06:10,  4.11s/it]64
+tensor(6.5585, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9053, device='cuda:0')
+acc:tensor(0.4528, device='cuda:0')
+thre:0.18199309706687927
+ 11%|█         | 11/100 [00:42<06:08,  4.14s/it]5
+tensor(6.4004, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9060, device='cuda:0')
+acc:tensor(0.4718, device='cuda:0')
+thre:0.15501148998737335
+ 12%|█▏        | 12/100 [00:46<06:05,  4.15s/it]5
+tensor(6.2538, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9073, device='cuda:0')
+acc:tensor(0.4718, device='cuda:0')
+thre:0.14339230954647064
+ 13%|█▎        | 13/100 [00:51<06:01,  4.16s/it]5
+tensor(6.0721, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9095, device='cuda:0')
+acc:tensor(0.4449, device='cuda:0')
+thre:0.14414241909980774
+ 14%|█▍        | 14/100 [00:55<05:58,  4.17s/it]5
+tensor(5.9063, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9115, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.15218080580234528
+ 15%|█▌        | 15/100 [00:59<05:54,  4.17s/it]5
+tensor(5.7206, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9142, device='cuda:0')
+acc:tensor(0.4718, device='cuda:0')
+thre:0.16564349830150604
+ 16%|█▌        | 16/100 [01:03<05:50,  4.18s/it]5
+tensor(5.5749, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9157, device='cuda:0')
+acc:tensor(0.4718, device='cuda:0')
+thre:0.1811186969280243
+ 17%|█▋        | 17/100 [01:07<05:47,  4.18s/it]5
+tensor(5.4266, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9167, device='cuda:0')
+acc:tensor(0.4449, device='cuda:0')
+thre:0.19560010731220245
+ 18%|█▊        | 18/100 [01:11<05:43,  4.19s/it]5
+tensor(5.2916, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9184, device='cuda:0')
+acc:tensor(0.4382, device='cuda:0')
+thre:0.20504124462604523
+ 19%|█▉        | 19/100 [01:16<05:39,  4.19s/it]64
+tensor(5.1299, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9200, device='cuda:0')
+acc:tensor(0.4453, device='cuda:0')
+thre:0.21071065962314606
+ 20%|██        | 20/100 [01:20<05:35,  4.19s/it]64
+tensor(4.9973, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9215, device='cuda:0')
+acc:tensor(0.4470, device='cuda:0')
+thre:0.21261803805828094
+ 21%|██        | 21/100 [01:24<05:31,  4.19s/it]64
+tensor(4.9032, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9224, device='cuda:0')
+acc:tensor(0.4418, device='cuda:0')
+thre:0.21274425089359283
+ 22%|██▏       | 22/100 [01:28<05:27,  4.19s/it]64
+tensor(4.8285, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9231, device='cuda:0')
+acc:tensor(0.4503, device='cuda:0')
+thre:0.21461112797260284
+ 23%|██▎       | 23/100 [01:32<05:23,  4.20s/it]64
+tensor(4.7754, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9237, device='cuda:0')
+acc:tensor(0.4653, device='cuda:0')
+thre:0.21878238022327423
+ 24%|██▍       | 24/100 [01:37<05:18,  4.20s/it]64
+tensor(4.6617, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9247, device='cuda:0')
+acc:tensor(0.4583, device='cuda:0')
+thre:0.22413994371891022
+ 25%|██▌       | 25/100 [01:41<05:14,  4.20s/it]64
+tensor(4.5811, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9261, device='cuda:0')
+acc:tensor(0.4832, device='cuda:0')
+thre:0.23060616850852966
+ 26%|██▌       | 26/100 [01:45<05:10,  4.20s/it]64
+tensor(4.4688, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9274, device='cuda:0')
+acc:tensor(0.4684, device='cuda:0')
+thre:0.23852476477622986
+ 27%|██▋       | 27/100 [01:49<05:06,  4.20s/it]64
+tensor(4.4030, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9284, device='cuda:0')
+acc:tensor(0.4761, device='cuda:0')
+thre:0.2454739809036255
+ 28%|██▊       | 28/100 [01:53<05:02,  4.20s/it]64
+tensor(4.3848, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9288, device='cuda:0')
+acc:tensor(0.4886, device='cuda:0')
+thre:0.2526417076587677
+ 29%|██▉       | 29/100 [01:58<04:58,  4.20s/it]64
+tensor(4.3062, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9294, device='cuda:0')
+acc:tensor(0.4886, device='cuda:0')
+thre:0.2585964500904083
+ 30%|███       | 30/100 [02:02<04:54,  4.20s/it]64
+tensor(4.2828, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9300, device='cuda:0')
+acc:tensor(0.5143, device='cuda:0')
+thre:0.2659904956817627
+ 31%|███       | 31/100 [02:06<04:49,  4.20s/it]64
+tensor(4.2277, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9304, device='cuda:0')
+acc:tensor(0.5219, device='cuda:0')
+thre:0.277448445558548
+ 32%|███▏      | 32/100 [02:10<04:45,  4.20s/it]64
+tensor(4.1761, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9311, device='cuda:0')
+acc:tensor(0.5296, device='cuda:0')
+thre:0.2943498492240906
+ 33%|███▎      | 33/100 [02:15<04:41,  4.20s/it]64
+tensor(4.1163, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9315, device='cuda:0')
+acc:tensor(0.5213, device='cuda:0')
+thre:0.3175481855869293
+ 34%|███▍      | 34/100 [02:19<04:37,  4.20s/it]64
+tensor(4.0811, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9316, device='cuda:0')
+acc:tensor(0.5314, device='cuda:0')
+thre:0.34600570797920227
+ 35%|███▌      | 35/100 [02:23<04:32,  4.19s/it]62
+tensor(4.0346, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9319, device='cuda:0')
+acc:tensor(0.5453, device='cuda:0')
+thre:0.3789297640323639
+ 36%|███▌      | 36/100 [02:27<04:27,  4.19s/it]62
+tensor(4.0236, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9322, device='cuda:0')
+acc:tensor(0.5786, device='cuda:0')
+thre:0.4095032811164856
+ 37%|███▋      | 37/100 [02:31<04:23,  4.18s/it]61
+tensor(3.9789, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9324, device='cuda:0')
+acc:tensor(0.5494, device='cuda:0')
+thre:0.4356469213962555
+ 38%|███▊      | 38/100 [02:35<04:19,  4.18s/it]61
+tensor(3.9583, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9326, device='cuda:0')
+acc:tensor(0.6011, device='cuda:0')
+thre:0.4556450843811035
+ 39%|███▉      | 39/100 [02:40<04:15,  4.18s/it]60
+tensor(3.9213, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9327, device='cuda:0')
+acc:tensor(0.5582, device='cuda:0')
+thre:0.46686357259750366
+ 40%|████      | 40/100 [02:44<04:10,  4.18s/it]60
+tensor(3.9011, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9329, device='cuda:0')
+acc:tensor(0.5756, device='cuda:0')
+thre:0.47386232018470764
+ 41%|████      | 41/100 [02:48<04:06,  4.18s/it]58
+tensor(3.8670, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9330, device='cuda:0')
+acc:tensor(0.6268, device='cuda:0')
+thre:0.47480231523513794
+ 42%|████▏     | 42/100 [02:52<04:02,  4.18s/it]58
+tensor(3.8366, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9331, device='cuda:0')
+acc:tensor(0.6368, device='cuda:0')
+thre:0.4752303957939148
+ 43%|████▎     | 43/100 [02:56<03:58,  4.18s/it]58
+tensor(3.8066, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9331, device='cuda:0')
+acc:tensor(0.5987, device='cuda:0')
+thre:0.4765661358833313
+ 44%|████▍     | 44/100 [03:00<03:53,  4.17s/it]58
+tensor(3.7893, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9332, device='cuda:0')
+acc:tensor(0.5953, device='cuda:0')
+thre:0.4826648533344269
+ 45%|████▌     | 45/100 [03:05<03:49,  4.17s/it]58
+tensor(3.7686, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9332, device='cuda:0')
+acc:tensor(0.6022, device='cuda:0')
+thre:0.4935495853424072
+ 46%|████▌     | 46/100 [03:09<03:45,  4.17s/it]58
+tensor(3.7451, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9333, device='cuda:0')
+acc:tensor(0.6110, device='cuda:0')
+thre:0.5075072646141052
+ 47%|████▋     | 47/100 [03:13<03:41,  4.17s/it]58
+tensor(3.7235, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9334, device='cuda:0')
+acc:tensor(0.6206, device='cuda:0')
+thre:0.5228931307792664
+ 48%|████▊     | 48/100 [03:17<03:36,  4.17s/it]57
+tensor(3.7117, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9334, device='cuda:0')
+acc:tensor(0.6335, device='cuda:0')
+thre:0.5374090075492859
+ 49%|████▉     | 49/100 [03:21<03:32,  4.17s/it]57
+tensor(3.6851, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9335, device='cuda:0')
+acc:tensor(0.6410, device='cuda:0')
+thre:0.5473796129226685
+ 50%|█████     | 50/100 [03:25<03:28,  4.17s/it]57
+tensor(3.6790, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9336, device='cuda:0')
+acc:tensor(0.6496, device='cuda:0')
+thre:0.555164098739624
+ 51%|█████     | 51/100 [03:30<03:24,  4.17s/it]57
+tensor(3.6529, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9336, device='cuda:0')
+acc:tensor(0.7067, device='cuda:0')
+thre:0.5593317151069641
+ 52%|█████▏    | 52/100 [03:34<03:20,  4.17s/it]57
+tensor(3.6345, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9337, device='cuda:0')
+acc:tensor(0.6642, device='cuda:0')
+thre:0.559789776802063
+ 53%|█████▎    | 53/100 [03:38<03:16,  4.17s/it]57
+tensor(3.6291, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9337, device='cuda:0')
+acc:tensor(0.6679, device='cuda:0')
+thre:0.5607425570487976
+ 54%|█████▍    | 54/100 [03:42<03:12,  4.17s/it]57
+tensor(3.6028, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9337, device='cuda:0')
+acc:tensor(0.6749, device='cuda:0')
+thre:0.5607188940048218
+ 55%|█████▌    | 55/100 [03:46<03:07,  4.18s/it]57
+tensor(3.5874, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9338, device='cuda:0')
+acc:tensor(0.7037, device='cuda:0')
+thre:0.561119019985199
+ 56%|█████▌    | 56/100 [03:51<03:03,  4.17s/it]57
+tensor(3.5734, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9338, device='cuda:0')
+acc:tensor(0.7108, device='cuda:0')
+thre:0.5635071396827698
+ 57%|█████▋    | 57/100 [03:55<02:59,  4.17s/it]57
+tensor(3.5602, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9339, device='cuda:0')
+acc:tensor(0.7205, device='cuda:0')
+thre:0.5667993426322937
+ 58%|█████▊    | 58/100 [03:59<02:55,  4.17s/it]57
+tensor(3.5474, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9338, device='cuda:0')
+acc:tensor(0.7106, device='cuda:0')
+thre:0.5713649392127991
+ 59%|█████▉    | 59/100 [04:03<02:51,  4.17s/it]57
+tensor(3.5350, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9339, device='cuda:0')
+acc:tensor(0.7188, device='cuda:0')
+thre:0.5755258202552795
+ 60%|██████    | 60/100 [04:07<02:46,  4.17s/it]57
+tensor(3.5232, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9340, device='cuda:0')
+acc:tensor(0.7475, device='cuda:0')
+thre:0.5785261988639832
+ 61%|██████    | 61/100 [04:11<02:42,  4.17s/it]57
+tensor(3.5098, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9340, device='cuda:0')
+acc:tensor(0.7366, device='cuda:0')
+thre:0.582913875579834
+ 62%|██████▏   | 62/100 [04:16<02:38,  4.18s/it]57
+tensor(3.5116, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9341, device='cuda:0')
+acc:tensor(0.7683, device='cuda:0')
+thre:0.5875243544578552
+ 63%|██████▎   | 63/100 [04:20<02:34,  4.18s/it]57
+tensor(3.4900, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9341, device='cuda:0')
+acc:tensor(0.7725, device='cuda:0')
+thre:0.5893539786338806
+ 64%|██████▍   | 64/100 [04:24<02:30,  4.17s/it]58
+tensor(3.4963, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9342, device='cuda:0')
+acc:tensor(0.7305, device='cuda:0')
+thre:0.5934678912162781
+ 65%|██████▌   | 65/100 [04:28<02:26,  4.17s/it]58
+tensor(3.4854, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9343, device='cuda:0')
+acc:tensor(0.7392, device='cuda:0')
+thre:0.5957568287849426
+ 66%|██████▌   | 66/100 [04:32<02:21,  4.17s/it]58
+tensor(3.4742, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9342, device='cuda:0')
+acc:tensor(0.7455, device='cuda:0')
+thre:0.596849262714386
+ 67%|██████▋   | 67/100 [04:36<02:17,  4.17s/it]58
+tensor(3.4631, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9343, device='cuda:0')
+acc:tensor(0.7562, device='cuda:0')
+thre:0.5969842672348022
+ 68%|██████▊   | 68/100 [04:41<02:13,  4.17s/it]58
+tensor(3.4428, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9344, device='cuda:0')
+acc:tensor(0.8021, device='cuda:0')
+thre:0.5952059626579285
+ 69%|██████▉   | 69/100 [04:45<02:09,  4.17s/it]58
+tensor(3.4346, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9344, device='cuda:0')
+acc:tensor(0.7891, device='cuda:0')
+thre:0.5959348082542419
+ 70%|███████   | 70/100 [04:49<02:05,  4.17s/it]58
+tensor(3.4273, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9345, device='cuda:0')
+acc:tensor(0.8088, device='cuda:0')
+thre:0.5964179039001465
+ 71%|███████   | 71/100 [04:53<02:01,  4.17s/it]58
+tensor(3.4197, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9345, device='cuda:0')
+acc:tensor(0.7988, device='cuda:0')
+thre:0.5996518135070801
+ 72%|███████▏  | 72/100 [04:57<01:56,  4.18s/it]58
+tensor(3.4118, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9346, device='cuda:0')
+acc:tensor(0.8185, device='cuda:0')
+thre:0.6023209691047668
+ 73%|███████▎  | 73/100 [05:01<01:52,  4.18s/it]58
+tensor(3.4094, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9346, device='cuda:0')
+acc:tensor(0.7997, device='cuda:0')
+thre:0.6074531674385071
+ 74%|███████▍  | 74/100 [05:06<01:48,  4.18s/it]58
+tensor(3.4056, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9346, device='cuda:0')
+acc:tensor(0.8264, device='cuda:0')
+thre:0.6106938719749451
+ 75%|███████▌  | 75/100 [05:10<01:44,  4.18s/it]58
+tensor(3.3954, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9346, device='cuda:0')
+acc:tensor(0.8078, device='cuda:0')
+thre:0.6129574179649353
+ 76%|███████▌  | 76/100 [05:14<01:40,  4.18s/it]58
+tensor(3.3919, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9347, device='cuda:0')
+acc:tensor(0.8299, device='cuda:0')
+thre:0.6137740015983582
+ 77%|███████▋  | 77/100 [05:18<01:36,  4.18s/it]58
+tensor(3.3849, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9347, device='cuda:0')
+acc:tensor(0.8365, device='cuda:0')
+thre:0.6138636469841003
+ 78%|███████▊  | 78/100 [05:22<01:31,  4.18s/it]58
+tensor(3.3707, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9347, device='cuda:0')
+acc:tensor(0.8460, device='cuda:0')
+thre:0.6127033233642578
+ 79%|███████▉  | 79/100 [05:27<01:27,  4.18s/it]58
+tensor(3.3700, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9347, device='cuda:0')
+acc:tensor(0.8274, device='cuda:0')
+thre:0.6148235201835632
+ 80%|████████  | 80/100 [05:31<01:23,  4.18s/it]58
+tensor(3.3642, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9347, device='cuda:0')
+acc:tensor(0.8304, device='cuda:0')
+thre:0.6167168617248535
+ 81%|████████  | 81/100 [05:35<01:19,  4.18s/it]58
+tensor(3.3555, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9348, device='cuda:0')
+acc:tensor(0.8439, device='cuda:0')
+thre:0.6180219054222107
+ 82%|████████▏ | 82/100 [05:39<01:15,  4.18s/it]58
+tensor(3.3538, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9347, device='cuda:0')
+acc:tensor(0.8613, device='cuda:0')
+thre:0.6205461621284485
+ 83%|████████▎ | 83/100 [05:43<01:11,  4.18s/it]59
+tensor(3.3426, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9348, device='cuda:0')
+acc:tensor(0.8654, device='cuda:0')
+thre:0.6214202642440796
+ 84%|████████▍ | 84/100 [05:47<01:06,  4.18s/it]58
+tensor(3.3427, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9348, device='cuda:0')
+acc:tensor(0.8644, device='cuda:0')
+thre:0.6244553923606873
+ 85%|████████▌ | 85/100 [05:52<01:02,  4.18s/it]59
+tensor(3.3343, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9348, device='cuda:0')
+acc:tensor(0.8601, device='cuda:0')
+thre:0.6258746385574341
+ 86%|████████▌ | 86/100 [05:56<00:58,  4.18s/it]60
+tensor(3.3401, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9348, device='cuda:0')
+acc:tensor(0.8862, device='cuda:0')
+thre:0.6360588669776917
+ 87%|████████▋ | 87/100 [06:00<00:54,  4.19s/it]60
+tensor(3.3419, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9348, device='cuda:0')
+acc:tensor(0.8523, device='cuda:0')
+thre:0.6411970853805542
+ 88%|████████▊ | 88/100 [06:04<00:50,  4.20s/it]60
+tensor(3.3282, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9348, device='cuda:0')
+acc:tensor(0.8924, device='cuda:0')
+thre:0.6416155099868774
+ 89%|████████▉ | 89/100 [06:08<00:46,  4.21s/it]60
+tensor(3.3272, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9349, device='cuda:0')
+acc:tensor(0.8741, device='cuda:0')
+thre:0.6427291631698608
+ 90%|█████████ | 90/100 [06:13<00:42,  4.21s/it]60
+tensor(3.3222, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9349, device='cuda:0')
+acc:tensor(0.8782, device='cuda:0')
+thre:0.642885684967041
+ 91%|█████████ | 91/100 [06:17<00:37,  4.22s/it]60
+tensor(3.3151, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9349, device='cuda:0')
+acc:tensor(0.9002, device='cuda:0')
+thre:0.6427174210548401
+ 92%|█████████▏| 92/100 [06:21<00:33,  4.22s/it]60
+tensor(3.3104, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9349, device='cuda:0')
+acc:tensor(0.9031, device='cuda:0')
+thre:0.6431098580360413
+ 93%|█████████▎| 93/100 [06:25<00:29,  4.22s/it]62
+tensor(3.3135, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9349, device='cuda:0')
+acc:tensor(0.8872, device='cuda:0')
+thre:0.6443238854408264
+ 94%|█████████▍| 94/100 [06:30<00:25,  4.22s/it]62
+tensor(3.3091, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9350, device='cuda:0')
+acc:tensor(0.8887, device='cuda:0')
+thre:0.6457163691520691
+ 95%|█████████▌| 95/100 [06:34<00:21,  4.22s/it]64
+tensor(3.2970, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9350, device='cuda:0')
+acc:tensor(0.8666, device='cuda:0')
+thre:0.6471646428108215
+ 96%|█████████▌| 96/100 [06:38<00:16,  4.23s/it]64
+tensor(3.2833, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9350, device='cuda:0')
+acc:tensor(0.9149, device='cuda:0')
+thre:0.646468460559845
+ 97%|█████████▋| 97/100 [06:42<00:12,  4.23s/it]64
+tensor(3.2885, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9350, device='cuda:0')
+acc:tensor(0.8751, device='cuda:0')
+thre:0.6476696133613586
+ 98%|█████████▊| 98/100 [06:47<00:08,  4.23s/it]64
+tensor(3.2839, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9350, device='cuda:0')
+acc:tensor(0.8798, device='cuda:0')
+thre:0.6479190587997437
+ 99%|█████████▉| 99/100 [06:51<00:04,  4.23s/it]64
+tensor(3.2782, device='cuda:0', grad_fn=<AddBackward0>)
+acc:tensor(0.9350, device='cuda:0')
+acc:tensor(0.9023, device='cuda:0')
+thre:0.6471245884895325
+100%|██████████| 100/100 [06:55<00:00,  4.23s/it]100%|██████████| 100/100 [06:55<00:00,  4.15s/it]
+start_index_query 237.77233560090704
+onset_frames (17,)

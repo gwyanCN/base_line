@@ -31,8 +31,11 @@ import os
 import os.path as osp
 import torch.nn as nn
 from utils.tensorbord_ import Summary
+from models.TSVAD2 import TSVAD2
+from models.PANNS import Cnn14
 
-def get_model(arch, num_classes,ema=False):
+os.environ['CUDA_VISIBLE_DEVICES']="1"
+def get_model(arch,num_classes,ema=False):
     if arch == 'resnet10' or arch == 'resnet18':
         model = __dict__[arch](num_classes=num_classes)
         if ema:
@@ -53,7 +56,7 @@ def train_protonet(model,train_loader,valid_loader,conf):
     alpha = 0.0  
     disable_tqdm = False 
     ckpt_path = conf.eval.ckpt_path
-    pretrain = True
+    pretrain = False
     resume = False
     if conf.train.device == 'cuda':
         device = torch.device('cuda:0')
@@ -132,10 +135,107 @@ def train_protonet(model,train_loader,valid_loader,conf):
         # if epoch == num_epochs-1:
         #     trainer.met_plot(epoch, model, disable_tqdm)
 
+def train_protonet_PANNS(PANN_model,model,train_loader,valid_loader,conf):
+    arch = 'Protonet'
+    alpha = 0.0  
+    disable_tqdm = True 
+    ckpt_path = conf.eval.panns_ckpt_path
+    is_pretrain = False
+    resume = False
+    if conf.train.device == 'cuda':
+        device = torch.device('cuda')
+    else:
+        device = torch.device('cpu')
+       
+    # load pretrained model 
+    pretrain = conf.pretrain_model.pretrain_path
+    checkpoint = torch.load(pretrain)
+    model_dict = PANN_model.state_dict()
+    params = checkpoint['model']
+    params = {k: v for k, v in params.items() if k in model_dict and k.__contains__("conv_block")}
+    model_dict.update(params)
+    PANN_model.load_state_dict(model_dict)
+    
+    # model freeze
+    if conf.pretrain_model.If_fine_tune:     
+        optim = torch.optim.Adam([{"params":model.parameters(),'lr':conf.train.lr_rate},
+                                {"params":PANN_model.parameters(),'lr':conf.pretrain_model.fine_tune_lr_rate}])
+    else:
+        for param in PANN_model.parameters():
+                param.detach_()
+        optim = torch.optim.Adam([{"params":model.parameters(),'lr':conf.train.lr_rate}])
+    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optim, gamma=conf.train.scheduler_gamma,
+                                                   step_size=conf.train.scheduler_step_size)
+    num_epochs = conf.train.epochs
+
+    if is_pretrain: 
+        pretrain = os.path.join(conf.path.work_path, 'check_point/checkpoint.pth.tar')
+        if os.path.isfile(pretrain):
+            print("=> loading pretrained weight '{}'".format(pretrain))
+            checkpoint = torch.load(pretrain)
+            model_dict = model.state_dict()
+            params = checkpoint['state_dict']
+            params = {k: v for k, v in params.items() if k in model_dict}
+            model_dict.update(params)
+            model.load_state_dict(model_dict)
+        else:
+            print('[Warning]: Did not find pretrained model {}'.format(pretrain))
+            
+    if resume:
+        resume_path = ckpt_path + '/checkpoint.pth.tar'
+        if os.path.isfile(resume_path):
+            print("=> loading checkpoint '{}'".format(resume_path))
+            checkpoint = torch.load(resume_path)
+            start_epoch = checkpoint['epoch']
+            best_prec1 = checkpoint['best_prec1']
+            # scheduler.load_state_dict(checkpoint['scheduler'])
+            model.load_state_dict(checkpoint['state_dict'])
+            optim.load_state_dict(checkpoint['optimizer'])
+            print("=> loaded checkpoint '{}' (epoch {})"
+                  .format(resume_path, checkpoint['epoch']))
+        else:
+            print('[Warning]: Did not find checkpoint {}'.format(resume_path))
+    else:
+        start_epoch = 0
+        best_prec1 = -1
+    #cudnn.benchmark = True
+    PANN_model.to(device,non_blocking=True) 
+    model.to(device,non_blocking=True) # cuda
+    trainer = Trainer(device=device,num_class=conf.train.num_classes,train_loader=train_loader,val_loader=valid_loader,conf=conf)
+    time_start=time.time()
+    for epoch in range(num_epochs):
+        trainer.do_epoch_PANN(epoch=epoch,scheduler=lr_scheduler,disable_tqdm=disable_tqdm,feature_extractor=PANN_model,model=model,alpha=alpha,optimizer=optim,aug=conf.train.aug)
+        # Evaluation on validation set
+        prec = trainer.PANNs_meta_val(epoch=epoch,model=model, PANNS_model=PANN_model, disable_tqdm=disable_tqdm)
+        print('Meta Val {}: {}'.format(epoch, prec)) #20分类
+        is_best = prec > best_prec1
+        best_prec1 = max(prec, best_prec1)
+        if not disable_tqdm:
+            print('Best Acc {:.2f}'.format(best_prec1 * 100.))
+        # Save checkpoint
+        save_checkpoint(state={'epoch': epoch + 1,
+                               'arch': arch,
+                               'feature_extractor': PANN_model.state_dict(),
+                               'state_dict': model.state_dict(),
+                               'best_prec1': best_prec1,
+                               'optimizer': optim.state_dict()},
+                        is_best=is_best,
+                        folder=ckpt_path)
+        if lr_scheduler is not None:
+            lr_scheduler.step()
+    time_end=time.time()
+    print('totally cost',time_end-time_start)
+    print('model_paramiter...............')
+    
+    num_params = 0
+    for param in model.parameters():
+        num_params += param.numel()
+    print(num_params / 1e6)
+
 def train_protonet2(model,train_loader,valid_loader,conf):
     arch = 'Protonet'
     alpha = 0.0  
-    disable_tqdm = False 
+    disable_tqdm = True 
     ckpt_path = conf.eval.ckpt_path
     is_pretrain = False
     resume = False
@@ -143,7 +243,6 @@ def train_protonet2(model,train_loader,valid_loader,conf):
         device = torch.device('cuda')
     else:
         device = torch.device('cpu')
-
     optim = torch.optim.Adam(model.parameters(), lr=conf.train.lr_rate)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optim, gamma=conf.train.scheduler_gamma,
                                                    step_size=conf.train.scheduler_step_size)
@@ -184,7 +283,7 @@ def train_protonet2(model,train_loader,valid_loader,conf):
     trainer = Trainer(device=device,num_class=conf.train.num_classes, train_loader=train_loader,val_loader=valid_loader,conf=conf)
     time_start=time.time()
     for epoch in range(num_epochs):
-        trainer.do_epoch2(epoch=epoch,scheduler=lr_scheduler,disable_tqdm=disable_tqdm,model=model,alpha=alpha,optimizer=optim)
+        trainer.do_epoch2(epoch=epoch,scheduler=lr_scheduler,disable_tqdm=disable_tqdm,model=model,alpha=alpha,optimizer=optim,aug=conf.train.aug)
         # Evaluation on validation set
         prec1, prec1_1 = trainer.meta_val2(epoch=epoch,model=model, disable_tqdm=disable_tqdm)
         print('Meta Val {}: {}'.format(epoch, prec1)) # 2分类
@@ -382,13 +481,22 @@ def post_contact(mean_pos_len,predict,offset,onset,thre):
             predict[start:end]=1
     return predict
 
+def setup_seed(seed):
+    torch.manual_seed(seed=seed)
+    os.environ['PTHONHASHSEED']=str(seed)  
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    cudnn.benchmark=False
+    cudnn.deterministic = True
+    cudnn.enabled = True 
+
 @hydra.main(config_name="config")
 def main(conf : DictConfig):
     seed = 2021
     if seed is not None:
-        random.seed(seed)
-        torch.manual_seed(seed)
-        cudnn.deterministic = True
+        setup_seed(seed)
     if not os.path.isdir(conf.path.feat_path):
         os.makedirs(conf.path.feat_path)
     if not os.path.isdir(conf.path.feat_train):
@@ -409,7 +517,6 @@ def main(conf : DictConfig):
         # Num_extract_test = feature_transform(conf=conf,mode='test')
         # print("Total number of samples used for evaluation: {}".format(Num_extract_test)) # test data
         # print(" --Feature Extraction Complete--")
-
     if conf.set.train: # train
         print("============> start training!")
         meta_learning = False # wether use meta learing ways to train
@@ -450,7 +557,6 @@ def main(conf : DictConfig):
                 X_val=train_datasets['X_val']
                 Y_val=train_datasets['Y_val']
                 Y2_val=train_datasets['Y2_val']
-                
             except:
                 gen_train = Datagen(conf) 
                 X_train,Y_train,Y2_train,X_val,Y_val,Y2_val = gen_train.generate_train() 
@@ -470,12 +576,13 @@ def main(conf : DictConfig):
                     'Y_val':Y_val,
                     'Y2_val':Y2_val        
                 }
-                torch.save(state,'/media/b227/ygw/Dcase2023/baseline/src/train_data/train_datasets_21.pth')
+                torch.save(state,conf.train.train_data)
 
             # print('X_tr ',X_tr.shape)
             # print('X_val ',X_val.shape)
             samples_per_cls =  conf.train.n_shot 
             batch_size_tr =  conf.train.n_shot* conf.train.k_way #64 # the batch size of training 
+            batch_size_tr =  conf.train.batch_size
            
             train_dataset = torch.utils.data.TensorDataset(X_tr,Y_tr) # 利用torch 的 dataset,整合X,Y
             valid_dataset = torch.utils.data.TensorDataset(X_val,Y_val)
@@ -486,12 +593,10 @@ def main(conf : DictConfig):
             
             train_dataset2 = torch.utils.data.TensorDataset(X_tr,Y2_tr,Y_tr) # 利用torch 的 dataset,整合X,Y, Y2∈{0,1}, Y∈{0,1,2....,19}
             valid_dataset2 = torch.utils.data.TensorDataset(X_val,Y2_val,Y_val)
-            train_loader2 = torch.utils.data.DataLoader(dataset=train_dataset2,batch_size=conf.train.batch_size,num_workers=10,pin_memory=True,shuffle=False)
-            valid_loader2 = torch.utils.data.DataLoader(dataset=valid_dataset2,batch_size=64,batch_sampler=None,num_workers=10,pin_memory=True,shuffle=False)
-
+            train_loader2 = torch.utils.data.DataLoader(dataset=train_dataset2,batch_size=conf.train.batch_size,num_workers=10,pin_memory=True,shuffle=True)
+            valid_loader2 = torch.utils.data.DataLoader(dataset=valid_dataset2,batch_size=64,batch_sampler=None,num_workers=10,pin_memory=True,shuffle=True)
         #model = get_model('Protonet',19)
         model = get_model('TSVAD1',conf.train.num_classes)
-        # train_protonet(model,train_loader,valid_loader,conf)
         train_protonet2(model,train_loader2,valid_loader2,conf)
 
     if conf.set.eval: # eval
@@ -518,11 +623,13 @@ def main(conf : DictConfig):
         k_q = 128
         iter_num = conf.eval.iter_num # change wether use ML framework
         CURRENT_TIMES = time.strftime("%Y-%m-%d %H-%M",time.localtime())
-        logger_writer = Summary(path=osp.join(conf.eval.tensorboard_path,CURRENT_TIMES))
+        # logger_writer = Summary(path=osp.join(conf.eval.tensorboard_path,CURRENT_TIMES))
         
         TOTAL_LENGTH = len(all_feat_files)
-        for i in range(TOTAL_LENGTH//4):
+        # for i in range(TOTAL_LENGTH):
+        for i in range(TOTAL_LENGTH):
             feat_file = all_feat_files[i]
+            if not feat_file.__contains__("BUK"):continue
             feat_name = feat_file.split('/')[-1]   
             file_name = feat_name.replace('.h5','')
             # if file_name!="n1":continue
@@ -537,7 +644,6 @@ def main(conf : DictConfig):
             tim_path = os.path.join(conf.path.work_path,'src','output_csv','tim')
             if not os.path.exists(tim_path):
                 os.makedirs(tim_path)   
-            
             if os.path.exists(os.path.join(conf.path.work_path,'waveFrame',file_name,"waveFrame.json")):
                 reader = open(os.path.join(conf.path.work_path,'waveFrame',file_name,"waveFrame.json"),'r')
                 waveData = json.load(fp=reader)
@@ -557,15 +663,13 @@ def main(conf : DictConfig):
             fileDict = {}
             fileDict['nframes']=nframe
             fileDict['start_index_query']=start_index_query
-            mask_path = conf.eval.mask_path
-            result, num,logs= evaluator.run_full_evaluation(test_file=audio_name[:-4],model=model, student_model=student_model,
+            result, num,_= evaluator.run_full_evaluation(test_file=audio_name[:-4],model=model, student_model=student_model,
                                                          model_path=ckpt_path,hdf_eval=hdf_eval,conf=conf,k_q=k_q,iter_num=iter_num) # only update W
-          
             predict = result[0]
             MFL = result[1]
             thre = max(result[2]-0.05,0.5)
             mean_pos_len = result[3]
-            
+
             krn = np.array([1,-1])
             prob_thresh = np.where(predict>thre,1,0)
 

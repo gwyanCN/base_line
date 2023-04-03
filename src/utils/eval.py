@@ -107,7 +107,6 @@ class Evaluator:
         distance_num = len(slice_c1) #pos之间的间距
 
         total_distance = int(431/2/3)
-
         mean_slice_distance = total_distance//(distance_num)
         distance_list = [mean_slice_distance for i in range(distance_num)]
         shake_distance_list = []
@@ -773,7 +772,7 @@ class Evaluator:
         z_query = torch.cat(query_samples,0)
 
         support_samples = []
-        support_samples2=[]
+        
         y_list = []
 
         list_len_pos =[fea.shape[0] for fea in pos_features]
@@ -832,32 +831,131 @@ class Evaluator:
             
         z_support = torch.stack(support_samples, 0)
         y_support = torch.stack(y_list, 0)
-        # reload sub_train_datasets
+        #reload sub_train_datasets
         try:
             sub_train_datasets  =torch.load(conf.eval.trainDatasets)
             z_sub_train = sub_train_datasets['z_sub_train']
             y_sub_train = sub_train_datasets['y_sub_train']
+          
         except:
             gen_sub_train = Datagen_train_select(conf)
             z_sub_train,y_sub_train = gen_sub_train.generate_eval()
             z_sub_train = torch.tensor(z_sub_train).type_as(z_support)
             y_sub_train = torch.tensor(y_sub_train).type_as(y_support)
+           
             sub_train_datasets ={
                 'z_sub_train': z_sub_train,
                 'y_sub_train': y_sub_train
             }
             torch.save(sub_train_datasets,conf.eval.trainDatasets)
-            
+        mask = torch.where(y_sub_train>0,1,0)  
         z_train_dataset = torch.utils.data.TensorDataset(z_sub_train,y_sub_train)
         z_train_dataloader = torch.utils.data.DataLoader(dataset=z_train_dataset,batch_sampler=None,batch_size=64,num_workers=0,shuffle=True)
         loaders_dic['z_trainloader'] = z_train_dataloader
-
-        mask = torch.where(y_sub_train>0,1,0)
-        mask = torch.cat((mask,y_support),0)
-
+    
+        sep_pos = []
+        sep_pos_mask = []
+        sep_neg = []
+       
+        hop_seg = 86
+        seg_len = 431
+        #先提neg段
+        for sub_neg in neg_features:
+            start = 0
+            end = start + seg_len
+            nframes = sub_neg.shape[0]
+            if nframes > seg_len:
+                while end<nframes and start<nframes:
+                    sep_neg.append(sub_neg[start:end])
+                    start +=hop_seg
+                    end = start + seg_len
+                if end>nframes and start<nframes:
+                    sep_neg.append(sub_neg[nframes-seg_len:nframes])
+            elif nframes<=seg_len:
+                repeatNum = seg_len // nframes + 1
+                sep_neg.append(torch.tile(sub_neg,[repeatNum,1])[:seg_len])
+        sep_neg  = torch.stack(sep_neg)
+        if sep_neg.shape[0]<128:
+            sep_neg = torch.tile(sep_neg,[128//sep_neg.shape[0]+1,1,1])[:128,:,:]
+        index_neg = torch.randperm(len(sep_neg))
+        sep_neg = sep_neg[index_neg]
+        sep_neg = sep_neg[:128,:,:]
+        # 再提pos段
+        if mean_pos_len >=431:
+            for sub_pos in pos_features:
+                start = 0
+                end = start + seg_len
+                nframes = sub_pos.shape[0]
+                if nframes>seg_len:
+                    while end<nframes and start<nframes:
+                        sep_pos.append(sub_pos[start:end])
+                        start+=hop_seg
+                        end = start +seg_len
+                    if end>nframes and start<nframes:
+                        sep_pos.append(sub_pos[nframes-seg_len:nframes])
+                elif nframes<=seg_len:
+                    repeatNum = seg_len // nframes +1
+                    sep_pos.append(torch.tile(sub_pos,[repeatNum,1])[:seg_len])    
+            sep_pos = torch.stack(sep_pos)
+            if sep_pos.shape[0]<128:
+                sep_pos=torch.tile(sep_pos,[128//sep_pos.shape[0]+1,1,1])[:128,:,:]
+            sep_pos = sep_pos[:128,:,:]    
+            sep_pos_mask  = torch.ones_like(sep_pos)
+        else:
+            for i in range(128):
+                pos1,pos2 = random.sample(pos_features,2)
+                mean_len = np.mean([pos1.shape[0],pos2.shape[0]])
+                pos_ = sep_neg[i].clone()
+                pos_mask = torch.zeros(431,128,dtype=torch.long)
+                if mean_len>431//2:
+                    min_shape = min([pos1.shape[0],pos2.shape[0]])
+                    max_shape = max([pos1.shape[0],pos2.shape[0]])
+                    if min_shape>431:
+                        raise ValueError('min-shape must smaller than 431')
+                    if max_shape<431//2:
+                        pos_[:431//2,:], pos_mask[:431//2,:] = self.append_data(pos_[:431//2,:], pos_mask[:431//2,:],pos1)
+                        pos_[431//2:,:], pos_mask[431//2:,:] = self.append_data(pos_[431//2:,:], pos_mask[431//2:,:],pos2)
+                    elif max_shape>=431//2 and sum([pos1.shape[0],pos2.shape[0]])<=431:
+                        if np.random.rand()<0.5:
+                            num = 431 - sum([pos1.shape[0],pos2.shape[0]])
+                            randnum = torch.randint(0,num//2)
+                            pos_[randnum:randnum+pos1.shape[0],:]=pos1
+                            pos_[2*randnum+pos1.shape[0]:,:]=pos2
+                            pos_mask[randnum:randnum+pos1.shape[0],:]=1
+                            pos_mask[2*randnum+pos1.shape[0]:,:]=1
+                        else:
+                            num = 431 - sum([pos1.shape[0],pos2.shape[0]])
+                            randnum = torch.randint(0,num)
+                            pos_[:pos1.shape[0],:]=pos1
+                            pos_[randnum+pos1.shape[0]:,:]=pos2
+                            pos_mask[:pos1.shape[0],:]=1
+                            pos_mask[randnum+pos1.shape[0]:,:]=1
+                else:
+                    pos_[:431//2,:], pos_mask[:431//2,:] = self.append_data(pos_[:431//2,:], pos_mask[:431//2,:],pos1)
+                    pos_[431//2:,:], pos_mask[431//2:,:] = self.append_data(pos_[431//2:,:], pos_mask[431//2:,:],pos2)
+                
+                sep_pos.append(pos_)
+                sep_pos_mask.append(pos_mask)
+            sep_pos = torch.stack(sep_pos)
+            sep_pos_mask = torch.stack(sep_pos_mask)
+            if sep_pos.shape[0]<128:
+                sep_pos = torch.tile(sep_pos,[128//sep_pos.shape[0]+1,1,1])[:128,:,:]
+            if sep_pos_mask.shape[0]<128:
+                sep_pos_mask = torch.tile(sep_pos_mask,[128//sep_pos_mask.shape[0]+1,1,1])[:128,:,:]
+        pos_index = torch.randperm(len(sep_pos))
+        sep_pos = sep_pos[pos_index][:128,:,:]
+        sep_pos_mask = sep_pos_mask[pos_index][:128,:,:]
+        
+        # torch.save(sep_pos,"/media/b227/ygw/Dcase2023/baseline/sep_pos.pth")
+        
+        z_support = torch.cat([z_support,sep_pos],dim=0)
+        y_support = torch.cat([y_support,sep_pos_mask[...,0]],dim=0)
+         
         z_sub_train = torch.cat((z_sub_train,z_support),0)
         y_sub_train = torch.cat((y_sub_train,y_support-1),0)
-
+        
+        mask = torch.cat((mask,y_support),0)
+        
         task = {'z_s': z_support.contiguous(), 'y_s': y_support.contiguous(),
                 'z_t': z_sub_train.contiguous(), 'y_t': y_sub_train.contiguous(),'mask':mask.contiguous(),
                 'z_q': z_query.contiguous(),'MFL':med_filter_len, 'mean_pos_len':mean_pos_len}

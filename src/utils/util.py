@@ -200,10 +200,13 @@ def load_checkpoint(model, model_path, type='best'):
     model_state_dict = model.state_dict()
     names = []
     for k, v in state_dict.items():
+        if k.__contains__("module."):
+            k=k.replace('module.','')
+            
         if k in model_state_dict.keys():
             model_state_dict[k]=v
             names.append(k)
-    model.load_state_dict(state_dict)
+    model.load_state_dict(model_state_dict)
 
 def load_checkpoint_sep(model, model_path, type='best'):
     if type == 'best':
@@ -221,7 +224,7 @@ def load_checkpoint_sep(model, model_path, type='best'):
                 k=k.replace('module.','')
             model_state_dict[k]=v
             names.append(k)
-    model.load_state_dict(state_dict)
+    model.load_state_dict(model_state_dict)
 
 def compute_confidence_interval(data, axis=0): 
     """

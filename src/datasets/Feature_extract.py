@@ -219,6 +219,13 @@ def extract_feature(audio_path,feat_extractor,conf,aug=False):
     #     pcen = pcen.numpy()
     return pcen.T
 
+def add_gussionNoise(data,sigma=1.0):# 添加高斯噪音
+    mean = torch.mean(data.cpu()).numpy()
+    var = torch.std(data.cpu()).numpy()
+    noise = np.random.normal(mean,var**2,data.shape)
+    noise = sigma*torch.from_numpy(noise).to(data.device).float()
+    aug_data = noise+data.clone()
+    return aug_data
 
 def frequencyMask(data,freq_mask=20):
     data_mask_list =[]
@@ -230,7 +237,7 @@ def frequencyMask(data,freq_mask=20):
     data_mask = torch.stack(data_mask_list)
     return data_mask
 
-def TimeMask(data, Time_mask=20):
+def TimeMask(data, Time_mask=10):
     Time_mask = Time_mask
     time_maskData_list = []
     Timeing_mask = T.TimeMasking(time_mask_param=Time_mask)
@@ -244,9 +251,8 @@ def TimeMask(data, Time_mask=20):
     mask_data = torch.stack(time_maskData_list)
     return mask_data
 
+
 def time_2_frame(df,fps):
-
-
     'Margin of 25 ms around the onset and offsets'
 
     df.loc[:,'Starttime'] = df['Starttime'] - 0.025
@@ -324,7 +330,7 @@ def feature_transform(conf=None,mode=None,aug=False):
                           maxshape=(None, seg_len, conf.features.n_mels))
         num_extract = 0
         for file in all_csv_files:
-            if file.__contains__('WMW'):continue
+            
             split_list = file.split('/')
             glob_cls_name = split_list[split_list.index('Training_Set') + 1]
             file_name = split_list[split_list.index('Training_Set') + 2]

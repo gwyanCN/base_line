@@ -517,10 +517,10 @@ def main(conf : DictConfig):
         k_q = 128
         iter_num = conf.eval.iter_num # change wether use ML framework
         CURRENT_TIMES = time.strftime("%Y-%m-%d %H-%M",time.localtime())
-        logger_writer = Summary(path=osp.join(conf.eval.tensorboard_path,CURRENT_TIMES))
+        # logger_writer = Summary(path=osp.join(conf.eval.tensorboard_path,CURRENT_TIMES))
         
         TOTAL_LENGTH = len(all_feat_files)
-        for i in range(2*TOTAL_LENGTH//4,3*TOTAL_LENGTH//4):
+        for i in range(TOTAL_LENGTH//4*2,TOTAL_LENGTH//4*3):
             feat_file = all_feat_files[i]
             feat_name = feat_file.split('/')[-1]   
             file_name = feat_name.replace('.h5','')

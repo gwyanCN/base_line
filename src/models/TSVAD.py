@@ -71,13 +71,13 @@ class ConvBlock(nn.Module):
         return x
 
 
-def conv_block(in_channels,out_channels,pooling_size):
+def conv_block(in_channels,out_channels,pooling_size,padding=1):
         return nn.Sequential(
-            nn.Conv2d(in_channels,out_channels,kernel_size=3,stride=(1,3-pooling_size),padding=1),
+            nn.Conv2d(in_channels,out_channels,kernel_size=3,stride=(1,3-pooling_size),padding=padding),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(),
             nn.MaxPool2d(pooling_size)
-        )
+        )   
           
 class TSVAD1(nn.Module):
     def __init__(self,num_classes):
@@ -96,6 +96,9 @@ class TSVAD1(nn.Module):
         self.decoder = nn.Sequential(
             nn.Linear(128*8*2,2)
         )
+        self.decoder2 = nn.Sequential(
+            nn.Linear(128*8,2)
+        )
         self.logsoftmax_fn = nn.LogSoftmax(dim=1)
 
     def forward(self,x,step=1):
@@ -112,29 +115,49 @@ class TSVAD1(nn.Module):
                 x = self.encoder[0](x)
                 x = self.encoder[1](x)
             x = self.encoder[2](x)
-            x = self.encoder[3](x)       
+            x = self.encoder[3](x)
+          
             x = x.repeat_interleave(4,dim=2)[:,:,:seq_len,:]
             x = x.permute(0,2,1,3).reshape(num_samples,-1,128*8)
             return x
-        elif step==1: # 20 classify
+        elif step==4:
+            x1 = torch.cat((x,torch.zeros_like(x[:,:,:1,:])),2)
+            x1 = self.encoder(x1)
+            x1 = x1.repeat_interleave(4,dim=2)[:,:,:seq_len,:]
+            x1 = x1.permute(0,2,1,3).reshape(-1,128*8)
+            pre = self.fc(x1)
+        elif step==1:
             x1 = torch.cat((x1,torch.zeros_like(x1[:,:,:1,:])),2)
             x1 = self.encoder(x1)
             x1 = x1.repeat_interleave(4,dim=2)[:,:,:(seq_len//2),:]
             x1 = x1.permute(0,2,1,3).reshape(-1,128*8)
             pre = self.fc(x1)
-        elif step==2:  # step2 classify
+        elif step==2: 
             mask = torch.where(x2.sum(-1,keepdim=True)!=0,1,0)
             x1 = torch.cat((x1,torch.zeros_like(x1[:,:,:1,:])),2)
             x1 = self.encoder(x1)
             x1 = x1.repeat_interleave(4,dim=2)[:,:,:seq_len//2,:]
             x1 = x1.permute(0,2,1,3).reshape(num_samples,-1,128*8)
-            
+
             x2 = self.forward_mask(x2,mask)
             x2 = x2.permute(0,2,1,3).reshape(num_samples,-1,128*8)
+
             vec = (x2*mask[:,0]).sum(1,keepdim=True)/mask[:,0].sum(1,keepdim=True)
             vec = vec.repeat(1,seq_len//2,1)
             cat_x = torch.cat((x1,vec),2).reshape(-1,128*8*2).contiguous()
             pre = self.decoder(cat_x)
+        elif step==3: #
+            # pdb.set_trace()
+            x1 = torch.cat((x1,torch.zeros_like(x[:,:,:1,:])),2)
+            x1 = self.encoder(x1)
+            x1 = x1.repeat_interleave(4,dim=2)[:,:,:seq_len//2,:]
+            x1 = x1.permute(0,2,1,3).flatten(start_dim=-2)
+            # mask = torch.where(x2.sum(-1,keepdim=True)!=0,1,0)
+            # x2 = self.forward_mask(x2,mask)
+            # x2 = x2.permute(0,2,1,3).reshape(num_samples,-1,128*8)
+            # vec = (x2*mask[:,0]).sum(1,keepdim=True)/mask[:,0].sum(1,keepdim=True)
+            # return vec
+            return x1
         return pre
 
     def forward_mask(self,x,mask):
@@ -150,7 +173,6 @@ class TSVAD1(nn.Module):
         self.encoder.eval()
         with torch.no_grad():
             (num_samples,seq_len,mel_bins) = x.shape
-
             if seq_len<=4:
                 x = torch.tile(x,[1,4//seq_len+1,1])[:,:4]
             elif seq_len%4==1:

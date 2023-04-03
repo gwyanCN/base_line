@@ -84,16 +84,17 @@ def balance_class_distribution(X,Y):
         fake_Y.append(class_id)
         x_index.append([i])
 
-        #选择上一片段作为正样本
+        #选择上一片段作为正样本 为什么？
         repeat_label = label_win.reshape(-1,1).repeat(128,1)
         masked_X = np.where(repeat_label==class_id, X[i], 0)
+        
+        X_pos[i] = masked_X
         if class_id not in dict_posX.keys():
             X_pos[i] = masked_X
         else:
             X_pos[i] = dict_posX[class_id]
         dict_posX[class_id] = masked_X
     
-    # x_index_arr = np.array(X)
     fake_Y = np.array(fake_Y,dtype=np.int64)
 
     all_X = np.concatenate((X,X_pos),axis=1)
@@ -179,7 +180,6 @@ def norm_params(X):
         - mean : Mean of the feature set
         - std: Standard deviation of the feature set
         '''
-
     mean = np.mean(X)
     std = np.std(X)
     return mean, std
@@ -196,6 +196,7 @@ class Datagen(object):
             self.nframe = self.x.shape[1]
             self.class_set = set(self.labels)    
             self.y = class_to_int(self.labels,self.class_set) # 字符转int 
+            
             self.x,self.y,self.y_unifm = balance_class_distribution(self.x,self.y)
             self.y2 = np.zeros_like(self.y)
             # import pdb
@@ -235,7 +236,6 @@ class Datagen(object):
         - Y_train: Training labels
         - Y_Val: Validation labels
         '''
-
         train_array = sorted(self.train_index)
         valid_array = sorted(self.valid_index)
         X_train = self.x[train_array]

@@ -5,7 +5,7 @@ set:
   test: false
 
 path:
-  work_path: /media/b227/ygw/Dcase2023/baseline
+  work_path: /media/b227/ygw/Dcase2023/baseline_2023_3_30
   root_dir:  /media/b227/ygw/Dcase2023/data/Development_Set_21
   train_dir: ${path.root_dir}/Training_Set
   eval_dir:  ${path.root_dir}/Validation_Set
@@ -29,28 +29,37 @@ features:
   n_mels: 128
   hop_mel: 256
   aug : False
-  
+
+pretrain_model:
+  model: Cnn14
+  pretrain_path: /media/b227/ygw/Dcase2023/audioset_tagging_cnn/ckpt_pretrain/Cnn14_16k_mAP=0.438.pth
+  If_fine_tune: true
+  fine_tune_lr_rate: 0.00001
+  layers_num: 6
+
 train:
   num_classes: 20
   num_query: 10
   n_shot: 5
   k_way : 10
   device: cuda
-  batch_size: 5
+  batch_size: 32
   lr_rate: 0.0001
   scheduler_gamma: 0.5
   scheduler_step_size: 10
   epochs: 14
-  train_data: /media/b227/ygw/Dcase2023/baseline/src/train_data/train_datasets_21.pth
-  
+  train_data: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/train_data/train_datasets_21.pth
+  aug: True
+
 eval:
   iter_num: 0
   samples_neg: 650
   iterations: 3
   query_batch_size: 50
   negative_set_batch_size : 50
-  trainDatasets: /media/b227/ygw/Dcase2023/baseline/src/train_data/sub_train_datasets_21.pth
-  ckpt_path: /media/b227/ygw/Dcase2022/new_frame_level/DCASE2021Task5-main/src/check_point_step2_MutiTask
+  trainDatasets: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/train_data/sub_train_datasets_21.pth
+  ckpt_path: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_step2
   ckpt_sep_path: 
   mask_path:  /media/b227/ygw/Dcase2023/baseline/src/mask
-  tensorboard_path: /media/b227/ygw/Dcase2023/baseline/src/tensorboard
+  tensorboard_path: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/tensorboard
+  panns_ckpt_path: /media/b227/ygw/Dcase2023/baseline_2023_3_30/src/check_point_panns

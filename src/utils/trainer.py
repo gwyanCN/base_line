@@ -5,7 +5,7 @@ import numpy as np
 from utils.util import warp_tqdm, get_metric, AverageMeter,prototypical_loss
 from sklearn import manifold, datasets
 import h5py
-from datasets.Feature_extract import frequencyMask, TimeMask
+from datasets.Feature_extract import frequencyMask, TimeMask, add_gussionNoise
 import pdb
 
 # setting
@@ -100,6 +100,7 @@ class Trainer:
     def DoAug(self,tensorInput):
         data = frequencyMask(tensorInput)
         data = TimeMask(data)
+        data = add_gussionNoise(data)
         return data
 
     def inputAug(self,input):
@@ -111,7 +112,7 @@ class Trainer:
         return output
 
     def do_epoch2(self, epoch, scheduler, disable_tqdm, model,
-                 alpha, optimizer):
+                 alpha, optimizer,aug):
         batch_time = AverageMeter()
         losses_1 = AverageMeter()
         top1_1 = AverageMeter()
@@ -131,7 +132,9 @@ class Trainer:
             target1 = target1.reshape(-1,1)
             target2 = target2.reshape(-1,1)
             mask = torch.where(target2>=0,1,0)
-            
+            if aug:
+                ori_input[:,:431,:] = self.DoAug(ori_input[:,:431,:])
+                
             if self.alpha > 0:  # Mixup augmentation
                 # generate mixed sample and targets
                 lam = np.random.beta(self.alpha, self.alpha)
@@ -188,7 +191,50 @@ class Trainer:
                       'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'.format(
                        epoch, i, len(self.train_loader), batch_time=batch_time,
                        loss=losses_1, top1=top1_1))
+                
+    def do_epoch_PANN(self, epoch, scheduler, disable_tqdm, feature_extractor,model,
+                    alpha, optimizer,aug):
+        batch_time = AverageMeter()
+        losses = AverageMeter()
+        top1 = AverageMeter()
+        # switch to train mode
+        model.train()
+        steps_per_epoch = len(self.train_loader) 
+        end = time.time()
+        tqdm_train_loader = warp_tqdm(self.train_loader, disable_tqdm) 
+        for i, (input, target) in enumerate(tqdm_train_loader):
+            input, target = input.to(self.device), target.to(self.device, non_blocking=True) 
+            target = target.reshape(-1,1)
+            mask = torch.where(target>=0,1,0)
+           
+            #compute loss
+            feature = feature_extractor.extract_feature(input)
+            output = model(feature,step=1)
+            loss = self.cross_entropy(output, target,mask)
 
+            # Backward pass
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            prec1 = (output.argmax(1) == target.squeeze()).float().sum()/mask.sum()
+            top1.update(prec1.item(), mask.sum().item())
+            if not disable_tqdm:
+                tqdm_train_loader.set_description('Acc {:.2f}'.format(top1.avg))
+
+            # Measure accurac y and record loss
+            losses.update(loss.item(), mask.sum().item())
+            batch_time.update(time.time() - end)
+            end = time.time()
+
+            if i % print_freq == 0:
+                print('Epoch: [{0}][{1}/{2}]\t'
+                      'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
+                      'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
+                      'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'.format(
+                       epoch, i, len(self.train_loader), batch_time=batch_time,
+                       loss=losses, top1=top1))
+
+    
     def do_epoch_sep(self, epoch, scheduler, disable_tqdm, model,model_sep,
                  alpha, optimizer,aug):  
         batch_time = AverageMeter()
@@ -357,7 +403,7 @@ class Trainer:
                        loss=losses_2, top1=top1_2))
         self.loss_record["20sepclass_loss"].append(loss_dict['20class'])
         self.loss_record["2class_loss"].append(loss_dict['2class'])
-        self.loss_record["sep_loss"].append(loss_dict['sep'])
+        self.loss_record["sep_loss"].append(loss_dict['sep'])     
     def do_epoch_meta_learning(self, epoch, scheduler, disable_tqdm, model,
                  alpha, optimizer): 
         batch_time = AverageMeter()
@@ -370,9 +416,7 @@ class Trainer:
         end = time.time()
         tqdm_train_loader = warp_tqdm(self.train_loader, disable_tqdm) 
         for i, (input, target) in enumerate(tqdm_train_loader):
-
             input, target = input.to(self.device), target.to(self.device, non_blocking=True) 
-            # print('target ',target.shape)
             smoothed_targets = self.smooth_one_hot(target,self.label_smoothing) 
             # assert (smoothed_targets.argmax(1) == target).float().mean() == 1.0
             # Forward pass
@@ -439,6 +483,24 @@ class Trainer:
                 mask = torch.where(target>=0,1,0)
                 
                 output = model(inputs)
+                acc = (output.argmax(1)==target.squeeze()).float().sum()/mask.sum()
+                top1.update(acc.item(),mask.sum().item())
+
+                if not disable_tqdm:
+                    tqdm_test_loader.set_description('Acc {:.2f}'.format(top1.avg*100))
+        return top1.avg
+    
+    def PANNs_meta_val(self,epoch, PANNS_model,model, disable_tqdm):
+        top1 = AverageMeter()
+        model.eval() 
+        with torch.no_grad():
+            tqdm_test_loader = warp_tqdm(self.val_loader, disable_tqdm)
+            for i, (inputs, target) in enumerate(tqdm_test_loader):
+                inputs, target = inputs.to(self.device), target.to(self.device, non_blocking=True)
+                target = target.reshape(-1,1)
+                mask = torch.where(target>=0,1,0) 
+                feature = PANNS_model.extract_feature(inputs)
+                output = model(feature)
                 acc = (output.argmax(1)==target.squeeze()).float().sum()/mask.sum()
                 top1.update(acc.item(),mask.sum().item())
 

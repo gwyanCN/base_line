@@ -15,15 +15,16 @@ def post_processing(val_path, evaluation_file, new_evaluation_file, n_shots=5):
     n_shots: number of available shots
     '''
     dict_duration = {}
+    val_path = os.path.realpath(val_path)
     folders = os.listdir(val_path)
     for folder in folders:
-        files = os.listdir(val_path+folder)
+        files = os.listdir(os.path.join(val_path,folder))
         for file in files:
             if file[-4:] == '.csv':
                 audiofile = file[:-4]+'.wav'
                 annotation = file
                 events = []
-                with open(val_path+folder+'/'+annotation) as csv_file:
+                with open(os.path.join(val_path,folder,annotation)) as csv_file:
                         csv_reader = csv.reader(csv_file, delimiter=',')
                         for row in csv_reader:
                             if row[-1] == 'POS' and len(events) < n_shots:
@@ -57,9 +58,9 @@ def post_processing(val_path, evaluation_file, new_evaluation_file, n_shots=5):
 if __name__ == "__main__":
     # print(os.getcwd())
     parser = argparse.ArgumentParser()
-    parser.add_argument('-val_path', type=str, default="/media/b227/0090ae43-1009-4c49-a645-e82a32b74d82/b227/ygw/Development_set/Dcase2021/Development_Set/Validation_Set/",help='path to validation folder with wav and csv files')
-    parser.add_argument('-evaluation_file', type=str,default="DCASE2021Task5-main/src/src/output_csv/tim/Eval_out_tim.csv", help='path and name of prediction file')
-    parser.add_argument('-new_evaluation_file', type=str, default="DCASE2021Task5-main/src/src/output_csv/tim/Eval_out_tim_post.csv",help="name of prost processed prediction file to be saved")
+    parser.add_argument('-val_path', type=str, default="../data/Development_Set_21/Validation_Set/",help='path to validation folder with wav and csv files')
+    parser.add_argument('-evaluation_file', type=str,default="src/output_csv/tim/Eval_out_tim.csv", help='path and name of prediction file')
+    parser.add_argument('-new_evaluation_file', type=str, default="src/output_csv/tim/Eval_out_tim_post.csv",help="name of prost processed prediction file to be saved")
     
     args = parser.parse_args()
 
