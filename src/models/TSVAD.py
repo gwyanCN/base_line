@@ -96,9 +96,14 @@ class TSVAD1(nn.Module):
         self.decoder = nn.Sequential(
             nn.Linear(128*8*2,2)
         )
+        
+        self.lstm = nn.LSTM(input_size=128*8*2, hidden_size=512,bidirectional=True,batch_first=True)
         self.decoder2 = nn.Sequential(
-            nn.Linear(128*8,2)
+            nn.Linear(512*2,2)
         )
+        # self.decoder2 = nn.Sequential(
+        #     nn.Linear(128*8*2,2)
+        # )
         self.logsoftmax_fn = nn.LogSoftmax(dim=1)
 
     def forward(self,x,step=1):
@@ -148,18 +153,25 @@ class TSVAD1(nn.Module):
             pre = self.decoder(cat_x)
         elif step==3: #
             # pdb.set_trace()
-            x1 = torch.cat((x1,torch.zeros_like(x[:,:,:1,:])),2)
+            mask = torch.where(x2.sum(-1,keepdim=True)!=0,1,0)
+            x1 = torch.cat((x1,torch.zeros_like(x1[:,:,:1,:])),2)
             x1 = self.encoder(x1)
             x1 = x1.repeat_interleave(4,dim=2)[:,:,:seq_len//2,:]
-            x1 = x1.permute(0,2,1,3).flatten(start_dim=-2)
-            # mask = torch.where(x2.sum(-1,keepdim=True)!=0,1,0)
-            # x2 = self.forward_mask(x2,mask)
-            # x2 = x2.permute(0,2,1,3).reshape(num_samples,-1,128*8)
-            # vec = (x2*mask[:,0]).sum(1,keepdim=True)/mask[:,0].sum(1,keepdim=True)
-            # return vec
-            return x1
+            x1 = x1.permute(0,2,1,3).reshape(num_samples,-1,128*8)
+
+            x2 = self.forward_mask(x2,mask)
+            x2 = x2.permute(0,2,1,3).reshape(num_samples,-1,128*8)
+
+            vec = (x2*mask[:,0]).sum(1,keepdim=True)/mask[:,0].sum(1,keepdim=True)
+            vec = vec.repeat(1,seq_len//2,1)
+            cat_x = torch.cat((x1,vec),-1) #.reshape(-1,128*8*2).contiguous()
+            ts_vad, _ = self.lstm(cat_x) # [b,431,512*2] 
+            ts_vad = ts_vad.flatten(end_dim=1)
+            pre = self.decoder2(ts_vad)
+            return pre
         return pre
 
+    
     def forward_mask(self,x,mask):
         for i in range(4):
             x=self.encoder[i][0](x)*mask
@@ -185,6 +197,12 @@ class TSVAD1(nn.Module):
             x = self.encoder(x)
             x = x.repeat_interleave(4,dim=2)[:,:,:seq_len,:]
             return x.permute(0,2,1,3).reshape(num_samples,seq_len,-1)
+    
+    def forward_tsvad_test(self,vec,x):
+        with torch.no_grad():
+            cat_x = torch.cat([x,vec])
+            ts_vad,_ = self.lstm(cat_x) # [batch,431,512*2]
+            return ts_vad
     
     def forward_decoder_test(self,vec,x):
         self.decoder.eval()

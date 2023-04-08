@@ -107,6 +107,7 @@ class Evaluator:
         distance_num = len(slice_c1) #pos之间的间距
 
         total_distance = int(431/2/3)
+
         mean_slice_distance = total_distance//(distance_num)
         distance_list = [mean_slice_distance for i in range(distance_num)]
         shake_distance_list = []
@@ -882,25 +883,27 @@ class Evaluator:
         sep_neg = sep_neg[:128,:,:]
         # 再提pos段
         if mean_pos_len >=431:
-            for sub_pos in pos_features:
-                start = 0
-                end = start + seg_len
-                nframes = sub_pos.shape[0]
-                if nframes>seg_len:
-                    while end<nframes and start<nframes:
-                        sep_pos.append(sub_pos[start:end])
-                        start+=hop_seg
-                        end = start +seg_len
-                    if end>nframes and start<nframes:
-                        sep_pos.append(sub_pos[nframes-seg_len:nframes])
-                elif nframes<=seg_len:
-                    repeatNum = seg_len // nframes +1
-                    sep_pos.append(torch.tile(sub_pos,[repeatNum,1])[:seg_len])    
+           
+            for i in range(128):
+                pos_ = sep_neg[random.randint(0,len(sep_neg)-1)]
+                pos1 = random.sample(pos_features,1)[0]
+                if pos1.shape[0]>=431:
+                    start = random.randint(0,pos1.shape[0]-431-1)
+                    end = start+431
+                    assert pos1[start:end].shape[0]==431
+                    sep_pos.append(pos1[start:end])
+                    sep_pos_mask.append(torch.ones_like(pos1[start:end]))
+                else:
+                    pos_mask = torch.zeros_like(pos_)
+                    start = random.randint(0,431-pos1.shape[0]-1)
+                    end = start + pos1.shape[0]
+                    pos_[start:end] = pos1
+                    pos_mask[start:end] = 1.0
+                    assert pos_.shape[0]==431
+                    sep_pos.append(pos_)
+                    sep_pos_mask.append(pos_mask)
             sep_pos = torch.stack(sep_pos)
-            if sep_pos.shape[0]<128:
-                sep_pos=torch.tile(sep_pos,[128//sep_pos.shape[0]+1,1,1])[:128,:,:]
-            sep_pos = sep_pos[:128,:,:]    
-            sep_pos_mask  = torch.ones_like(sep_pos)
+            sep_pos_mask = torch.stack(sep_pos_mask)
         else:
             for i in range(128):
                 pos1,pos2 = random.sample(pos_features,2)
@@ -933,7 +936,7 @@ class Evaluator:
                 else:
                     pos_[:431//2,:], pos_mask[:431//2,:] = self.append_data(pos_[:431//2,:], pos_mask[:431//2,:],pos1)
                     pos_[431//2:,:], pos_mask[431//2:,:] = self.append_data(pos_[431//2:,:], pos_mask[431//2:,:],pos2)
-                
+                    
                 sep_pos.append(pos_)
                 sep_pos_mask.append(pos_mask)
             sep_pos = torch.stack(sep_pos)

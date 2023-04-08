@@ -35,8 +35,7 @@ class Trainer:
         logsoftmax = logsoftmax_fn(logits)
         log_pos = torch.gather(logsoftmax,1,targets*mask)
         return - (log_pos * mask).sum()/mask.sum()
-
-    
+   
     def cross_entropy2(self, logits, targets, reduction='batchmean'):
         logsoftmax_fn = nn.LogSoftmax(dim=1)
         logsoftmax = logsoftmax_fn(logits)
@@ -96,13 +95,11 @@ class Trainer:
                       'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'.format(
                        epoch, i, len(self.train_loader), batch_time=batch_time,
                        loss=losses, top1=top1))
-
     def DoAug(self,tensorInput):
-        data = frequencyMask(tensorInput)
+        data = add_gussionNoise(tensorInput)
+        data = frequencyMask(data)
         data = TimeMask(data)
-        data = add_gussionNoise(data)
         return data
-
     def inputAug(self,input):
         input1 = input[:,:431]
         input2 = input[:,431:]
@@ -110,9 +107,8 @@ class Trainer:
         # input2 = self.DoAug(input2)
         output = torch.cat([input1,input2],dim=1)
         return output
-
     def do_epoch2(self, epoch, scheduler, disable_tqdm, model,
-                 alpha, optimizer,aug):
+                 alpha, optimizer,aug,logger_writer):
         batch_time = AverageMeter()
         losses_1 = AverageMeter()
         top1_1 = AverageMeter()
@@ -127,14 +123,24 @@ class Trainer:
 
         for i, (input, target1, target2) in enumerate(tqdm_train_loader):
             # pdb.set_trace()
-            ori_input, target1, target2 = input.to(self.device), target1.to(self.device, non_blocking=True), target2.to(self.device, non_blocking=True)
-            
+            ori_input, target1, target2 = input.to(self.device), target1.to(self.device, non_blocking=True), target2.to(self.device, non_blocking=True)        
             target1 = target1.reshape(-1,1)
             target2 = target2.reshape(-1,1)
             mask = torch.where(target2>=0,1,0)
             if aug:
                 ori_input[:,:431,:] = self.DoAug(ori_input[:,:431,:])
-                
+            if i!=0 and i%10==0:
+                with torch.no_grad():
+                   
+                    show_image1 = ori_input[:,:431,:]-ori_input[:,:431,:].flatten(start_dim=-2).min(dim=1,keepdim=True).values.unsqueeze(-1)
+                    show_image1 = ((show_image1/show_image1.flatten(start_dim=-2).max(dim=1,keepdim=True).values.unsqueeze(-1))*255).unsqueeze(1).repeat_interleave(3,dim=1)
+                  
+                    show_image2 = ori_input[:,431:,:]-ori_input[:,431:,:].flatten(start_dim=-2).min(dim=1,keepdim=True).values.unsqueeze(-1)
+                    show_image2 = ((show_image2/show_image2.flatten(start_dim=-2).max(dim=1,keepdim=True).values.unsqueeze(-1))*255).unsqueeze(1).repeat_interleave(3,dim=1)
+                    
+                    show_image = torch.cat([show_image1,show_image2])
+                    logger_writer.add_img("Input Image",show_image.permute([0,1,3,2]).type(torch.uint8),epoch*len(tqdm_train_loader)+i)
+                    
             if self.alpha > 0:  # Mixup augmentation
                 # generate mixed sample and targets
                 lam = np.random.beta(self.alpha, self.alpha)
@@ -148,7 +154,7 @@ class Trainer:
                 output1 = model(ori_input,step=1)
                 loss1 = self.cross_entropy(output1, target2,mask) # 20分类
 
-                output = model(ori_input,step=2)
+                output = model(ori_input,step=3)
                 loss = self.cross_entropy(output,target1,mask) # 增强2分类
 
             total_loss = loss1 + loss 
@@ -190,8 +196,7 @@ class Trainer:
                       'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
                       'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'.format(
                        epoch, i, len(self.train_loader), batch_time=batch_time,
-                       loss=losses_1, top1=top1_1))
-                
+                       loss=losses_1, top1=top1_1))              
     def do_epoch_PANN(self, epoch, scheduler, disable_tqdm, feature_extractor,model,
                     alpha, optimizer,aug):
         batch_time = AverageMeter()
@@ -233,8 +238,6 @@ class Trainer:
                       'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'.format(
                        epoch, i, len(self.train_loader), batch_time=batch_time,
                        loss=losses, top1=top1))
-
-    
     def do_epoch_sep(self, epoch, scheduler, disable_tqdm, model,model_sep,
                  alpha, optimizer,aug):  
         batch_time = AverageMeter()
@@ -489,7 +492,6 @@ class Trainer:
                 if not disable_tqdm:
                     tqdm_test_loader.set_description('Acc {:.2f}'.format(top1.avg*100))
         return top1.avg
-    
     def PANNs_meta_val(self,epoch, PANNS_model,model, disable_tqdm):
         top1 = AverageMeter()
         model.eval() 
@@ -520,7 +522,7 @@ class Trainer:
                 target2 = target2.reshape(-1,1)
                 mask = torch.where(target2>=0,1,0)
                 
-                output = model(inputs,step=2)
+                output = model(inputs,step=3)
                 acc = ((output.argmax(1)==target1.squeeze()).float()*mask.squeeze()).sum()/mask.sum() # 2 分类
                 
                 top1.update(acc.item(),mask.sum().item())

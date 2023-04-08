@@ -77,7 +77,7 @@ class TIM(object):
                 sample_sep = sample_sep.detach()
             return sample_sep,mask
 
-    def get_logits(self, samples, is_train=False, is_class=False, is_decoder2=False,label=None, m=0.2, embedding=None, get_mask=False, use_cnn1=False,train_together=False):
+    def get_logits(self, samples, is_train=False, is_class=False,label=None,embedding=False):
         """
         inputs:
             samples : torch.Tensor of shape [n_task, shot, feature_dim]
@@ -88,13 +88,8 @@ class TIM(object):
         sample_list = []
         mask_sample_list =[]
         mask_list = []
-        if use_cnn1:
-            model = self.model_student
-            # bias = self.bias[:,0]
-            bias = self.bias[:,0]
-        else:
-            model = self.model
-            bias = self.bias[:,0]
+        model = self.model
+        bias = self.bias[:,0]
         b_s = 32
         if is_train:
             model.train()
@@ -102,18 +97,10 @@ class TIM(object):
             list_vec = []
             for i in np.arange(0, batch_size,b_s):
                 sample = samples[i:i+b_s]
-                if embedding is not None:
-                    sample_list.append(torch.clone(sample.cpu().detach()))
-                    sample,s_mask = self.process_sep(sample,embedding,train_together)
-                    mask_sample_list.append(torch.clone(sample.cpu().detach()))
-                    mask_list.append(s_mask)
                 list_vec.append(model(sample,step=0))
                 outputs_samples = torch.cat(list_vec,0)
             if is_class:
                 logits = model.fc(outputs_samples)
-                return logits
-            if is_decoder2:
-                logits = model.decoder2(outputs_samples)
                 return logits
         else:
             list_vec = []
@@ -122,24 +109,13 @@ class TIM(object):
                 batch_size, win, ndim = samples.shape
                 for i in np.arange(0,batch_size,b_s):
                     sample = samples[i:i+b_s].reshape(-1,win,ndim)
-                    if embedding is not None:
-                        sample_list.append(torch.clone(sample.cpu().detach()))
-                        sample,s_mask = self.process_sep(sample,embedding,train_together)
-                        mask_sample_list.append(torch.clone(sample.cpu().detach()))
-                        mask_list.append(s_mask)
                     list_vec.append(model.forward_encoder_test(sample))
                 outputs_samples = torch.cat(list_vec,0)
+        
         if None == label:
-            if use_cnn1:
-                self.weights.detach()
-                bias.detach()
-            else:
-                self.weights.requires_grad_()
-                bias.requires_grad_()
             logits0 = outputs_samples.matmul(self.weights[:,0:1].transpose(1,2)) + bias
             logits1 = outputs_samples.matmul(model.fc.weight[0].view(1,-1,1)) + model.fc.bias[0].view(1,1,-1)
             logits = torch.cat((logits0,logits1),-1)
-        
         else:
             cosine = F.normalize(outputs_samples,dim=2).matmul(F.normalize(self.weights.transpose(1,2),dim=1))
             sine = torch.sqrt((1.0-torch.pow(cosine,2)).clamp(0,1))
@@ -148,9 +124,10 @@ class TIM(object):
             one_hot = label
             output = (one_hot * phi) + ((1.0 - one_hot)*cosine)
             logits = output*self.s
-        if get_mask:
-            return logits, sample_list, mask_sample_list,mask_list
-        return logits
+        if embedding:
+            return logits ,outputs_samples
+        else:
+            return logits
 
     def get_preds(self, samples):
         """
@@ -188,15 +165,15 @@ class TIM(object):
         self.model.eval()
         t0 = time.time()
         n_tasks = support.size(0)
-
+        n,seq_len,_ = support.shape
         with torch.no_grad():
             outputs_support = self.model.forward_encoder_test(support)
             outputs_support = F.normalize(outputs_support, dim=2)
         # print('n_tasks ',n_tasks)
         one_hot = get_one_hot(y_s) # get one-hot vector
         counts = one_hot.sum(1).view(n_tasks, -1, 1) # 
-
-        weights = one_hot.transpose(1, 2).matmul(outputs_support)
+        
+        weights = one_hot.transpose(1, 2).matmul(outputs_support) 
         self.weights = weights.sum(0,keepdim=True) / counts.sum(0,keepdim=True)
 
         self.weights = F.normalize(self.weights,dim=2)
@@ -274,22 +251,45 @@ class TIM(object):
             y_q : torch.Tensor of shape [n_task, q_shot] :
         """
         with torch.no_grad():
-            logits_s = self.get_logits(support)
-            logits_s = logits_s.softmax(2).detach()
+            torch.cuda.empty_cache()
+            logits_s,s_embedding = self.get_logits(support,embedding=True)
+            s_prototype = ((s_embedding[:]*y_s[:].unsqueeze(-1)).sum(1,keepdim=True) / y_s[:].unsqueeze(-1).sum(1,keepdim=True)).mean(0,keepdim=True).repeat([1,431,1])
+            s_prototype_s = s_prototype[0:1].repeat_interleave(s_embedding.shape[0],dim=0)
+            
+            ts_vad_s,_ =self.model.lstm(torch.cat([s_embedding,s_prototype_s],dim=-1))
+            logits_s_2 = self.model.decoder2(ts_vad_s).softmax(2).unsqueeze(-1).detach()
+            logits_s = logits_s.softmax(2).detach().unsqueeze(-1)
+            logits_s = torch.cat([logits_s,logits_s_2],dim=-1).mean(-1)
             
             self.thre = ((logits_s[:,:,1]*y_s).sum(1)/y_s.sum(1)).min().item()
             print('thre:%s'%self.thre)
-
-            logits_q = self.get_logits(query)
+        
+            logits_q,q_embedding = self.get_logits(query,embedding=True)
             logits_q = logits_q.softmax(2).detach()
-            q_probs = logits_q 
+            q_probs = logits_q.unsqueeze(-1) 
             
+            s_prototype_q = s_prototype[0:1].repeat_interleave(q_embedding.shape[0],dim=0)
+            ts_vad_2 = torch.cat([q_embedding,s_prototype_q],dim=-1)
+            try:
+                ts_vad_2,_ =self.model.lstm(ts_vad_2)
+                q_probs_2 = self.model.decoder2(ts_vad_2).softmax(2).unsqueeze(-1).detach()
+                q_probs = torch.cat([q_probs.cpu(),q_probs_2.cpu()],dim=-1).mean(dim=-1)
+            except:
+                deivce = torch.device("cpu")
+                self.model.eval()
+                self.model.to(deivce)
+                ts_vad_2 = ts_vad_2.cpu()
+                ts_vad_2,_ =self.model.lstm(ts_vad_2)
+                q_probs_2 = self.model.decoder2(ts_vad_2).softmax(2).unsqueeze(-1).detach()
+                q_probs = torch.cat([q_probs.cpu(),q_probs_2.cpu()],dim=-1).mean(dim=-1)
+                self.model.cuda()
             self.timestamps.append(new_time) 
             self.mutual_infos.append(get_mi(probs=q_probs.detach().cpu())) 
             self.entropy.append(get_entropy(probs=q_probs.detach().cpu())) # # H(Y_q)
             self.cond_entropy.append(get_cond_entropy(probs=q_probs.detach().cpu())) # # H(Y_q | X_q)
-            self.test_probs.append(q_probs[:,:,1]) 
+            self.test_probs.append(q_probs[:,:,1].cpu()) 
             self.y_s = y_s.cpu().numpy()
+            torch.cuda.empty_cache()
 
     def get_logs(self):
         self.test_probs = self.test_probs[-1].cpu().numpy() # use the last as results
@@ -315,6 +315,8 @@ class TIM_GD(TIM):
             {'params':self.model.fc.parameters(),'lr':self.lr},
             {'params':self.model.encoder[2].parameters(),'lr':0.1*self.lr},
             {'params':self.model.encoder[3].parameters(),'lr':0.1*self.lr},
+            {'params':self.model.lstm.parameters(),'lr':0.1*self.lr},
+            {'params':self.model.decoder2.parameters(),'lr':0.3*self.lr},  
             {'params':self.weights},{'params':self.bias}], lr=self.lr)
         step_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer,T_max=50)
         y_s_one_hot = get_one_hot(y_s)
@@ -339,21 +341,48 @@ class TIM_GD(TIM):
             # support
             logits_s = self.get_logits(support,is_train=True)  #
             
+            # get_support_vec 
+            _,support_vec = self.get_logits(support,is_train=True,embedding=True)
+            s_prototype = ((support_vec[:128]*y_s[:128].unsqueeze(-1)).sum(1,keepdim=True) / y_s[:128].unsqueeze(-1).sum(1,keepdim=True)).mean(0,keepdim=True).repeat([128,431,1])
+            ts_vad =  torch.cat([support_vec[128:],s_prototype],dim=-1)
+            ts_vec,_  = self.model.lstm(ts_vad)
+            logits_tsvad = self.model.decoder2(ts_vec)
+            y_s_vad_one_hot = y_s_one_hot[128:]
+            
             # ce = self.dice_loss(logits_s.softmax(2),y_s_one_hot)
             ce = - (y_s_one_hot * torch.log(logits_s.softmax(2) + 1e-12)).sum(2).mean(1).sum(0) 
+            ce2 = - (y_s_vad_one_hot * torch.log(logits_tsvad.softmax(2) + 1e-12)).sum(2).mean(1).sum(0) 
             
             # query
-            logits_q = self.get_logits(query) #  
-            q_probs = logits_q.softmax(2)
+            logits_q, embedding_q = self.get_logits(query,embedding=True) #  
+            q_probs = logits_q.softmax(2).unsqueeze(-1)
+            
+            s_prototype_q = s_prototype[0:1].repeat_interleave(embedding_q.shape[0],dim=0)
+            ts_vad_2 = torch.cat([embedding_q,s_prototype_q],dim=-1)
+            with torch.no_grad():
+                try:
+                    ts_vad_2,_ = self.model.lstm(ts_vad_2)
+                    q_probs_2 = self.model.decoder2(ts_vad_2).softmax(2).unsqueeze(-1)
+                except:
+                    deivce = torch.device("cpu")
+                    self.model.eval()
+                    self.model.to(deivce)
+                    ts_vad_2 = ts_vad_2.cpu()
+                    ts_vad_2,_ =self.model.lstm(ts_vad_2)
+                    q_probs_2 = self.model.decoder2(ts_vad_2).softmax(2).unsqueeze(-1).detach()
+                    self.model.cuda()
+            q_probs = torch.cat([q_probs.cpu(),q_probs_2.cpu()],dim=-1).mean(dim=-1)
+            # get support vec
             
             self.select_query_data_v2(q_probs[:,:,1],query,self.thre)
             print(len(self.torch_q_x))
+            
             if  len(self.torch_q_x)>0 and i>=86: #
                
-                mask = torch.where(self.torch_q_y==-1,torch.zeros_like(self.torch_q_y),self.torch_q_y)
-                y_qs_one_hot = get_one_hot(self.torch_q_y*mask)
+                mask = torch.where(self.torch_q_y==-1,torch.zeros_like(self.torch_q_y),self.torch_q_y).cuda()
+                y_qs_one_hot = get_one_hot(self.torch_q_y.cuda()*mask)
                 
-                logits_qs = self.get_logits(self.torch_q_x,is_train=True)
+                logits_qs = self.get_logits(self.torch_q_x.cuda(),is_train=True)
                 ce_qs = -(mask.unsqueeze(2)*y_qs_one_hot * torch.log(logits_qs.softmax(2)+1e-12)).sum(2).mean(1).sum(0)
 
                 self.loss_weights[1]=0.1
@@ -363,13 +392,14 @@ class TIM_GD(TIM):
                 ce_qs2= 0
                 self.loss_weights[1]=0 
                 self.loss_weights[2]=0 
-
-            loss = self.loss_weights[0] * ce  +  self.loss_weights[0]*ce_t + self.loss_weights[1]*ce_qs    #  # + self.loss_weights[0]*ce_t # 不过分离网络  +  self.loss_weights[0]*ce_t + self.loss_weights[0]*ce_t2 
+            self.loss_weights[2]=0.01 if i <50 else 0.1
+            loss = self.loss_weights[0] * ce + self.loss_weights[2] * ce2 +  self.loss_weights[0]*ce_t + self.loss_weights[1]*ce_qs    #  # + self.loss_weights[0]*ce_t # 不过分离网络  +  self.loss_weights[0]*ce_t + self.loss_weights[0]*ce_t2 
                 
            
             optimizer.zero_grad()
             loss.backward()
             print(loss)
+            print(ce2,'\n')
             optimizer.step()
             self.get_acc(logits_s,y_s)
             self.get_acc(logits_t.detach(),select_y_t,select_mask_t)  
@@ -434,7 +464,6 @@ class TIM_GD(TIM):
         np.save(os.path.join(save_path,"ori_query_mask.npy"),ori_query_mask)
         np.save(os.path.join(save_path,"mask_query.npy"),mask_query)
         
-
     def get_embedding(self,sep_dict,train=False):
         pos_data = sep_dict['sep_pos'].clone()
         pos_mask_data  = sep_dict["sep_pos_mask"].clone()
@@ -553,7 +582,6 @@ class TIM_GD(TIM):
         self.get_acc(logits_s,y_s)
         self.get_acc(logits_t.detach(),select_y_t,select_mask_t)
         return loss
-
 
     def get_m(self,i):
         if i<1:
