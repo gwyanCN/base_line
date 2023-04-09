@@ -129,6 +129,36 @@ class TIM(object):
         else:
             return logits
 
+    def get_tsvad(self,ts_vectors,samples,is_train=False):
+        lstm = self.model.lstm
+        fc = self.model.decoder2
+        b_s = 32
+        batch_size,_,_ = samples.shape
+        assert ts_vectors.shape[0]==batch_size
+        out_list = []
+        if is_train:
+            lstm.train()
+            fc.train()   
+            for i in range(0,batch_size,b_s):
+                sample = samples[i:i+b_s]
+                ts_vector = ts_vectors[i:i+b_s]
+                d_vector = torch.cat([sample,ts_vector],dim=-1)
+                ts_vad,_ = lstm(d_vector)
+                out = fc(ts_vad).softmax(-1)
+                out_list.append(out)
+        else:
+            with torch.no_grad():
+                lstm.eval()
+                fc.eval()   
+                for i in range(0,batch_size,b_s):
+                    sample = samples[i:i+b_s]
+                    ts_vector = ts_vectors[i:i+b_s]
+                    d_vector = torch.cat([sample,ts_vector],dim=-1)
+                    ts_vad,_ = lstm(d_vector)
+                    out = fc(ts_vad).softmax(-1)
+                    out_list.append(out)
+        return torch.cat(out_list,dim=0)
+
     def get_preds(self, samples):
         """
         inputs:
@@ -252,12 +282,12 @@ class TIM(object):
         """
         with torch.no_grad():
             torch.cuda.empty_cache()
+            b_s,seq_len,_ = support.shape
             logits_s,s_embedding = self.get_logits(support,embedding=True)
-            s_prototype = ((s_embedding[:]*y_s[:].unsqueeze(-1)).sum(1,keepdim=True) / y_s[:].unsqueeze(-1).sum(1,keepdim=True)).mean(0,keepdim=True).repeat([1,431,1])
+            s_prototype = ((s_embedding*y_s.unsqueeze(-1)).sum(1,keepdim=True) / y_s.unsqueeze(-1).sum(1,keepdim=True)).mean(0,keepdim=True).repeat([1,seq_len,1])
             s_prototype_s = s_prototype[0:1].repeat_interleave(s_embedding.shape[0],dim=0)
             
-            ts_vad_s,_ =self.model.lstm(torch.cat([s_embedding,s_prototype_s],dim=-1))
-            logits_s_2 = self.model.decoder2(ts_vad_s).softmax(2).unsqueeze(-1).detach()
+            logits_s_2 = self.get_tsvad(s_prototype_s,s_embedding).unsqueeze(-1).detach()
             logits_s = logits_s.softmax(2).detach().unsqueeze(-1)
             logits_s = torch.cat([logits_s,logits_s_2],dim=-1).mean(-1)
             
@@ -269,20 +299,8 @@ class TIM(object):
             q_probs = logits_q.unsqueeze(-1) 
             
             s_prototype_q = s_prototype[0:1].repeat_interleave(q_embedding.shape[0],dim=0)
-            ts_vad_2 = torch.cat([q_embedding,s_prototype_q],dim=-1)
-            try:
-                ts_vad_2,_ =self.model.lstm(ts_vad_2)
-                q_probs_2 = self.model.decoder2(ts_vad_2).softmax(2).unsqueeze(-1).detach()
-                q_probs = torch.cat([q_probs.cpu(),q_probs_2.cpu()],dim=-1).mean(dim=-1)
-            except:
-                deivce = torch.device("cpu")
-                self.model.eval()
-                self.model.to(deivce)
-                ts_vad_2 = ts_vad_2.cpu()
-                ts_vad_2,_ =self.model.lstm(ts_vad_2)
-                q_probs_2 = self.model.decoder2(ts_vad_2).softmax(2).unsqueeze(-1).detach()
-                q_probs = torch.cat([q_probs.cpu(),q_probs_2.cpu()],dim=-1).mean(dim=-1)
-                self.model.cuda()
+            q_probs_2 = self.get_tsvad(s_prototype_q,q_embedding).unsqueeze(-1).detach()
+            q_probs = torch.cat([q_probs.cpu(),q_probs_2.cpu()],dim=-1).mean(dim=-1)
             self.timestamps.append(new_time) 
             self.mutual_infos.append(get_mi(probs=q_probs.detach().cpu())) 
             self.entropy.append(get_entropy(probs=q_probs.detach().cpu())) # # H(Y_q)
@@ -324,6 +342,7 @@ class TIM_GD(TIM):
         
         l3 = 0.2
         self.iter=100
+        b_s,seq_len,_ = support.shape
         for i in tqdm(range(self.iter)): # 
             self.model.train()
             
@@ -343,11 +362,9 @@ class TIM_GD(TIM):
             
             # get_support_vec 
             _,support_vec = self.get_logits(support,is_train=True,embedding=True)
-            s_prototype = ((support_vec[:128]*y_s[:128].unsqueeze(-1)).sum(1,keepdim=True) / y_s[:128].unsqueeze(-1).sum(1,keepdim=True)).mean(0,keepdim=True).repeat([128,431,1])
-            ts_vad =  torch.cat([support_vec[128:],s_prototype],dim=-1)
-            ts_vec,_  = self.model.lstm(ts_vad)
-            logits_tsvad = self.model.decoder2(ts_vec)
-            y_s_vad_one_hot = y_s_one_hot[128:]
+            s_prototype = ((support_vec[:b_s//2]*y_s[:b_s//2].unsqueeze(-1)).sum(1,keepdim=True) / y_s[:b_s//2].unsqueeze(-1).sum(1,keepdim=True)).mean(0,keepdim=True).repeat([b_s//2,seq_len,1])
+            logits_tsvad = self.get_tsvad(s_prototype,support_vec[b_s//2:],is_train=True)
+            y_s_vad_one_hot = y_s_one_hot[b_s//2:]
             
             # ce = self.dice_loss(logits_s.softmax(2),y_s_one_hot)
             ce = - (y_s_one_hot * torch.log(logits_s.softmax(2) + 1e-12)).sum(2).mean(1).sum(0) 
@@ -356,29 +373,15 @@ class TIM_GD(TIM):
             # query
             logits_q, embedding_q = self.get_logits(query,embedding=True) #  
             q_probs = logits_q.softmax(2).unsqueeze(-1)
-            
             s_prototype_q = s_prototype[0:1].repeat_interleave(embedding_q.shape[0],dim=0)
-            ts_vad_2 = torch.cat([embedding_q,s_prototype_q],dim=-1)
-            with torch.no_grad():
-                try:
-                    ts_vad_2,_ = self.model.lstm(ts_vad_2)
-                    q_probs_2 = self.model.decoder2(ts_vad_2).softmax(2).unsqueeze(-1)
-                except:
-                    deivce = torch.device("cpu")
-                    self.model.eval()
-                    self.model.to(deivce)
-                    ts_vad_2 = ts_vad_2.cpu()
-                    ts_vad_2,_ =self.model.lstm(ts_vad_2)
-                    q_probs_2 = self.model.decoder2(ts_vad_2).softmax(2).unsqueeze(-1).detach()
-                    self.model.cuda()
+            q_probs_2 = self.get_tsvad(s_prototype_q,embedding_q,is_train=False).unsqueeze(-1)
             q_probs = torch.cat([q_probs.cpu(),q_probs_2.cpu()],dim=-1).mean(dim=-1)
             # get support vec
             
             self.select_query_data_v2(q_probs[:,:,1],query,self.thre)
             print(len(self.torch_q_x))
             
-            if  len(self.torch_q_x)>0 and i>=86: #
-               
+            if  len(self.torch_q_x)>0 and i>=86: #   
                 mask = torch.where(self.torch_q_y==-1,torch.zeros_like(self.torch_q_y),self.torch_q_y).cuda()
                 y_qs_one_hot = get_one_hot(self.torch_q_y.cuda()*mask)
                 
