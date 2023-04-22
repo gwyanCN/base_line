@@ -130,31 +130,27 @@ class TIM(object):
             return logits
 
     def get_tsvad(self,ts_vectors,samples,is_train=False):
-        lstm = self.model.lstm
+        lstm = self.model.Encoder_layers
         fc = self.model.decoder2
-        b_s = 32
+        b_s = 128
         batch_size,_,_ = samples.shape
         assert ts_vectors.shape[0]==batch_size
         out_list = []
-        if is_train:
-            lstm.train()
-            fc.train()   
+        if is_train:  
             for i in range(0,batch_size,b_s):
                 sample = samples[i:i+b_s]
                 ts_vector = ts_vectors[i:i+b_s]
                 d_vector = torch.cat([sample,ts_vector],dim=-1)
-                ts_vad,_ = lstm(d_vector)
+                ts_vad = lstm(d_vector)
                 out = fc(ts_vad).softmax(-1)
                 out_list.append(out)
-        else:
+        else:        
             with torch.no_grad():
-                lstm.eval()
-                fc.eval()   
                 for i in range(0,batch_size,b_s):
                     sample = samples[i:i+b_s]
                     ts_vector = ts_vectors[i:i+b_s]
                     d_vector = torch.cat([sample,ts_vector],dim=-1)
-                    ts_vad,_ = lstm(d_vector)
+                    ts_vad= lstm(d_vector)
                     out = fc(ts_vad).softmax(-1)
                     out_list.append(out)
         return torch.cat(out_list,dim=0)
@@ -281,7 +277,7 @@ class TIM(object):
             y_q : torch.Tensor of shape [n_task, q_shot] :
         """
         with torch.no_grad():
-            torch.cuda.empty_cache()
+           
             b_s,seq_len,_ = support.shape
             logits_s,s_embedding = self.get_logits(support,embedding=True)
             s_prototype = ((s_embedding*y_s.unsqueeze(-1)).sum(1,keepdim=True) / y_s.unsqueeze(-1).sum(1,keepdim=True)).mean(0,keepdim=True).repeat([1,seq_len,1])
@@ -297,10 +293,11 @@ class TIM(object):
             logits_q,q_embedding = self.get_logits(query,embedding=True)
             logits_q = logits_q.softmax(2).detach()
             q_probs = logits_q.unsqueeze(-1) 
-            
+
             s_prototype_q = s_prototype[0:1].repeat_interleave(q_embedding.shape[0],dim=0)
             q_probs_2 = self.get_tsvad(s_prototype_q,q_embedding).unsqueeze(-1).detach()
             q_probs = torch.cat([q_probs.cpu(),q_probs_2.cpu()],dim=-1).mean(dim=-1)
+            
             self.timestamps.append(new_time) 
             self.mutual_infos.append(get_mi(probs=q_probs.detach().cpu())) 
             self.entropy.append(get_entropy(probs=q_probs.detach().cpu())) # # H(Y_q)
@@ -333,8 +330,8 @@ class TIM_GD(TIM):
             {'params':self.model.fc.parameters(),'lr':self.lr},
             {'params':self.model.encoder[2].parameters(),'lr':0.1*self.lr},
             {'params':self.model.encoder[3].parameters(),'lr':0.1*self.lr},
-            {'params':self.model.lstm.parameters(),'lr':0.1*self.lr},
-            {'params':self.model.decoder2.parameters(),'lr':0.3*self.lr},  
+            {'params':self.model.Encoder_layers.parameters(),'lr':0.1*self.lr},
+            {'params':self.model.decoder2.parameters(),'lr':0.1*self.lr},  
             {'params':self.weights},{'params':self.bias}], lr=self.lr)
         step_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer,T_max=50)
         y_s_one_hot = get_one_hot(y_s)
@@ -357,36 +354,40 @@ class TIM_GD(TIM):
             
             ce_t = self.cross_entropy(logits_t,select_y_t,select_mask_t)
 
-            # support
-            logits_s = self.get_logits(support,is_train=True)  #
-            
             # get_support_vec 
-            _,support_vec = self.get_logits(support,is_train=True,embedding=True)
+            logits_s,support_vec = self.get_logits(support,is_train=True,embedding=True)
             s_prototype = ((support_vec[:b_s//2]*y_s[:b_s//2].unsqueeze(-1)).sum(1,keepdim=True) / y_s[:b_s//2].unsqueeze(-1).sum(1,keepdim=True)).mean(0,keepdim=True).repeat([b_s//2,seq_len,1])
             logits_tsvad = self.get_tsvad(s_prototype,support_vec[b_s//2:],is_train=True)
             y_s_vad_one_hot = y_s_one_hot[b_s//2:]
             
             # ce = self.dice_loss(logits_s.softmax(2),y_s_one_hot)
             ce = - (y_s_one_hot * torch.log(logits_s.softmax(2) + 1e-12)).sum(2).mean(1).sum(0) 
-            ce2 = - (y_s_vad_one_hot * torch.log(logits_tsvad.softmax(2) + 1e-12)).sum(2).mean(1).sum(0) 
+            ce2 = - (y_s_vad_one_hot * torch.log(logits_tsvad + 1e-12)).sum(2).mean(1).sum(0) 
             
             # query
             logits_q, embedding_q = self.get_logits(query,embedding=True) #  
             q_probs = logits_q.softmax(2).unsqueeze(-1)
             s_prototype_q = s_prototype[0:1].repeat_interleave(embedding_q.shape[0],dim=0)
             q_probs_2 = self.get_tsvad(s_prototype_q,embedding_q,is_train=False).unsqueeze(-1)
+            
             q_probs = torch.cat([q_probs.cpu(),q_probs_2.cpu()],dim=-1).mean(dim=-1)
             # get support vec
             
             self.select_query_data_v2(q_probs[:,:,1],query,self.thre)
             print(len(self.torch_q_x))
             
+            #pseudo-label
             if  len(self.torch_q_x)>0 and i>=86: #   
                 mask = torch.where(self.torch_q_y==-1,torch.zeros_like(self.torch_q_y),self.torch_q_y).cuda()
                 y_qs_one_hot = get_one_hot(self.torch_q_y.cuda()*mask)
                 
-                logits_qs = self.get_logits(self.torch_q_x.cuda(),is_train=True)
-                ce_qs = -(mask.unsqueeze(2)*y_qs_one_hot * torch.log(logits_qs.softmax(2)+1e-12)).sum(2).mean(1).sum(0)
+                logits_qs = self.get_logits(self.torch_q_x.cuda(),is_train=True,embedding=False)
+                # s_prototype_q = s_prototype[0:1].repeat_interleave(embedding_qs.shape[0],dim=0)
+                logits_qs = logits_qs.softmax(2)#.unsqueeze(-1)
+                # q_probs_presudo = self.get_tsvad(s_prototype_q,embedding_qs,is_train=True).unsqueeze(-1)
+                # logits_qs = torch.cat([logits_qs,q_probs_presudo],dim=-1).mean(dim=-1)
+
+                ce_qs = -(mask.unsqueeze(2)*y_qs_one_hot * torch.log(logits_qs+1e-12)).sum(2).mean(1).sum(0)
 
                 self.loss_weights[1]=0.1
                 self.loss_weights[2]=0
@@ -395,10 +396,9 @@ class TIM_GD(TIM):
                 ce_qs2= 0
                 self.loss_weights[1]=0 
                 self.loss_weights[2]=0 
-            self.loss_weights[2]=0.01 if i <50 else 0.1
+            self.loss_weights[2]=0.1  #if i <50 else 0.1
             loss = self.loss_weights[0] * ce + self.loss_weights[2] * ce2 +  self.loss_weights[0]*ce_t + self.loss_weights[1]*ce_qs    #  # + self.loss_weights[0]*ce_t # 不过分离网络  +  self.loss_weights[0]*ce_t + self.loss_weights[0]*ce_t2 
                 
-           
             optimizer.zero_grad()
             loss.backward()
             print(loss)
