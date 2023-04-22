@@ -8,7 +8,10 @@ import functools
 from torch.nn import init
 # from pytorch_utils import do_mixup, interpolate, pad_framewise_output
 import pdb
+from src.models.transformer.encoder import EEND_encoder
 from torchsummary import summary
+import os
+os.environ['CUDA_VISIBLE_DEVICES']='1'
 __all__ = ['TSVAD1']
 
 def init_layer(layer):
@@ -89,22 +92,15 @@ class TSVAD1(nn.Module):
             conv_block(128,128,pooling_size=1),
             conv_block(128,128,pooling_size=1)
         )
-        # self.attention_bolck = nn.LSTM(128,128,batch_first=True)
-        # self.attention=nn.Sequential(*[
-        #     nn.Conv2d(128,128,kernel_size=3,stride=1,padding=1),
-        # ])
         self.fc = nn.Linear(128*8, num_classes)
         self.decoder = nn.Sequential(
             nn.Linear(128*8*2,2)
         )
         
-        self.lstm = nn.LSTM(input_size=128*8*2, hidden_size=512,bidirectional=True,batch_first=True)
+        self.Encoder_layers = EEND_encoder(d_model=128*8*2,ffn_hidden=512*2,n_head=8,n_layers=1,drop_prob=0.5)
         self.decoder2 = nn.Sequential(
-            nn.Linear(512*2,2)
+            nn.Linear(512*2*2,2)
         )
-        # self.decoder2 = nn.Sequential(
-        #     nn.Linear(128*8*2,2)
-        # )
         self.logsoftmax_fn = nn.LogSoftmax(dim=1)
 
     def forward(self,x,step=1):
@@ -126,12 +122,12 @@ class TSVAD1(nn.Module):
             x = x.repeat_interleave(4,dim=2)[:,:,:seq_len,:]
             x = x.permute(0,2,1,3).reshape(num_samples,-1,128*8)
             return x
-        elif step==4:
+        elif step==5:
             x1 = torch.cat((x,torch.zeros_like(x[:,:,:1,:])),2)
             x1 = self.encoder(x1)
             x1 = x1.repeat_interleave(4,dim=2)[:,:,:seq_len,:]
             x1 = x1.permute(0,2,1,3).reshape(-1,128*8)
-            pre = self.fc(x1)
+            return x1
         elif step==1:
             x1 = torch.cat((x1,torch.zeros_like(x1[:,:,:1,:])),2)
             x1 = self.encoder(x1)
@@ -147,7 +143,6 @@ class TSVAD1(nn.Module):
 
             x2 = self.forward_mask(x2,mask)
             x2 = x2.permute(0,2,1,3).reshape(num_samples,-1,128*8)
-
             vec = (x2*mask[:,0]).sum(1,keepdim=True)/mask[:,0].sum(1,keepdim=True)
             vec = vec.repeat(1,seq_len//2,1)
             cat_x = torch.cat((x1,vec),2).reshape(-1,128*8*2).contiguous()
@@ -166,7 +161,7 @@ class TSVAD1(nn.Module):
             vec = (x2*mask[:,0]).sum(1,keepdim=True)/mask[:,0].sum(1,keepdim=True)
             vec = vec.repeat(1,seq_len//2,1)
             cat_x = torch.cat((x1,vec),-1) #.reshape(-1,128*8*2).contiguous()
-            ts_vad, _ = self.lstm(cat_x) # [b,431,512*2] 
+            ts_vad  = self.Encoder_layers(cat_x) # [b,431,512*2] 
             ts_vad = ts_vad.flatten(end_dim=1)
             pre = self.decoder2(ts_vad)
             return pre
@@ -214,10 +209,9 @@ class TSVAD1(nn.Module):
 
             return logsoftmax
 
+
 if __name__ == '__main__':
     import torch
     model = TSVAD1(num_classes=20).cuda()
     param_sum = sum([param.numel() for param in model.parameters()])
     print(param_sum)
-    
-    

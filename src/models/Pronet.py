@@ -1,7 +1,5 @@
 import torch.nn as nn
 
-from torchlibrosa.stft import Spectrogram, LogmelFilterBank
-from torchlibrosa.augmentation import SpecAugmentation
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
