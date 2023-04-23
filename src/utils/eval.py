@@ -883,7 +883,6 @@ class Evaluator:
         sep_neg = sep_neg[:128,:,:]
         # 再提pos段
         if mean_pos_len >=431:
-           
             for i in range(128):
                 pos_ = sep_neg[random.randint(0,len(sep_neg)-1)]
                 pos1 = random.sample(pos_features,1)[0]

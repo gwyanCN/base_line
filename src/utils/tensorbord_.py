@@ -11,10 +11,10 @@ class Summary():
         self.writer = SummaryWriter(log_dir=path)
     
     def add_scalar(self,name,x,tag):
-        self.writer.add_scalar(name,x,tag)
+        self.writer.add_scalars(name,x,tag)
         
     def add_img(self,name,x,tag):
-        self.writer.add_image(name,x,global_step=tag)
+        self.writer.add_images(name,x,global_step=tag)
     
     def add_text(self,name,x,tag):
         self.writer.add_text(name,x,tag)

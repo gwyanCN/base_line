@@ -107,6 +107,7 @@ class Trainer:
         # input2 = self.DoAug(input2)
         output = torch.cat([input1,input2],dim=1)
         return output
+    
     def do_epoch2(self, epoch, scheduler, disable_tqdm, model,
                  alpha, optimizer,aug,logger_writer):
         batch_time = AverageMeter()
@@ -127,6 +128,7 @@ class Trainer:
             target1 = target1.reshape(-1,1)
             target2 = target2.reshape(-1,1)
             mask = torch.where(target2>=0,1,0)
+            ori_ori_input = ori_input.clone()
             if aug:
                 ori_input[:,:431,:] = self.DoAug(ori_input[:,:431,:])
             if i!=0 and i%10==0:
@@ -151,7 +153,7 @@ class Trainer:
                 output = model(mixed_input)
                 loss = self.cross_entropy(output, target_a) * lam + self.cross_entropy(output, target_b) * (1. - lam)
             else:
-                output1 = model(ori_input,step=1)
+                output1 = model(ori_ori_input,step=1)
                 loss1 = self.cross_entropy(output1, target2,mask) # 20分类
 
                 output = model(ori_input,step=3)
@@ -180,7 +182,7 @@ class Trainer:
                       'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'.format(
                        epoch, i, len(self.train_loader), batch_time=batch_time,
                        loss=losses, top1=top1))
-            prec2 = (output1.argmax(1)==target2.squeeze()).float().sum()/mask.sum()
+            prec2 = ((output1.argmax(1)==target2.squeeze()).float()*mask.squeeze()).sum()/mask.sum()
 
             top1_1.update(prec2.item(),mask.sum().item())
             if not disable_tqdm:
@@ -196,7 +198,8 @@ class Trainer:
                       'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
                       'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'.format(
                        epoch, i, len(self.train_loader), batch_time=batch_time,
-                       loss=losses_1, top1=top1_1))              
+                       loss=losses_1, top1=top1_1))  
+                            
     def do_epoch_PANN(self, epoch, scheduler, disable_tqdm, feature_extractor,model,
                     alpha, optimizer,aug):
         batch_time = AverageMeter()
@@ -527,7 +530,7 @@ class Trainer:
                 
                 top1.update(acc.item(),mask.sum().item())
                 output1 = model(inputs)
-                acc1 = (output1.argmax(1)==target2.squeeze()).float().sum() / mask.sum() #20分类
+                acc1 = ((output1.argmax(1)==target2.squeeze()).float()*mask.squeeze()).sum() / mask.sum() #20分类
                 
                 top1_1.update(acc1.item(),mask.sum().item())
                 if not disable_tqdm:

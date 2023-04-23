@@ -96,7 +96,6 @@ class TSVAD1(nn.Module):
         self.decoder = nn.Sequential(
             nn.Linear(128*8*2,2)
         )
-        
         self.Encoder_layers = EEND_encoder(d_model=128*8*2,ffn_hidden=512*2,n_head=8,n_layers=1,drop_prob=0.5)
         self.decoder2 = nn.Sequential(
             nn.Linear(512*2*2,2)
@@ -118,7 +117,6 @@ class TSVAD1(nn.Module):
                 x = self.encoder[1](x)
             x = self.encoder[2](x)
             x = self.encoder[3](x)
-          
             x = x.repeat_interleave(4,dim=2)[:,:,:seq_len,:]
             x = x.permute(0,2,1,3).reshape(num_samples,-1,128*8)
             return x
@@ -154,7 +152,6 @@ class TSVAD1(nn.Module):
             x1 = self.encoder(x1)
             x1 = x1.repeat_interleave(4,dim=2)[:,:,:seq_len//2,:]
             x1 = x1.permute(0,2,1,3).reshape(num_samples,-1,128*8)
-
             x2 = self.forward_mask(x2,mask)
             x2 = x2.permute(0,2,1,3).reshape(num_samples,-1,128*8)
 

@@ -12,8 +12,6 @@ import torch
 
 pd.options.mode.chained_assignment = None
 
-
-
 def create_dataset(df_pos,pcen,glob_cls_name,file_name,hf,seg_len,hop_seg,fps):
 
     '''Chunk the time-frequecy representation to segment length and store in h5py dataset
@@ -219,7 +217,7 @@ def extract_feature(audio_path,feat_extractor,conf,aug=False):
     #     pcen = pcen.numpy()
     return pcen.T
 
-def add_gussionNoise(data,sigma=1.0):# 添加高斯噪音
+def add_gussionNoise(data,sigma=0.4):# 添加高斯噪音
     mean = torch.mean(data.cpu()).numpy()
     var = torch.std(data.cpu()).numpy()
     noise = np.random.normal(mean,var**2,data.shape)
@@ -395,7 +393,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             Q_list = df_eval['Q'].to_numpy() # Q 列
 
             start_time,end_time = time_2_frame(df_eval,fps) # 时间转 frame
-            index_sup = np.where(Q_list == 'POS')[0][:conf.train.n_shot] # 查找前n_shot个有POS标签的 片段
+            index_sup = np.where(Q_list == 'POS')[0][:conf.feature.n_shot] # 查找前n_shot个有POS标签的 片段
              
             pcen = extract_feature(audio_path, pcen_extractor,conf) # 提取feature
             mean = np.mean(pcen)
@@ -493,7 +491,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             Q_list = df_eval['Q'].to_numpy() # Q 列
 
             start_time,end_time = time_2_frame(df_eval,fps) # 时间转 frame
-            index_sup = np.where(Q_list == 'POS')[0][:conf.train.n_shot] # 查找前n_shot个有POS标签的 片段
+            index_sup = np.where(Q_list == 'POS')[0][:conf.feature.n_shot] # 查找前n_shot个有POS标签的 片段
              
             pcen = extract_feature(audio_path, pcen_extractor,conf) # 提取feature
             mean = np.mean(pcen)

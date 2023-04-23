@@ -88,7 +88,7 @@ def balance_class_distribution(X,Y):
         repeat_label = label_win.reshape(-1,1).repeat(128,1)
         masked_X = np.where(repeat_label==class_id, X[i], 0)
         
-        X_pos[i] = masked_X
+        # X_pos[i] = masked_X
         if class_id not in dict_posX.keys():
             X_pos[i] = masked_X
         else:

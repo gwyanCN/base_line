@@ -34,7 +34,7 @@ from utils.tensorbord_ import Summary
 from models.TSVAD2 import TSVAD2
 from models.PANNS import Cnn14
 
-os.environ['CUDA_VISIBLE_DEVICES']="1"
+# os.environ['CUDA_VISIBLE_DEVICES']="0"
 def get_model(arch,num_classes,ema=False):
     if arch == 'resnet10' or arch == 'resnet18':
         model = __dict__[arch](num_classes=num_classes)
@@ -232,7 +232,7 @@ def train_protonet_PANNS(PANN_model,model,train_loader,valid_loader,conf):
         num_params += param.numel()
     print(num_params / 1e6)
 
-def train_protonet2(model,train_loader,valid_loader,conf):
+def train_protonet2(model,train_loader,valid_loader,conf,logger_writer):
     arch = 'Protonet'
     alpha = 0.0  
     disable_tqdm = True 
@@ -283,7 +283,7 @@ def train_protonet2(model,train_loader,valid_loader,conf):
     trainer = Trainer(device=device,num_class=conf.train.num_classes, train_loader=train_loader,val_loader=valid_loader,conf=conf)
     time_start=time.time()
     for epoch in range(num_epochs):
-        trainer.do_epoch2(epoch=epoch,scheduler=lr_scheduler,disable_tqdm=disable_tqdm,model=model,alpha=alpha,optimizer=optim,aug=conf.train.aug)
+        trainer.do_epoch2(epoch=epoch,scheduler=lr_scheduler,disable_tqdm=disable_tqdm,model=model,alpha=alpha,optimizer=optim,aug=conf.train.aug,logger_writer=logger_writer)
         # Evaluation on validation set
         prec1, prec1_1 = trainer.meta_val2(epoch=epoch,model=model, disable_tqdm=disable_tqdm)
         print('Meta Val {}: {}'.format(epoch, prec1)) # 2分类
@@ -495,6 +495,7 @@ def setup_seed(seed):
 @hydra.main(config_name="config")
 def main(conf : DictConfig):
     seed = 2021
+   
     if seed is not None:
         setup_seed(seed)
     if not os.path.isdir(conf.path.feat_path):
@@ -503,7 +504,8 @@ def main(conf : DictConfig):
         os.makedirs(conf.path.feat_train)
     if not os.path.isdir(conf.path.feat_eval):
         os.makedirs(conf.path.feat_eval)
-        
+    if not os.path.isdir(osp.join(conf.path.work_path,'src','train_data')):
+        os.makedirs(osp.join(conf.path.work_path,'src','train_data'))
     if conf.set.features:
         print(" --Feature Extraction Stage--")
         Num_extract_train,data_shape = feature_transform(conf=conf,mode="train") # train data
@@ -582,22 +584,28 @@ def main(conf : DictConfig):
             # print('X_val ',X_val.shape)
             samples_per_cls =  conf.train.n_shot 
             batch_size_tr =  conf.train.n_shot* conf.train.k_way #64 # the batch size of training 
-            batch_size_tr =  conf.train.batch_size
-           
+         
+            num_batches_tr = len(Y_tr)//batch_size_tr
+            
             train_dataset = torch.utils.data.TensorDataset(X_tr,Y_tr) # 利用torch 的 dataset,整合X,Y
             valid_dataset = torch.utils.data.TensorDataset(X_val,Y_val)
-
+            
+            samplr_train = EpisodicBatchSampler(Y_tr,Y2_tr,num_batches_tr,conf.train.k_way,samples_per_cls) 
+            
             train_loader = torch.utils.data.DataLoader(dataset=train_dataset,batch_size=conf.train.batch_size,num_workers=10,shuffle=False)
             # batch_sampler 批量采样，默认设置为None。但每次返回的是一批数据的索引,每次输入网络的数据是随机采样模式，这样能使数据更具有独立性质
             valid_loader = torch.utils.data.DataLoader(dataset=valid_dataset,batch_size=64,num_workers=10,shuffle=False)
             
             train_dataset2 = torch.utils.data.TensorDataset(X_tr,Y2_tr,Y_tr) # 利用torch 的 dataset,整合X,Y, Y2∈{0,1}, Y∈{0,1,2....,19}
             valid_dataset2 = torch.utils.data.TensorDataset(X_val,Y2_val,Y_val)
-            train_loader2 = torch.utils.data.DataLoader(dataset=train_dataset2,batch_size=conf.train.batch_size,num_workers=10,pin_memory=True,shuffle=True)
+            train_loader2 = torch.utils.data.DataLoader(dataset=train_dataset2, batch_sampler=samplr_train,num_workers=10,pin_memory=True)
             valid_loader2 = torch.utils.data.DataLoader(dataset=valid_dataset2,batch_size=64,batch_sampler=None,num_workers=10,pin_memory=True,shuffle=True)
         #model = get_model('Protonet',19)
+        # tensorboard
+        CURRENT_TIMES = time.strftime("%Y-%m-%d %H-%M",time.localtime())
+        logger_writer = Summary(path=osp.join(conf.path.tensorboard_path,CURRENT_TIMES))
         model = get_model('TSVAD1',conf.train.num_classes)
-        train_protonet2(model,train_loader2,valid_loader2,conf)
+        train_protonet2(model,train_loader2,valid_loader2,conf,logger_writer)
 
     if conf.set.eval: # eval
         device = 'cuda'
@@ -622,14 +630,12 @@ def main(conf : DictConfig):
         hop_seg = int(conf.features.hop_seg * conf.features.sr // conf.features.hop_mel) # 0.05*22050//256 == 86
         k_q = 128
         iter_num = conf.eval.iter_num # change wether use ML framework
-        CURRENT_TIMES = time.strftime("%Y-%m-%d %H-%M",time.localtime())
-        # logger_writer = Summary(path=osp.join(conf.eval.tensorboard_path,CURRENT_TIMES))
         
         TOTAL_LENGTH = len(all_feat_files)
         # for i in range(TOTAL_LENGTH):
         for i in range(TOTAL_LENGTH):
             feat_file = all_feat_files[i]
-            if not feat_file.__contains__("BUK"):continue
+            # if not feat_file.__contains__("BUK"): continue
             feat_name = feat_file.split('/')[-1]   
             file_name = feat_name.replace('.h5','')
             # if file_name!="n1":continue
