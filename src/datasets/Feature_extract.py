@@ -222,8 +222,54 @@ def add_gussionNoise(data,sigma=0.4):# 添加高斯噪音
     var = torch.std(data.cpu()).numpy()
     noise = np.random.normal(mean,var**2,data.shape)
     noise = sigma*torch.from_numpy(noise).to(data.device).float()
-    aug_data = noise+data.clone()
+    aug_data = noise+data
     return aug_data
+
+# FilterAugment
+def filt_aug(features, db_range=[-8, 8], n_band=[3, 6], min_bw=6, filter_type="linear"):
+    '''Feature augmentation method
+    '''
+    # this is updated FilterAugment algorithm used for ICASSP 2022
+    if not isinstance(filter_type, str):
+        if torch.rand(1).item() < filter_type:
+            filter_type = "step"
+            n_band = [2, 5]
+            min_bw = 4
+        else:
+            filter_type = "linear"
+            n_band = [3, 6]
+            min_bw = 6 # filter band mini-width
+
+    batch_size, n_freq_bin, _ = features.shape
+    n_freq_band = torch.randint(low=n_band[0], high=n_band[1], size=(1,)).item()   # [low, high)
+    if n_freq_band > 1:
+        while n_freq_bin - n_freq_band * min_bw + 1 < 0:
+            min_bw -= 1
+        band_bndry_freqs = torch.sort(torch.randint(0, n_freq_bin - n_freq_band * min_bw + 1,
+                                                    (n_freq_band - 1,)))[0] + \
+                           torch.arange(1, n_freq_band) * min_bw
+        band_bndry_freqs = torch.cat((torch.tensor([0]), band_bndry_freqs, torch.tensor([n_freq_bin])))
+
+        if filter_type == "step":
+            band_factors = torch.rand((batch_size, n_freq_band)).to(features) * (db_range[1] - db_range[0]) + db_range[0]
+            band_factors = 10 ** (band_factors / 20)
+
+            freq_filt = torch.ones((batch_size, n_freq_bin, 1)).to(features)
+            for i in range(n_freq_band):
+                freq_filt[:, band_bndry_freqs[i]:band_bndry_freqs[i + 1], :] = band_factors[:, i].unsqueeze(-1).unsqueeze(-1)
+
+        elif filter_type == "linear":
+            band_factors = torch.rand((batch_size, n_freq_band + 1)).to(features) * (db_range[1] - db_range[0]) + db_range[0]
+            freq_filt = torch.ones((batch_size, n_freq_bin, 1)).to(features)
+            for i in range(n_freq_band):
+                for j in range(batch_size):
+                    freq_filt[j, band_bndry_freqs[i]:band_bndry_freqs[i+1], :] = \
+                        torch.linspace(band_factors[j, i], band_factors[j, i+1],
+                                       band_bndry_freqs[i+1] - band_bndry_freqs[i]).unsqueeze(-1)
+            freq_filt = 10 ** (freq_filt / 20)
+        return features * freq_filt
+    else:
+        return features
 
 def frequencyMask(data,freq_mask=20):
     data_mask_list =[]
@@ -248,7 +294,6 @@ def TimeMask(data, Time_mask=10):
         time_maskData_list.append(mask_data)
     mask_data = torch.stack(time_maskData_list)
     return mask_data
-
 
 def time_2_frame(df,fps):
     'Margin of 25 ms around the onset and offsets'
@@ -393,7 +438,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             Q_list = df_eval['Q'].to_numpy() # Q 列
 
             start_time,end_time = time_2_frame(df_eval,fps) # 时间转 frame
-            index_sup = np.where(Q_list == 'POS')[0][:conf.feature.n_shot] # 查找前n_shot个有POS标签的 片段
+            index_sup = np.where(Q_list == 'POS')[0][:conf.features.n_shot] # 查找前n_shot个有POS标签的 片段
              
             pcen = extract_feature(audio_path, pcen_extractor,conf) # 提取feature
             mean = np.mean(pcen)
