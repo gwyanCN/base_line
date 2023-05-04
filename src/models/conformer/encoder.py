@@ -17,13 +17,13 @@ import torch.nn as nn
 from torch import Tensor
 from typing import Tuple
 
-from .feed_forward import FeedForwardModule
-from .attention import MultiHeadedSelfAttentionModule
-from .convolution import (
+from src.models.conformer.feed_forward import FeedForwardModule
+from src.models.conformer.attention import MultiHeadedSelfAttentionModule
+from src.models.conformer.convolution import (
     ConformerConvModule,
     Conv2dSubampling,
 )
-from .modules import (
+from src.models.conformer.modules import (
     ResidualConnectionModule,
     Linear,
 )
@@ -106,9 +106,8 @@ class ConformerBlock(nn.Module):
             nn.LayerNorm(encoder_dim),
         )
 
-    def forward(self, inputs: Tensor) -> Tensor:
+    def forward(self, inputs: Tensor):
         return self.sequential(inputs)
-
 
 class ConformerEncoder(nn.Module):
     """
@@ -161,25 +160,25 @@ class ConformerEncoder(nn.Module):
             encoder_dim=encoder_dim,
             num_attention_heads=num_attention_heads,
             feed_forward_expansion_factor=feed_forward_expansion_factor,
-            conv_expansion_factor=conv_expansion_factor,
-            feed_forward_dropout_p=feed_forward_dropout_p,
-            attention_dropout_p=attention_dropout_p,
-            conv_dropout_p=conv_dropout_p,
-            conv_kernel_size=conv_kernel_size,
-            half_step_residual=half_step_residual,
+            conv_expansion_factor = conv_expansion_factor,
+            feed_forward_dropout_p = feed_forward_dropout_p,
+            attention_dropout_p = attention_dropout_p,
+            conv_dropout_p = conv_dropout_p,
+            conv_kernel_size = conv_kernel_size,
+            half_step_residual = half_step_residual,
         ) for _ in range(num_layers)])
 
-    def count_parameters(self) -> int:
+    def count_parameters(self):
         """ Count parameters of encoder """
         return sum([p.numel() for p in self.parameters()])
 
-    def update_dropout(self, dropout_p: float) -> None:
+    def update_dropout(self, dropout_p: float):
         """ Update dropout probability of encoder """
         for name, child in self.named_children():
             if isinstance(child, nn.Dropout):
                 child.p = dropout_p
 
-    def forward(self, inputs: Tensor, input_lengths: Tensor) -> Tuple[Tensor, Tensor]:
+    def forward(self, inputs: Tensor, input_lengths: Tensor):
         """
         Forward propagate a `inputs` for  encoder training.
 
@@ -202,3 +201,8 @@ class ConformerEncoder(nn.Module):
             outputs = layer(outputs)
 
         return outputs, output_lengths
+    
+if __name__ == '__main__':
+    block =  ConformerBlock()
+    print(block)
+    

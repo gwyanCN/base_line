@@ -10,6 +10,8 @@ from imblearn.under_sampling import RandomUnderSampler
 import os
 import warnings
 from collections import Counter
+from sklearn.model_selection import StratifiedGroupKFold, KFold
+import pandas as pd
 warnings.filterwarnings("ignore")
 import json
 
@@ -96,7 +98,7 @@ def balance_class_distribution(X,Y):
         dict_posX[class_id] = masked_X
     
     fake_Y = np.array(fake_Y,dtype=np.int64)
-
+    
     all_X = np.concatenate((X,X_pos),axis=1)
 
     ros = RandomOverSampler(random_state=42)
@@ -189,6 +191,7 @@ class Datagen(object):
     def __init__(self, conf, is_test=False):
         if not is_test:
             hdf_path = os.path.join(conf.path.feat_train, 'Mel_train.h5')
+            self.work_space_path = conf.path.work_path
             # print(hdf_path)
             hdf_train = h5py.File(hdf_path, 'r+')
             self.x = hdf_train['features'][:]
@@ -203,28 +206,48 @@ class Datagen(object):
             # pdb.set_trace()
             for i in range(self.y_unifm.shape[0]):
                 self.y2[i] = np.where(self.y[i]==self.y_unifm[i],1,0)
-
+    
             array_train = np.arange(len(self.x))
-            _,_,_,_,_,_,train_array,valid_array = train_test_split(self.x,self.y,self.y2,array_train,random_state=42,stratify=self.y_unifm)
-            self.train_index = train_array
-            self.valid_index = valid_array
-            self.mean,self.std = norm_params(self.x[train_array,:self.nframe])
-            with open("%s/mean_var"%conf.path.work_path,'w') as fw:
-                fw.writelines('%s %s %s'%(self.mean,self.std,self.nframe))
-            
-        else:
-            with open("%s/mean_var"%conf.path.work_path,'r') as fr:
-                list_line = fr.readlines()[0].strip().split()
-                self.mean = float(list_line[0])
-                self.std = float(list_line[1])
-                self.nframe = int(list_line[2])
-
+            # KFold split
+            assert len(self.y2) == len(self.x)
+            assert len(self.x) == len(self.y)
+            self.KFold = {} 
+            kf = KFold(n_splits=conf.train.Fold,shuffle=True, random_state=conf.train.seed)
+            for fold, (train_idx, val_idx) in enumerate(kf.split(array_train)):
+                self.KFold[fold] = {
+                    "train_idx": train_idx,
+                    "val_idx": val_idx
+                }
+            # build mean_var
+            for fold in self.KFold.keys():
+                train_array = self.KFold[fold]['train_idx']
+                self.mean,self.std = norm_params(self.x[train_array,:self.nframe])
+                with open(f"%s/mean_var_fold{fold+1}"%conf.path.work_path,'w') as fw:
+                    fw.writelines('%s %s %s'%(self.mean,self.std,self.nframe))
+                
+    def getMeanStd(self,path):
+        ''' Return trainSet mean and std
+        '''
+        with open(path,'r') as fr:
+            list_line = fr.readlines()[0].strip().split()
+            self.mean = float(list_line[0])
+            self.std = float(list_line[1])
+            self.nframe = int(list_line[2])
+    
     def feature_scale(self,X):
         X[:,:self.nframe] = (X[:,:self.nframe]-self.mean)/self.std
         X[:,self.nframe:] = np.where(X[:,self.nframe:]!=0,(X[:,self.nframe:]-self.mean)/self.std,0)
         return X
-
-
+    
+    def generate_DATA(self,index,fold):
+        ''' generate Data
+        '''
+        x_, Y_, Y2_ = self.x[index], self.y[index], self.y2[index]
+        path_ = f"%s/mean_var_fold{fold+1}"%self.work_space_path
+        self.getMeanStd(path_)
+        x_ = self.feature_scale(x_)
+        return x_, Y_, Y2_
+        
     def generate_train(self):
 
         ''' Returns normalized training and validation features.
@@ -284,7 +307,7 @@ class Datagen_test(Datagen):
         self.x_neg_5 = hf['feat_neg_4'][:]
         
         self.x_query = hf['feat_query'][:]
-
+        
     def generate_eval(self):
 
         '''Returns normalizedtest features

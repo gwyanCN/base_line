@@ -217,6 +217,52 @@ def extract_feature(audio_path,feat_extractor,conf,aug=False):
     #     pcen = pcen.numpy()
     return pcen.T
 
+# FilterAugment
+def filt_aug(features, db_range=[-8, 8], n_band=[3, 6], min_bw=6, filter_type="linear"):
+    '''Feature augmentation method
+    '''
+    # this is updated FilterAugment algorithm used for ICASSP 2022
+    if not isinstance(filter_type, str):
+        if torch.rand(1).item() < filter_type:
+            filter_type = "step"
+            n_band = [2, 5]
+            min_bw = 4
+        else:
+            filter_type = "linear"
+            n_band = [3, 6]
+            min_bw = 6 # filter band mini-width
+
+    batch_size, n_freq_bin, _ = features.shape
+    n_freq_band = torch.randint(low=n_band[0], high=n_band[1], size=(1,)).item()   # [low, high)
+    if n_freq_band > 1:
+        while n_freq_bin - n_freq_band * min_bw + 1 < 0:
+            min_bw -= 1
+        band_bndry_freqs = torch.sort(torch.randint(0, n_freq_bin - n_freq_band * min_bw + 1,
+                                                    (n_freq_band - 1,)))[0] + \
+                           torch.arange(1, n_freq_band) * min_bw
+        band_bndry_freqs = torch.cat((torch.tensor([0]), band_bndry_freqs, torch.tensor([n_freq_bin])))
+
+        if filter_type == "step":
+            band_factors = torch.rand((batch_size, n_freq_band)).to(features) * (db_range[1] - db_range[0]) + db_range[0]
+            band_factors = 10 ** (band_factors / 20)
+
+            freq_filt = torch.ones((batch_size, n_freq_bin, 1)).to(features)
+            for i in range(n_freq_band):
+                freq_filt[:, band_bndry_freqs[i]:band_bndry_freqs[i + 1], :] = band_factors[:, i].unsqueeze(-1).unsqueeze(-1)
+
+        elif filter_type == "linear":
+            band_factors = torch.rand((batch_size, n_freq_band + 1)).to(features) * (db_range[1] - db_range[0]) + db_range[0]
+            freq_filt = torch.ones((batch_size, n_freq_bin, 1)).to(features)
+            for i in range(n_freq_band):
+                for j in range(batch_size):
+                    freq_filt[j, band_bndry_freqs[i]:band_bndry_freqs[i+1], :] = \
+                        torch.linspace(band_factors[j, i], band_factors[j, i+1],
+                                       band_bndry_freqs[i+1] - band_bndry_freqs[i]).unsqueeze(-1)
+            freq_filt = 10 ** (freq_filt / 20)
+        return features * freq_filt
+    else:
+        return features
+
 def add_gussionNoise(data,sigma=0.4):# 添加高斯噪音
     mean = torch.mean(data.cpu()).numpy()
     var = torch.std(data.cpu()).numpy()
@@ -452,9 +498,9 @@ def feature_transform(conf=None,mode=None,aug=False):
         return num_extract_eval
     elif mode=='test':
 
-        print("=== Processing Validation set ===")
+        print("=== Processing Test set ===")
 
-        meta_path = conf.path.eval_dir
+        meta_path = conf.path.test_dir
 
         all_csv_files = [file
                          for path_dir, subdir, files in os.walk(meta_path)
@@ -477,7 +523,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             feat_name = name + '.h5'
             audio_path = file.replace('csv', 'wav')
             feat_info = []
-            hdf_eval = os.path.join(conf.path.feat_eval,feat_name)
+            hdf_eval = os.path.join(conf.path.feat_test,feat_name)
             hf = h5py.File(hdf_eval,'w')
 
             hf.create_dataset('feat_pos', shape=(0, seg_len, conf.features.n_mels),
@@ -491,7 +537,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             Q_list = df_eval['Q'].to_numpy() # Q 列
 
             start_time,end_time = time_2_frame(df_eval,fps) # 时间转 frame
-            index_sup = np.where(Q_list == 'POS')[0][:conf.feature.n_shot] # 查找前n_shot个有POS标签的 片段
+            index_sup = np.where(Q_list == 'POS')[0][:conf.features.n_shot] # 查找前n_shot个有POS标签的 片段
              
             pcen = extract_feature(audio_path, pcen_extractor,conf) # 提取feature
             mean = np.mean(pcen)
@@ -514,7 +560,7 @@ def feature_transform(conf=None,mode=None,aug=False):
                 patch_pos = pcen[int(str_ind):int(end_ind)]
 
                 hf.create_dataset('feat_pos_%s'%idx_pos,shape=(0,patch_pos.shape[0],patch_pos.shape[1]),maxshape=(None,patch_pos.shape[0],patch_pos.shape[1]))
-                hf['feat_pos_%s'%idx_pos].resize(0+1,patch_pos.shape[0],patch_pos.shape[1])
+                hf['feat_pos_%s'%idx_pos].resize((0+1,patch_pos.shape[0],patch_pos.shape[1]))
                 hf['feat_pos_%s'%idx_pos][0]=patch_pos
                 idx_pos +=1
 
@@ -525,10 +571,10 @@ def feature_transform(conf=None,mode=None,aug=False):
             str_ind = 0
             for i in range(0,index_sup.shape[0]):
                 index = index_sup[i]
-                end_idx = max(0,int(start_time[index]))
+                end_ind = max(0,int(start_time[index]))
                 patch_pos = pcen[int(str_ind):int(end_ind)]
                 hf.create_dataset('feat_neg_%s'%idx_neg,shape=(0,patch_pos.shape[0],patch_pos.shape[1]),maxshape=(None,patch_pos.shape[0],patch_pos.shape[1]))
-                hf['feat_neg_%s'%idx_neg].resize(0+1,patch_pos.shape[0],patch_pos.shape[1])
+                hf['feat_neg_%s'%idx_neg].resize((0+1,patch_pos.shape[0],patch_pos.shape[1]))
                 hf['feat_neg_%s'%idx_neg][0] = patch_pos
                 idx_neg +=1
                 str_ind = int(end_time[index])

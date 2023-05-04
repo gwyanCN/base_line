@@ -181,7 +181,7 @@ class Evaluator:
             W = logs['W']
         return predict,W,student
         
-    def run_full_evaluation(self,test_file, model,model_path,student_model,hdf_eval,conf,k_q,iter_num):
+    def run_full_evaluation(self,test_file, model,model_path,student_model,hdf_eval,conf,k_q,iter_num, n_fold):
         """
         Run the evaluation over all the tasks in parallel
         inputs:
@@ -201,7 +201,7 @@ class Evaluator:
         load_checkpoint(model=student_model,model_path=model_path,type=self.model_tag)
         # Get loaders
 
-        loaders_dic,save_dict = self.get_loaders(hdf_eval=hdf_eval,conf=conf) 
+        loaders_dic,save_dict = self.get_loaders(hdf_eval=hdf_eval,conf=conf,n_fold=n_fold) 
         # Extract features (just load them if already in memory)
         extracted_features_dic = self.extract_features(model=model, model_path=model_path, model_tag=self.model_tag,
                                     used_set=test_file, fresh_start=self.fresh_start,loaders_dic=loaders_dic)
@@ -209,7 +209,7 @@ class Evaluator:
         predict = None
         for shot in self.shots: # 5 shot
             tasks,_ = self.generate_tasks(extracted_features_dic=extracted_features_dic,k_q=k_q,conf=conf,
-                                    model=student_model,loaders_dic=loaders_dic)  
+                                    model=student_model,loaders_dic=loaders_dic,n_fold=n_fold)  
             logs = self.run_task(task_dic=tasks,model_student=student_model,
                                  model=model,test_file=test_file,first=0)
             # l2n_mean, l2n_conf = compute_confidence_interval(logs['acc'][:, -1])
@@ -488,11 +488,12 @@ class Evaluator:
             raise ValueError("Method must be in ['tim_gd', 'tim_adm', 'baseline']")
         return tim_builder
 
-    def get_loaders(self, hdf_eval,conf):
+    def get_loaders(self, hdf_eval,conf, n_fold):
         # First, get loaders
         loaders_dic = {}
         gen_eval = Datagen_test(hdf_eval,conf)
-
+        gen_eval.getMeanStd(path=f"%s/mean_var_fold{n_fold+1}"%conf.path.work_path)
+        
         X_pos_1, X_pos_2, X_pos_3, X_pos_4, X_pos_5,X_neg_1, X_neg_2, X_neg_3, X_neg_4, X_neg_5, X_query = gen_eval.generate_eval()
 
         save_dict = {}
@@ -598,8 +599,8 @@ class Evaluator:
         with torch.no_grad():
             all_features = []
             all_labels = []
-            print("===> Query feature extraction")
-            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['query'], False)):
+            # print("===> Query feature extraction")
+            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['query'], True)):
                 # inputs = inputs.to(self.device)
                 # outputs, _ = model(inputs, True)
                 all_features.append(inputs)
@@ -611,32 +612,32 @@ class Evaluator:
             all_features = []
             all_labels = []
 
-            print("===> Pos feature extraction")
-            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_1'], False)):
+            # print("===> Pos feature extraction")
+            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_1'], True)):
                 # inputs = inputs.to(self.device)
                 # outputs, _ = model(inputs, True)
                 all_features.append(inputs.reshape(-1,inputs.shape[-1]))
                 all_labels.append(labels)
 
-            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_2'], False)):
+            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_2'], True)):
                 # inputs = inputs.to(self.device)
                 # outputs, _ = model(inputs, True)
                 all_features.append(inputs.reshape(-1,inputs.shape[-1]))
                 all_labels.append(labels)
 
-            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_3'], False)):
+            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_3'], True)):
                 # inputs = inputs.to(self.device)
                 # outputs, _ = model(inputs, True)
                 all_features.append(inputs.reshape(-1,inputs.shape[-1]))
                 all_labels.append(labels)
 
-            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_4'], False)):
+            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_4'], True)):
                 # inputs = inputs.to(self.device)
                 # outputs, _ = model(inputs, True)
                 all_features.append(inputs.reshape(-1,inputs.shape[-1]))
                 all_labels.append(labels)
             
-            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_5'], False)):
+            for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['pos_loader_5'], True)):
                 # inputs = inputs.to(self.device)
                 # outputs, _ = model(inputs, True)
                 all_features.append(inputs.reshape(-1,inputs.shape[-1]))
@@ -649,11 +650,11 @@ class Evaluator:
             all_features = []
             all_labels = []
 
-            print("===> Neg feature extraction")
+            # print("===> Neg feature extraction")
 
             bad_cnt = 0
             try:
-                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_1'], False)):
+                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_1'], True)):
                     # inputs = inputs.to(self.device)
                     # outputs, _ = model(inputs, True)
                     assert inputs.shape[-2]>0
@@ -663,7 +664,7 @@ class Evaluator:
                 bad_cnt +=1
 
             try:
-                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_2'], False)):
+                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_2'], True)):
                     # inputs = inputs.to(self.device)
                     # outputs, _ = model(inputs, True)
                     assert inputs.shape[-2]>0
@@ -673,7 +674,7 @@ class Evaluator:
                 bad_cnt +=1
 
             try:
-                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_3'], False)):
+                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_3'], True)):
                     # inputs = inputs.to(self.device)
                     # outputs, _ = model(inputs, True)
                     assert inputs.shape[-2]>0
@@ -683,7 +684,7 @@ class Evaluator:
                 bad_cnt +=1
 
             try:
-                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_4'], False)):
+                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_4'], True)):
                     # inputs = inputs.to(self.device)
                     # outputs, _ = model(inputs, True)
                     assert inputs.shape[-2]>0
@@ -693,7 +694,7 @@ class Evaluator:
                 bad_cnt +=1
 
             try:
-                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_5'], False)):
+                for i, (inputs, labels) in enumerate(warp_tqdm(loaders_dic['neg_loader_5'], True)):
                     # inputs = inputs.to(self.device)
                     # outputs, _ = model(inputs, True)
                     assert inputs.shape[-2]>0
@@ -720,10 +721,10 @@ class Evaluator:
 
     def get_extra_neg(self,model,pos_features,query_features):
         model.eval()
-        print("===> extra Neg feature extraction")
+        # print("===> extra Neg feature extraction")
         with torch.no_grad():
             list_pos_vec = []
-            for i in tqdm(range(len(pos_features))):
+            for i in warp_tqdm(range(len(pos_features)), True):
 
                 pos_input = torch.zeros_like(query_features[:1])
                 start = max((query_features.shape[1]-pos_features[i].shape[0])//2,0)
@@ -737,14 +738,14 @@ class Evaluator:
             pos_w = F.normalize(pos_w,dim=2)
 
             list_neg = []
-            for i in tqdm(range(query_features.shape[0])):
+            for i in warp_tqdm(range(query_features.shape[0]),True):
                 que_outputs = model.forward_encoder_test(query_features[i:(i+1)].to(self.device))
                 _,neg_idx = (que_outputs*pos_w).sum(2).sort()
                 list_neg.append(query_features[i, neg_idx[0,50:60],:])
             torch_neg = torch.cat(list_neg,0)
 
         return torch_neg
-    def get_task(self, extracted_features_dic,index,k_q,conf,model,loaders_dic):
+    def get_task(self, extracted_features_dic,index,k_q,conf,model,loaders_dic,n_fold):
 
         """
         inputs:
@@ -785,8 +786,8 @@ class Evaluator:
         print('min_pos_len:%s'%med_filter_len)
         n_frame = 431
         max_seg_len = n_frame//2
-        print("====> Build features")
-        for i in tqdm(range(128)):
+        # print("====> Build features")
+        for i in warp_tqdm(range(128),True):
             list_X = []
             list_Y = []
             len_cnt = 0
@@ -833,13 +834,16 @@ class Evaluator:
         z_support = torch.stack(support_samples, 0)
         y_support = torch.stack(y_list, 0)
         #reload sub_train_datasets
+        sub_train_dataset = conf.eval.trainDatasets + f"_{n_fold}.pth"
         try:
-            sub_train_datasets  =torch.load(conf.eval.trainDatasets)
+            sub_train_datasets  =torch.load(sub_train_dataset)
             z_sub_train = sub_train_datasets['z_sub_train']
             y_sub_train = sub_train_datasets['y_sub_train']
           
         except:
+            meanVarPath = f"%s/mean_var_fold{n_fold+1}"%conf.path.work_path
             gen_sub_train = Datagen_train_select(conf)
+            gen_sub_train.getMeanStd(meanVarPath)
             z_sub_train,y_sub_train = gen_sub_train.generate_eval()
             z_sub_train = torch.tensor(z_sub_train).type_as(z_support)
             y_sub_train = torch.tensor(y_sub_train).type_as(y_support)
@@ -848,7 +852,7 @@ class Evaluator:
                 'z_sub_train': z_sub_train,
                 'y_sub_train': y_sub_train
             }
-            torch.save(sub_train_datasets,conf.eval.trainDatasets)
+            torch.save(sub_train_datasets,sub_train_dataset)
         mask = torch.where(y_sub_train>0,1,0)  
         z_train_dataset = torch.utils.data.TensorDataset(z_sub_train,y_sub_train)
         z_train_dataloader = torch.utils.data.DataLoader(dataset=z_train_dataset,batch_sampler=None,batch_size=64,num_workers=0,shuffle=True)
@@ -909,29 +913,55 @@ class Evaluator:
                 mean_len = np.mean([pos1.shape[0],pos2.shape[0]])
                 pos_ = sep_neg[i].clone()
                 pos_mask = torch.zeros(431,128,dtype=torch.long)
-                if mean_len>431//2:
+                if 431>mean_len>431//2:
                     min_shape = min([pos1.shape[0],pos2.shape[0]])
                     max_shape = max([pos1.shape[0],pos2.shape[0]])
                     if min_shape>431:
-                        raise ValueError('min-shape must smaller than 431')
+                        pos_target = [pos1, pos2][np.argmin([pos1.shape[0],pos2.shape[0]])]
+                        start = random.randint(0,pos_target.shape[0]-431-1)
+                        end = start+431
+                        pos_[:] = pos_target[start:end]
+                        pos_mask[:] = 1
                     if max_shape<431//2:
                         pos_[:431//2,:], pos_mask[:431//2,:] = self.append_data(pos_[:431//2,:], pos_mask[:431//2,:],pos1)
                         pos_[431//2:,:], pos_mask[431//2:,:] = self.append_data(pos_[431//2:,:], pos_mask[431//2:,:],pos2)
-                    elif max_shape>=431//2 and sum([pos1.shape[0],pos2.shape[0]])<=431:
+                    elif sum([pos1.shape[0],pos2.shape[0]])<=431: 
                         if np.random.rand()<0.5:
                             num = 431 - sum([pos1.shape[0],pos2.shape[0]])
-                            randnum = torch.randint(0,num//2)
+                            if num>0:
+                                randnum =random.randint(0,num//2)
+                            else:
+                                randnum = 0                           
                             pos_[randnum:randnum+pos1.shape[0],:]=pos1
                             pos_[2*randnum+pos1.shape[0]:,:]=pos2
                             pos_mask[randnum:randnum+pos1.shape[0],:]=1
                             pos_mask[2*randnum+pos1.shape[0]:,:]=1
                         else:
                             num = 431 - sum([pos1.shape[0],pos2.shape[0]])
-                            randnum = torch.randint(0,num)
+                            if num>0:
+                                randnum = random.randint(0,num)
+                            else:
+                                randnum = 0
                             pos_[:pos1.shape[0],:]=pos1
                             pos_[randnum+pos1.shape[0]:,:]=pos2
                             pos_mask[:pos1.shape[0],:]=1
                             pos_mask[randnum+pos1.shape[0]:,:]=1
+                    else:
+                        sample = random.sample([pos1, pos2],1)[0]
+                        if sample.shape[0]>431:
+                            start = random.randint(0,sample.shape[0]-431-1)
+                            end = start+431
+                            pos_[:] = sample[start:end]
+                            pos_mask[:] = 1
+                        elif  sample.shape[0]==431:
+                            start = 0
+                            end = start+431
+                            pos_[:] = sample[start:end]
+                            pos_mask[:] = 1
+                        else:
+                            distance = random.randint(0,431 - sample.shape[0])
+                            pos_[distance:distance+sample.shape[0],:]=sample
+                            pos_mask[distance:distance+sample.shape[0],:]=1
                 else:
                     pos_[:431//2,:], pos_mask[:431//2,:] = self.append_data(pos_[:431//2,:], pos_mask[:431//2,:],pos1)
                     pos_[431//2:,:], pos_mask[431//2:,:] = self.append_data(pos_[431//2:,:], pos_mask[431//2:,:],pos2)
@@ -963,7 +993,7 @@ class Evaluator:
                 'z_q': z_query.contiguous(),'MFL':med_filter_len, 'mean_pos_len':mean_pos_len}
         return task,loaders_dic 
     
-    def generate_tasks(self, extracted_features_dic,k_q,conf,model,loaders_dic):
+    def generate_tasks(self, extracted_features_dic,k_q,conf,model,loaders_dic,n_fold):
         """
         inputs:
             extracted_features_dic :
@@ -976,5 +1006,5 @@ class Evaluator:
                             y_support : torch.tensor of shape [number_tasks, n_ways * shot]
                             y_query : torch.tensor of shape [number_tasks, n_ways * query_shot] }
         """
-        return self.get_task(extracted_features_dic,0,k_q,conf,model,loaders_dic)
+        return self.get_task(extracted_features_dic,0,k_q,conf,model,loaders_dic,n_fold)
 
