@@ -128,7 +128,7 @@ class Trainer:
             target1 = target1.reshape(-1,1)
             target2 = target2.reshape(-1,1)
             mask = torch.where(target2>=0,1,0)
-            ori_ori_input = ori_input.clone()
+            # ori_ori_input = ori_input.clone()
             if aug:
                 ori_input[:,:431,:] = self.DoAug(ori_input[:,:431,:])
             if i!=0 and i%10==0:
@@ -153,7 +153,7 @@ class Trainer:
                 output = model(mixed_input)
                 loss = self.cross_entropy(output, target_a) * lam + self.cross_entropy(output, target_b) * (1. - lam)
             else:
-                output1 = model(ori_ori_input,step=1)
+                output1 = model(ori_input,step=1)
                 loss1 = self.cross_entropy(output1, target2,mask) # 20分类
 
                 output = model(ori_input,step=3)

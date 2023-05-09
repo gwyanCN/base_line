@@ -217,14 +217,6 @@ def extract_feature(audio_path,feat_extractor,conf,aug=False):
     #     pcen = pcen.numpy()
     return pcen.T
 
-def add_gussionNoise(data,sigma=0.4):# 添加高斯噪音
-    mean = torch.mean(data.cpu()).numpy()
-    var = torch.std(data.cpu()).numpy()
-    noise = np.random.normal(mean,var**2,data.shape)
-    noise = sigma*torch.from_numpy(noise).to(data.device).float()
-    aug_data = noise+data
-    return aug_data
-
 # FilterAugment
 def filt_aug(features, db_range=[-8, 8], n_band=[3, 6], min_bw=6, filter_type="linear"):
     '''Feature augmentation method
@@ -271,6 +263,14 @@ def filt_aug(features, db_range=[-8, 8], n_band=[3, 6], min_bw=6, filter_type="l
     else:
         return features
 
+def add_gussionNoise(data,sigma=0.4):# 添加高斯噪音
+    mean = torch.mean(data.cpu()).numpy()
+    var = torch.std(data.cpu()).numpy()
+    noise = np.random.normal(mean,var**2,data.shape)
+    noise = sigma*torch.from_numpy(noise).to(data.device).float()
+    aug_data = noise+data.clone()
+    return aug_data
+
 def frequencyMask(data,freq_mask=20):
     data_mask_list =[]
     freq_mask = freq_mask
@@ -294,6 +294,7 @@ def TimeMask(data, Time_mask=10):
         time_maskData_list.append(mask_data)
     mask_data = torch.stack(time_maskData_list)
     return mask_data
+
 
 def time_2_frame(df,fps):
     'Margin of 25 ms around the onset and offsets'
@@ -438,7 +439,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             Q_list = df_eval['Q'].to_numpy() # Q 列
 
             start_time,end_time = time_2_frame(df_eval,fps) # 时间转 frame
-            index_sup = np.where(Q_list == 'POS')[0][:conf.features.n_shot] # 查找前n_shot个有POS标签的 片段
+            index_sup = np.where(Q_list == 'POS')[0][:conf.feature.n_shot] # 查找前n_shot个有POS标签的 片段
              
             pcen = extract_feature(audio_path, pcen_extractor,conf) # 提取feature
             mean = np.mean(pcen)
@@ -497,9 +498,9 @@ def feature_transform(conf=None,mode=None,aug=False):
         return num_extract_eval
     elif mode=='test':
 
-        print("=== Processing Validation set ===")
+        print("=== Processing Test set ===")
 
-        meta_path = conf.path.eval_dir
+        meta_path = conf.path.test_dir
 
         all_csv_files = [file
                          for path_dir, subdir, files in os.walk(meta_path)
@@ -508,7 +509,7 @@ def feature_transform(conf=None,mode=None,aug=False):
         num_extract_eval = 0
 
         for file in all_csv_files:
-
+            if not file.__contains__("E3_49_20190715_0150.csv"): continue
             idx_pos = 0
             idx_neg = 0
             start_neg = 0
@@ -522,7 +523,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             feat_name = name + '.h5'
             audio_path = file.replace('csv', 'wav')
             feat_info = []
-            hdf_eval = os.path.join(conf.path.feat_eval,feat_name)
+            hdf_eval = os.path.join(conf.path.feat_test,feat_name)
             hf = h5py.File(hdf_eval,'w')
 
             hf.create_dataset('feat_pos', shape=(0, seg_len, conf.features.n_mels),
@@ -536,8 +537,15 @@ def feature_transform(conf=None,mode=None,aug=False):
             Q_list = df_eval['Q'].to_numpy() # Q 列
 
             start_time,end_time = time_2_frame(df_eval,fps) # 时间转 frame
-            index_sup = np.where(Q_list == 'POS')[0][:conf.feature.n_shot] # 查找前n_shot个有POS标签的 片段
-             
+            start_time = np.array(start_time)
+            end_time = np.array(end_time)
+            index_sup = np.where(Q_list == 'POS')[0][:conf.features.n_shot] # 查找前n_shot个有POS标签的 片段
+            unk_index = np.where(Q_list == 'UNK')[0]
+            if len(unk_index)>0:
+                unk_sup = np.stack([start_time, end_time]).T
+            else:
+                unk_sup = np.empty(shape=(0,2))
+            
             pcen = extract_feature(audio_path, pcen_extractor,conf) # 提取feature
             mean = np.mean(pcen)
             std = np.std(pcen) # ？？ 有问题
@@ -559,21 +567,37 @@ def feature_transform(conf=None,mode=None,aug=False):
                 patch_pos = pcen[int(str_ind):int(end_ind)]
 
                 hf.create_dataset('feat_pos_%s'%idx_pos,shape=(0,patch_pos.shape[0],patch_pos.shape[1]),maxshape=(None,patch_pos.shape[0],patch_pos.shape[1]))
-                hf['feat_pos_%s'%idx_pos].resize(0+1,patch_pos.shape[0],patch_pos.shape[1])
+                hf['feat_pos_%s'%idx_pos].resize((0+1,patch_pos.shape[0],patch_pos.shape[1]))
                 hf['feat_pos_%s'%idx_pos][0]=patch_pos
                 idx_pos +=1
 
             print('index_Pos: ', idx_pos)
             print("Creating Negative dataset from {}".format(file))
+            
             start_time,end_time = time_2_frame2(df_eval,fps)
             idx_neg = 0
             str_ind = 0
             for i in range(0,index_sup.shape[0]):
                 index = index_sup[i]
-                end_idx = max(0,int(start_time[index]))
-                patch_pos = pcen[int(str_ind):int(end_ind)]
+                end_ind = max(0,int(start_time[index]))
+                     
+                if len(unk_sup)>0:
+                    unk_index = (unk_sup[:,0]>=str_ind) & (unk_sup[:,1]<=end_ind)
+                    patch_unk = unk_sup[unk_index][np.argsort(unk_sup[unk_index][:,0], axis=0)]
+                    if len(patch_unk)>0:
+                        patch_pos_list = []     
+                        for unk in patch_unk:
+                           patch_end = unk[0]
+                           patch_pos_list.append(pcen[int(str_ind):int(patch_end)])
+                           str_ind = unk[1]
+                        patch_pos_list.append(pcen[int(str_ind):int(end_ind)])
+                        patch_pos = np.concatenate(patch_pos_list, axis=0) 
+                    else:
+                        patch_pos = pcen[int(str_ind):int(end_ind)]
+                else:
+                    patch_pos = pcen[int(str_ind):int(end_ind)]
                 hf.create_dataset('feat_neg_%s'%idx_neg,shape=(0,patch_pos.shape[0],patch_pos.shape[1]),maxshape=(None,patch_pos.shape[0],patch_pos.shape[1]))
-                hf['feat_neg_%s'%idx_neg].resize(0+1,patch_pos.shape[0],patch_pos.shape[1])
+                hf['feat_neg_%s'%idx_neg].resize((0+1,patch_pos.shape[0],patch_pos.shape[1]))
                 hf['feat_neg_%s'%idx_neg][0] = patch_pos
                 idx_neg +=1
                 str_ind = int(end_time[index])
@@ -588,6 +612,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             print("index_Query", idx_query)
             last_patch_query = pcen[end_idx_neg-seg_len:end_idx_neg]
             hf['feat_query'].resize((idx_query+1,last_patch_query.shape[0],last_patch_query.shape[1]))
+            hf['feat_query'][idx_query] = last_patch_query
             num_extract_eval += len(hf['feat_query'])
             
             hf.close()

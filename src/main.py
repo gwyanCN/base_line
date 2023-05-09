@@ -30,11 +30,11 @@ import json
 import os
 import os.path as osp
 import torch.nn as nn
-from utils.tensorbord_ import Summary
+from output_csv.tim.tensorbord_ import Summary
 from models.TSVAD2 import TSVAD2
 from models.PANNS import Cnn14
 
-# os.environ['CUDA_VISIBLE_DEVICES']="0"
+os.environ['CUDA_VISIBLE_DEVICES']="0"
 def get_model(arch,num_classes,ema=False):
     if arch == 'resnet10' or arch == 'resnet18':
         model = __dict__[arch](num_classes=num_classes)
@@ -98,7 +98,6 @@ def train_protonet(model,train_loader,valid_loader,conf):
     else:
         start_epoch = 0
         best_prec1 = -1
-
     # cudnn.benchmark = True
     # model = nn.DataParallel(model,device_ids=device_ids)
     model.to(device) # cuda
@@ -232,11 +231,12 @@ def train_protonet_PANNS(PANN_model,model,train_loader,valid_loader,conf):
         num_params += param.numel()
     print(num_params / 1e6)
 
-def train_protonet2(model,train_loader,valid_loader,conf,logger_writer):
+def train_protonet2(model,train_loader,valid_loader, conf, logger_writer, fold):
     arch = 'Protonet'
     alpha = 0.0  
     disable_tqdm = True 
-    ckpt_path = conf.eval.ckpt_path
+    os.makedirs(conf.eval.ckpt_path, exist_ok=True)
+    ckpt_path = conf.eval.ckpt_path + f"_{fold}.pth"
     is_pretrain = False
     resume = False
     if conf.train.device == 'cuda':
@@ -473,6 +473,13 @@ def get_name2wav(wav_dir):
             hash_name2wav[name] = wav_path
     return hash_name2wav
 
+def get_name2wav2(wav_dir):
+    hash_name2wav={}
+    for wav_path in glob(osp.join(wav_dir,"*","*","*.wav")):
+        name = wav_path.split("/")[-1]
+        hash_name2wav[name] = wav_path
+    return hash_name2wav
+
 def post_contact(mean_pos_len,predict,offset,onset,thre):
     for i in range(len(offset)-1):
         start = offset[i]
@@ -492,10 +499,34 @@ def setup_seed(seed):
     cudnn.deterministic = True
     cudnn.enabled = True 
 
+def build_train(sets, conf, logger_writer,fold):
+    X_tr, Y_tr, Y2_tr, X_val, Y_val, Y2_val = sets['X_tr'], sets['Y_tr'], sets['Y2_tr'], sets['X_val'], sets['Y_val'], sets['Y2_val']
+    
+    samples_per_cls =  conf.train.n_shot 
+    batch_size_tr =  conf.train.n_shot* conf.train.k_way #64 # the batch size of training 
+    
+    num_batches_tr = len(Y_tr)//batch_size_tr
+    
+    train_dataset = torch.utils.data.TensorDataset(X_tr,Y_tr) # 利用torch 的 dataset,整合X,Y
+    valid_dataset = torch.utils.data.TensorDataset(X_val,Y_val)
+    
+    samplr_train = EpisodicBatchSampler(Y_tr,Y2_tr,num_batches_tr,conf.train.k_way,samples_per_cls) 
+    
+    train_loader = torch.utils.data.DataLoader(dataset=train_dataset,batch_size=conf.train.batch_size,num_workers=10,shuffle=False)
+    # batch_sampler 批量采样，默认设置为None。但每次返回的是一批数据的索引,每次输入网络的数据是随机采样模式，这样能使数据更具有独立性质
+    valid_loader = torch.utils.data.DataLoader(dataset=valid_dataset,batch_size=64,num_workers=10,shuffle=False)
+    
+    train_dataset2 = torch.utils.data.TensorDataset(X_tr,Y2_tr,Y_tr) # 利用torch 的 dataset,整合X,Y, Y2∈{0,1}, Y∈{0,1,2....,19}
+    valid_dataset2 = torch.utils.data.TensorDataset(X_val,Y2_val,Y_val)
+    train_loader2 = torch.utils.data.DataLoader(dataset=train_dataset2, batch_sampler=samplr_train,num_workers=10,pin_memory=True)
+    valid_loader2 = torch.utils.data.DataLoader(dataset=valid_dataset2,batch_size=64,batch_sampler=None,num_workers=10,pin_memory=True,shuffle=True)
+
+    model = get_model('TSVAD1',conf.train.num_classes)
+    train_protonet2(model,train_loader2,valid_loader2,conf,logger_writer,fold)
+
 @hydra.main(config_name="config")
 def main(conf : DictConfig):
     seed = 2021
-   
     if seed is not None:
         setup_seed(seed)
     if not os.path.isdir(conf.path.feat_path):
@@ -504,24 +535,29 @@ def main(conf : DictConfig):
         os.makedirs(conf.path.feat_train)
     if not os.path.isdir(conf.path.feat_eval):
         os.makedirs(conf.path.feat_eval)
+    if not os.path.isdir(conf.path.feat_test):
+        os.makedirs(conf.path.feat_test)
     if not os.path.isdir(osp.join(conf.path.work_path,'src','train_data')):
         os.makedirs(osp.join(conf.path.work_path,'src','train_data'))
     if conf.set.features:
         print(" --Feature Extraction Stage--")
-        Num_extract_train,data_shape = feature_transform(conf=conf,mode="train") # train data
-        print("Shape of dataset is {}".format(data_shape))
-        print("Total training samples is {}".format(Num_extract_train))
+        # Num_extract_train,data_shape = feature_transform(conf=conf,mode="train") # train data
+        # print("Shape of dataset is {}".format(data_shape))
+        # print("Total training samples is {}".format(Num_extract_train))
         
-        Num_extract_eval = feature_transform(conf=conf,mode='eval',aug=False)
-        print("Total number of samples used for evaluation: {}".format(Num_extract_eval)) # validate data
-        print(" --Feature Extraction Complete--")
-
-        # Num_extract_test = feature_transform(conf=conf,mode='test')
-        # print("Total number of samples used for evaluation: {}".format(Num_extract_test)) # test data
+        # Num_extract_eval = feature_transform(conf=conf,mode='eval',aug=False)
+        # print("Total number of samples used for evaluation: {}".format(Num_extract_eval)) # validate data
         # print(" --Feature Extraction Complete--")
+
+        Num_extract_test = feature_transform(conf=conf,mode='test')
+        print("Total number of samples used for evaluation: {}".format(Num_extract_test)) # test data
+        print(" --Feature Extraction Complete--")
+        
     if conf.set.train: # train
         print("============> start training!")
         meta_learning = False # wether use meta learing ways to train
+        CURRENT_TIMES = time.strftime("%Y-%m-%d %H-%M",time.localtime())
+        logger_writer = Summary(path=osp.join(conf.path.tensorboard_path,CURRENT_TIMES))
         # import pdb 
         # pdb.set_trace()
         if meta_learning:
@@ -549,64 +585,43 @@ def main(conf : DictConfig):
             train_loader = torch.utils.data.DataLoader(dataset=train_dataset,batch_sampler=samplr_train,shuffle=False)
             # batch_sampler 批量采样，默认设置为None。但每次返回的是一批数据的索引,每次输入网络的数据是随机采样模式，这样能使数据更具有独立性质
             valid_loader = torch.utils.data.DataLoader(dataset=valid_dataset,batch_sampler=samplr_valid,shuffle=False)
-        else:
-            try:
-                train_datasets = torch.load(conf.train.train_data)
-                X_tr=train_datasets['X_tr']
-                Y_tr=train_datasets['Y_tr']
-                Y2_tr=train_datasets['Y2_tr']
-                
-                X_val=train_datasets['X_val']
-                Y_val=train_datasets['Y_val']
-                Y2_val=train_datasets['Y2_val']
-            except:
+        else: 
+            if conf.train.buildFold:
                 gen_train = Datagen(conf) 
-                X_train,Y_train,Y2_train,X_val,Y_val,Y2_val = gen_train.generate_train() 
-                X_tr = torch.tensor(X_train) 
-                Y_tr = torch.LongTensor(Y_train)
-                Y2_tr = torch.LongTensor(Y2_train)
-                
-                X_val = torch.tensor(X_val)
-                Y_val = torch.LongTensor(Y_val)
-                Y2_val = torch.LongTensor(Y2_val)
-                state = {
-                    'X_tr':X_tr,
-                    'Y_tr':Y_tr,
-                    'Y2_tr':Y2_tr,
-                    'X_val':X_val,
+                for fold in gen_train.KFold.keys():
+                    print("#"*20, f"build Fold{fold+1}","#"*20)
+
+                    X_train_index = gen_train.KFold[fold]['train_idx']
+                    X_val_index = gen_train.KFold[fold]['val_idx']
                     
-                    'Y_val':Y_val,
-                    'Y2_val':Y2_val        
-                }
-                torch.save(state,conf.train.train_data)
-
-            # print('X_tr ',X_tr.shape)
-            # print('X_val ',X_val.shape)
-            samples_per_cls =  conf.train.n_shot 
-            batch_size_tr =  conf.train.n_shot* conf.train.k_way #64 # the batch size of training 
-         
-            num_batches_tr = len(Y_tr)//batch_size_tr
-            
-            train_dataset = torch.utils.data.TensorDataset(X_tr,Y_tr) # 利用torch 的 dataset,整合X,Y
-            valid_dataset = torch.utils.data.TensorDataset(X_val,Y_val)
-            
-            samplr_train = EpisodicBatchSampler(Y_tr,Y2_tr,num_batches_tr,conf.train.k_way,samples_per_cls) 
-            
-            train_loader = torch.utils.data.DataLoader(dataset=train_dataset,batch_size=conf.train.batch_size,num_workers=10,shuffle=False)
-            # batch_sampler 批量采样，默认设置为None。但每次返回的是一批数据的索引,每次输入网络的数据是随机采样模式，这样能使数据更具有独立性质
-            valid_loader = torch.utils.data.DataLoader(dataset=valid_dataset,batch_size=64,num_workers=10,shuffle=False)
-            
-            train_dataset2 = torch.utils.data.TensorDataset(X_tr,Y2_tr,Y_tr) # 利用torch 的 dataset,整合X,Y, Y2∈{0,1}, Y∈{0,1,2....,19}
-            valid_dataset2 = torch.utils.data.TensorDataset(X_val,Y2_val,Y_val)
-            train_loader2 = torch.utils.data.DataLoader(dataset=train_dataset2, batch_sampler=samplr_train,num_workers=10,pin_memory=True)
-            valid_loader2 = torch.utils.data.DataLoader(dataset=valid_dataset2,batch_size=64,batch_sampler=None,num_workers=10,pin_memory=True,shuffle=True)
-        #model = get_model('Protonet',19)
-        # tensorboard
-        CURRENT_TIMES = time.strftime("%Y-%m-%d %H-%M",time.localtime())
-        logger_writer = Summary(path=osp.join(conf.path.tensorboard_path,CURRENT_TIMES))
-        model = get_model('TSVAD1',conf.train.num_classes)
-        train_protonet2(model,train_loader2,valid_loader2,conf,logger_writer)
-
+                    X_train, Y_train, Y2_train = gen_train.generate_DATA(X_train_index, fold)
+                    X_val, Y_val, Y2_val= gen_train.generate_DATA(X_val_index, fold)
+                    
+                    X_tr = torch.tensor(X_train) 
+                    Y_tr = torch.LongTensor(Y_train)
+                    Y2_tr = torch.LongTensor(Y2_train)
+                    
+                    X_val = torch.tensor(X_val)
+                    Y_val = torch.LongTensor(Y_val)
+                    Y2_val = torch.LongTensor(Y2_val)
+                    state = {
+                        'X_tr':X_tr,
+                        'Y_tr':Y_tr,
+                        'Y2_tr':Y2_tr,
+                        'X_val':X_val,
+                        
+                        'Y_val':Y_val,
+                        'Y2_val':Y2_val        
+                    }
+                    torch.save(state,conf.train.train_data + f"_fold{fold+1}.pth")
+                import sys
+                sys.exit()
+            else:
+                for fold in range(conf.train.Fold):
+                    train_datasets = torch.load(conf.train.train_data + f"_fold{fold+1}.pth")
+                    print("#"*20, f"Fold{fold+1}","#"*20,'\n')
+                    build_train(train_datasets, conf, logger_writer,fold)  
+                    
     if conf.set.eval: # eval
         device = 'cuda'
         # init_seed()
@@ -624,15 +639,17 @@ def main(conf : DictConfig):
 
         # model = nn.DataParallel(model,device_ids=device_ids)
         student_model = get_model('TSVAD1',conf.train.num_classes,ema=False).cuda()
-      
-        ckpt_path = conf.eval.ckpt_path
+
         hash_name2wav = get_name2wav(conf.path.eval_dir)
         hop_seg = int(conf.features.hop_seg * conf.features.sr // conf.features.hop_mel) # 0.05*22050//256 == 86
         k_q = 128
         iter_num = conf.eval.iter_num # change wether use ML framework
-        
+
         TOTAL_LENGTH = len(all_feat_files)
         # for i in range(TOTAL_LENGTH):
+        fold = conf.eval.target_fold
+        print(f">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Start Fold{fold}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        ckpt_path = conf.eval.ckpt_path + f"_{fold}.pth"
         for i in range(TOTAL_LENGTH):
             feat_file = all_feat_files[i]
             # if not feat_file.__contains__("BUK"): continue
@@ -669,13 +686,17 @@ def main(conf : DictConfig):
             fileDict = {}
             fileDict['nframes']=nframe
             fileDict['start_index_query']=start_index_query
+            # result_fold = []
+            # thresh_fold = np.array([i for i in range(n_fold)],dtype=np.float32)
+            # for i in range(n_fold):
+            
             result, num,_= evaluator.run_full_evaluation(test_file=audio_name[:-4],model=model, student_model=student_model,
-                                                         model_path=ckpt_path,hdf_eval=hdf_eval,conf=conf,k_q=k_q,iter_num=iter_num) # only update W
+                                                        model_path=ckpt_path,hdf_eval=hdf_eval,conf=conf,k_q=k_q,iter_num=iter_num, n_fold=fold) # only update W
             predict = result[0]
             MFL = result[1]
             thre = max(result[2]-0.05,0.5)
             mean_pos_len = result[3]
-
+            
             krn = np.array([1,-1])
             prob_thresh = np.where(predict>thre,1,0)
 
@@ -742,68 +763,148 @@ def main(conf : DictConfig):
     if conf.set.test: # It only be used when test the final dataset of DCASE2021 task5
 
         device = 'cuda'
-
         # init_seed()
         name_arr = np.array([])
         onset_arr = np.array([])
         offset_arr = np.array([])
+
+        name_arr_ori = np.array([])
+        onset_arr_ori = np.array([])
+        offset_arr_ori = np.array([])
+
         all_feat_files = sorted([file for file in glob(os.path.join(conf.path.feat_test,'*.h5'))])
         evaluator = Evaluator(device=device)
-        model = get_model('Protonet',19).cuda()
-        student_model = get_model('Protonet',19).cuda()
-        ckpt_path = '/home/ydc/DACSE2021/sed-tim-base/check_point'
-        #ckpt_path = '/home/ydc/DACSE2021/task5/best2'
-        #ckpt_path = '/home/ydc/DACSE2021/sed-tim-base/pre_best'
-        hop_seg = int(conf.features.hop_seg * conf.features.sr // conf.features.hop_mel) # 0.05*22050//256 == 4
+        model = get_model('TSVAD1',conf.train.num_classes).cuda()
+
+        # model = nn.DataParallel(model,device_ids=device_ids)
+        student_model = get_model('TSVAD1',conf.train.num_classes,ema=False).cuda()
+
+        hash_name2wav = get_name2wav2(conf.path.test_dir)
+        hop_seg = int(conf.features.hop_seg * conf.features.sr // conf.features.hop_mel) # 0.05*22050//256 == 86
         k_q = 128
-        iter_num = 0
-        for feat_file in all_feat_files[:1]:
-            print('file name ',feat_file)
-            feat_name = feat_file.split('/')[-1]
+        iter_num = conf.eval.iter_num # change wether use ML framework
+
+        TOTAL_LENGTH = len(all_feat_files)
+        # for i in range(TOTAL_LENGTH):
+        fold = conf.eval.target_fold
+        print(f">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Start Fold{fold}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        ckpt_path = conf.eval.ckpt_path + f"_{fold}.pth"
+        No_concatlist = ["E1_208_20190712_0150", "E2_208_20190712_0150", "E3_49_20190715_0150", "E4_49_20190804_0150"]
+        for i in range(TOTAL_LENGTH):
+            feat_file = all_feat_files[i]
+            # if not feat_file.__contains__("E3_49_20190715_0150"): continue
+            feat_name = feat_file.split('/')[-1]   
+            file_name = feat_name.replace('.h5','')
+            # if file_name!="n1":continue
             audio_name = feat_name.replace('h5','wav')
             print("Processing audio file : {}".format(audio_name))
-            hdf_eval = h5py.File(feat_file,'r')
-            strt_index_query =  hdf_eval['start_index_query'][:][0]
-            result, num= evaluator.run_full_evaluation(test_file=audio_name[:-4],model=model,student_model=student_model,
-                                                        model_path=ckpt_path,hdf_eval=hdf_eval,conf=conf,k_q=k_q,iter_num=iter_num) # only update W
-            # result, num= evaluator.run_full_evaluation_model_w(test_file=audio_name[:-4],model=model,student_model=student_model,
-            #                                             model_path=ckpt_path,hdf_eval=hdf_eval,conf=conf,k_q=k_q,iter_num=iter_num) # updata model and W
-            # num 返回query 的长度
-            predict = result[0]
-            if predict.shape[0]>num:
-                n_ = predict.shape[0]//k_q
-                print('n_ ',n_)
-                prob_final = predict[:(n_-1)*k_q]
-                n_last = num - prob_final.shape[0]
-                print('n_last ',n_last)
-                prob_final = np.concatenate((prob_final,predict[-n_last:]))
-                print('prob_final ',prob_final.shape)
+            # if audio_name!="n1.wav":continue
+            wav_path = hash_name2wav[audio_name]
+
+            ori_path = os.path.join(conf.path.work_path,'src','output_csv','ori')
+            if not os.path.exists(ori_path):
+                os.makedirs(ori_path)
+            tim_path = os.path.join(conf.path.work_path,'src','output_csv','tim')
+            if not os.path.exists(tim_path):
+                os.makedirs(tim_path)   
+            if os.path.exists(os.path.join(conf.path.work_path,'waveFrame',file_name,"waveFrame.json")):
+                reader = open(os.path.join(conf.path.work_path,'waveFrame',file_name,"waveFrame.json"),'r')
+                waveData = json.load(fp=reader)
+                nframe = waveData['nframe']
             else:
-                prob_final = predict
+               if not os.path.exists(os.path.join(conf.path.work_path,'waveFrame',file_name)):
+                    os.makedirs(os.path.join(conf.path.work_path,'waveFrame',file_name))
+               writer = open(os.path.join(conf.path.work_path,'waveFrame',file_name,'waveFrame.json'),'w')
+               y,fs = librosa.load(wav_path,sr= conf.features.sr)
+               nframe = len(y)//conf.features.hop_mel
+               json.dump({'nframe':nframe},fp=writer)
+               writer.close()
+
+            hdf_eval = h5py.File(feat_file,'r')
+            start_index_query =  hdf_eval['start_index_query'][:][0]
             
-            assert num == prob_final.shape[0]
-            krn = np.array([1, -1])
-            prob_thresh = np.where(prob_final > 0.5, 1, 0) # 70572
-            prob_pos_final = prob_final * prob_thresh
-            changes = np.convolve(krn, prob_thresh) # 70573
-            onset_frames = np.where(changes == 1)[0]
-            print('onset_frames ',onset_frames.shape)
-            offset_frames = np.where(changes == -1)[0]
-            str_time_query = strt_index_query * conf.features.hop_mel / conf.features.sr # 转时间？
-            print('str_time_query ',str_time_query) # 322.5
-            onset = (onset_frames + 1) * (hop_seg) * conf.features.hop_mel / conf.features.sr
-            onset = onset + str_time_query
-            offset = (offset_frames + 1) * (hop_seg) * conf.features.hop_mel / conf.features.sr
-            offset = offset + str_time_query
-            assert len(onset) == len(offset)
+            fileDict = {}
+            fileDict['nframes']=nframe
+            fileDict['start_index_query']=start_index_query
+            # result_fold = []
+            # thresh_fold = np.array([i for i in range(n_fold)],dtype=np.float32)
+            # for i in range(n_fold):
+            
+            result, num,_= evaluator.run_full_evaluation(test_file=audio_name[:-4],model=model, student_model=student_model,
+                                                        model_path=ckpt_path,hdf_eval=hdf_eval,conf=conf,k_q=k_q,iter_num=iter_num, n_fold=fold) # only update W
+            predict = result[0]
+            MFL = result[1] # min_pos_len
+            thre = max(result[2]-0.05,0.5)
+            mean_pos_len = result[3]
+            
+            krn = np.array([1,-1])
+            prob_thresh = np.where(predict>thre,1,0)
+
+            prob_middle = flatten_res(prob_thresh,hop_seg,int(nframe-start_index_query))
+            predict_middle = flatten_res(predict,hop_seg,int(nframe-start_index_query))
+
+            changes_smooth = np.convolve(krn, prob_middle)
+            onset_frames_smooth = np.where(changes_smooth==1)[0] #事件开始点
+            offset_frames_smooth = np.where(changes_smooth==-1)[0] #事件结束点
+
+            # prob_middle=post_contact(mean_pos_len=mean_pos_len,offset=offset_frames_smooth,onset=offset_frames_smooth,predict=prob_middle,thre=0.4)
+
+            for i in range(onset_frames_smooth.shape[0]-1):
+                start = offset_frames_smooth[i]
+                end = onset_frames_smooth[i+1]
+                if feat_name.split(".")[0] in No_concatlist:
+                    break
+                if MFL>50 and end-start <=np.ceil(MFL*0.2) and end-start < int(86*0.5) and  predict_middle[start:end].mean()>0.5:
+                    prob_middle[start:end]=1
+                elif MFL<=50 and end-start <=np.ceil(MFL*0.5) and end-start < int(86*0.5) and  predict_middle[start:end].mean()>0.5:
+                    prob_middle[start:end]=1
+                # if mean_pos_len > 2*87 and end-start<87 and predict_middle[start:end].mean()>0.5:                                                                        
+                #     prob_middle[start:end]=1
+                # elif 71>mean_pos_len>64 and end-start < int(0.6*mean_pos_len) and predict_middle[start:end].mean()>0.5:
+                #     prob_middle[start:end]=1
+                    
+            prob_med_filt = medFilt(prob_middle,5)
+            start_index_query = start_index_query*conf.features.hop_mel / conf.features.sr
+            print('start_index_query',start_index_query)
+
+            ###############################ORI############################
+            changes_ori = np.convolve(krn,prob_middle) # 原数据
+            onset_frames_ori = np.where(changes_ori==1)[0]
+            offset_frames_ori = np.where(changes_ori==-1)[0]
+
+            onset_ori = (onset_frames_ori+1) *conf.features.hop_mel / conf.features.sr
+            onset_ori = onset_ori + start_index_query
+            offset_ori = (offset_frames_ori+1) *conf.features.hop_mel / conf.features.sr
+            offset_ori = offset_ori + start_index_query
+
+            name_ori = np.repeat(audio_name,len(onset_ori))
+            name_arr_ori = np.append(name_arr_ori,name_ori)
+            onset_arr_ori = np.append(onset_arr_ori,onset_ori)
+            offset_arr_ori = np.append(offset_arr_ori,offset_ori)
+            #############################################################
+
+            changes = np.convolve(krn, prob_med_filt) #中值滤波
+            onset_frames = np.where(changes==1)[0]
+            print("onset_frames", onset_frames.shape)
+            offset_frames = np.where(changes==-1)[0]
+
+            onset = (onset_frames+1) * conf.features.hop_mel / conf.features.sr
+            onset = onset + start_index_query 
+            offset = (offset_frames+1) * conf.features.hop_mel / conf.features.sr
+            offset = offset + start_index_query
+
             name = np.repeat(audio_name,len(onset))
             name_arr = np.append(name_arr,name)
             onset_arr = np.append(onset_arr,onset)
             offset_arr = np.append(offset_arr,offset)
 
-        df_out = pd.DataFrame({'Audiofilename':name_arr,'Starttime':onset_arr,'Endtime':offset_arr})
-        csv_path = os.path.join(conf.path.work_path,'Eval_out_tim_test.csv')
-        df_out.to_csv(csv_path,index=False)
+        df_out_ori = pd.DataFrame({'Audiofilename':name_arr_ori,'Starttime':onset_arr_ori,'Endtime':offset_arr_ori})
+        csv_path_ori = os.path.join(conf.path.work_path,'src','output_csv','ori','Test_out_ori_2.csv')
+        df_out_ori.to_csv(csv_path_ori,index=False)
+
+        df_out_tim = pd.DataFrame({'Audiofilename':name_arr,'Starttime':onset_arr,'Endtime':offset_arr})
+        csv_path_tim = os.path.join(conf.path.work_path,'src','output_csv','tim','Test_out_tim_2.csv')
+        df_out_tim.to_csv(csv_path_tim,index=False)
 
 def medFilt(detections, median_window):
 
@@ -817,12 +918,11 @@ def medFilt(detections, median_window):
     y = np.zeros((len(x),k),dtype=x.dtype)
     y[:,k2]=x
     for i in range(k2):
-        j = k2 -1
+        j = k2 - i
         y[j:,i]=x[:-j]
         y[:j,i]=x[0]
         y[:-j,-(i+1)] = x[j:]
         y[-j:,-(i+1)] = x[-1]
-
     return np.median(y,axis=1)
 
 def medFilt0(detections, median_window,hop_seg):
@@ -856,9 +956,10 @@ def flatten_res(detections,hop_seg,nframe):
     seg_num,seg_len = x.shape
 
     y = np.zeros(nframe,dtype=x.dtype)
-    for i in range(seg_num-2):
-        y[(i+1)*hop_seg:(i+2)*hop_seg] = x[i,hop_seg:2*hop_seg]
+    for i in range(seg_num-3):
+        y[(i+2)*hop_seg:(i+3)*hop_seg] = x[i,2*hop_seg:3*hop_seg]
     y[:hop_seg] = x[0,:hop_seg]
+    y[hop_seg:2*hop_seg] = x[0,hop_seg:2*hop_seg]
     y[(seg_num-1)*hop_seg:nframe] = x[seg_num-1,-(nframe-(seg_num-1)*hop_seg):]
     return y
 

@@ -865,20 +865,32 @@ class Evaluator:
         hop_seg = 86
         seg_len = 431
         #先提neg段
-        for sub_neg in neg_features:
-            start = 0
-            end = start + seg_len
-            nframes = sub_neg.shape[0]
-            if nframes > seg_len:
-                while end<nframes and start<nframes:
-                    sep_neg.append(sub_neg[start:end])
-                    start +=hop_seg
-                    end = start + seg_len
-                if end>nframes and start<nframes:
-                    sep_neg.append(sub_neg[nframes-seg_len:nframes])
-            elif nframes<=seg_len:
-                repeatNum = seg_len // nframes + 1
-                sep_neg.append(torch.tile(sub_neg,[repeatNum,1])[:seg_len])
+        if sum(list_len_neg)<max_seg_len:
+            seg_win_len = int(np.mean(list_len_neg))
+            
+            for i in range(128):
+                random.shuffle(neg_features)
+                negs = torch.cat(neg_features, dim=0)
+                start = np.random.randint(0,sum(list_len_neg)-seg_win_len)
+                end = start + seg_win_len
+                neg = negs[start:end]
+                repeatNum = seg_len // neg.shape[0] + 1
+                sep_neg.append(torch.tile(neg,[repeatNum,1])[:seg_len])
+        else:       
+            for sub_neg in neg_features:
+                start = 0
+                end = start + seg_len
+                nframes = sub_neg.shape[0]
+                if nframes > seg_len:
+                    while end<nframes and start<nframes:
+                        sep_neg.append(sub_neg[start:end])
+                        start +=hop_seg
+                        end = start + seg_len
+                    if end>nframes and start<nframes:
+                        sep_neg.append(sub_neg[nframes-seg_len:nframes])
+                elif nframes<=seg_len:
+                    repeatNum = seg_len // nframes + 1
+                    sep_neg.append(torch.tile(sub_neg,[repeatNum,1])[:seg_len])
         sep_neg  = torch.stack(sep_neg)
         if sep_neg.shape[0]<128:
             sep_neg = torch.tile(sep_neg,[128//sep_neg.shape[0]+1,1,1])[:128,:,:]
