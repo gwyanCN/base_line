@@ -633,14 +633,18 @@ def main(conf : DictConfig):
         onset_arr_ori = np.array([])
         offset_arr_ori = np.array([])
 
-        all_feat_files = sorted([file for file in glob(os.path.join(conf.path.feat_eval,'*.h5'))])
+        all_feat_files = sorted([file for file in glob(os.path.join(conf.path.feat_test,'*.h5'))])
         evaluator = Evaluator(device=device)
         model = get_model('TSVAD1',conf.train.num_classes).cuda()
 
         # model = nn.DataParallel(model,device_ids=device_ids)
         student_model = get_model('TSVAD1',conf.train.num_classes,ema=False).cuda()
 
+<<<<<<< HEAD
         hash_name2wav = get_name2wav(conf.path.eval_dir)
+=======
+        hash_name2wav = get_name2wav(conf.path.test_dir)
+>>>>>>> ea2e1c5818fa17a473011d0da45174877a129706
         hop_seg = int(conf.features.hop_seg * conf.features.sr // conf.features.hop_mel) # 0.05*22050//256 == 86
         k_q = 128
         iter_num = conf.eval.iter_num # change wether use ML framework
@@ -789,10 +793,16 @@ def main(conf : DictConfig):
         fold = conf.eval.target_fold
         print(f">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Start Fold{fold}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
         ckpt_path = conf.eval.ckpt_path + f"_{fold}.pth"
+<<<<<<< HEAD
         No_concatlist = ["E1_208_20190712_0150", "E2_208_20190712_0150", "E3_49_20190715_0150", "E4_49_20190804_0150"]
         for i in range(TOTAL_LENGTH):
             feat_file = all_feat_files[i]
             # if not feat_file.__contains__("E3_49_20190715_0150"): continue
+=======
+        for i in range(TOTAL_LENGTH):
+            feat_file = all_feat_files[i]
+            if not feat_file.__contains__("CHE_"): continue
+>>>>>>> ea2e1c5818fa17a473011d0da45174877a129706
             feat_name = feat_file.split('/')[-1]   
             file_name = feat_name.replace('.h5','')
             # if file_name!="n1":continue
@@ -833,7 +843,11 @@ def main(conf : DictConfig):
             result, num,_= evaluator.run_full_evaluation(test_file=audio_name[:-4],model=model, student_model=student_model,
                                                         model_path=ckpt_path,hdf_eval=hdf_eval,conf=conf,k_q=k_q,iter_num=iter_num, n_fold=fold) # only update W
             predict = result[0]
+<<<<<<< HEAD
             MFL = result[1] # min_pos_len
+=======
+            MFL = result[1]
+>>>>>>> ea2e1c5818fa17a473011d0da45174877a129706
             thre = max(result[2]-0.05,0.5)
             mean_pos_len = result[3]
             
@@ -852,6 +866,7 @@ def main(conf : DictConfig):
             for i in range(onset_frames_smooth.shape[0]-1):
                 start = offset_frames_smooth[i]
                 end = onset_frames_smooth[i+1]
+<<<<<<< HEAD
                 if feat_name.split(".")[0] in No_concatlist:
                     break
                 if MFL>50 and end-start <=np.ceil(MFL*0.2) and end-start < int(86*0.5) and  predict_middle[start:end].mean()>0.5:
@@ -862,6 +877,12 @@ def main(conf : DictConfig):
                 #     prob_middle[start:end]=1
                 # elif 71>mean_pos_len>64 and end-start < int(0.6*mean_pos_len) and predict_middle[start:end].mean()>0.5:
                 #     prob_middle[start:end]=1
+=======
+                if mean_pos_len > 2*87 and end-start<87 and predict_middle[start:end].mean()>0.5:
+                    prob_middle[start:end]=1
+                elif 71>mean_pos_len>64 and end-start < int(0.6*mean_pos_len) and predict_middle[start:end].mean()>0.5:
+                    prob_middle[start:end]=1
+>>>>>>> ea2e1c5818fa17a473011d0da45174877a129706
                     
             prob_med_filt = medFilt(prob_middle,5)
             start_index_query = start_index_query*conf.features.hop_mel / conf.features.sr
@@ -899,11 +920,19 @@ def main(conf : DictConfig):
             offset_arr = np.append(offset_arr,offset)
 
         df_out_ori = pd.DataFrame({'Audiofilename':name_arr_ori,'Starttime':onset_arr_ori,'Endtime':offset_arr_ori})
+<<<<<<< HEAD
         csv_path_ori = os.path.join(conf.path.work_path,'src','output_csv','ori','Test_out_ori_2.csv')
         df_out_ori.to_csv(csv_path_ori,index=False)
 
         df_out_tim = pd.DataFrame({'Audiofilename':name_arr,'Starttime':onset_arr,'Endtime':offset_arr})
         csv_path_tim = os.path.join(conf.path.work_path,'src','output_csv','tim','Test_out_tim_2.csv')
+=======
+        csv_path_ori = os.path.join(conf.path.work_path,'src','output_csv','ori','Test_out_ori_CHE_02.csv')
+        df_out_ori.to_csv(csv_path_ori,index=False)
+
+        df_out_tim = pd.DataFrame({'Audiofilename':name_arr,'Starttime':onset_arr,'Endtime':offset_arr})
+        csv_path_tim = os.path.join(conf.path.work_path,'src','output_csv','tim','Test_out_tim_CHE_02.csv')
+>>>>>>> ea2e1c5818fa17a473011d0da45174877a129706
         df_out_tim.to_csv(csv_path_tim,index=False)
 
 def medFilt(detections, median_window):

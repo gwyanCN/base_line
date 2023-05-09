@@ -537,6 +537,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             Q_list = df_eval['Q'].to_numpy() # Q 列
 
             start_time,end_time = time_2_frame(df_eval,fps) # 时间转 frame
+<<<<<<< HEAD
             start_time = np.array(start_time)
             end_time = np.array(end_time)
             index_sup = np.where(Q_list == 'POS')[0][:conf.features.n_shot] # 查找前n_shot个有POS标签的 片段
@@ -546,6 +547,10 @@ def feature_transform(conf=None,mode=None,aug=False):
             else:
                 unk_sup = np.empty(shape=(0,2))
             
+=======
+            index_sup = np.where(Q_list == 'POS')[0][:conf.features.n_shot] # 查找前n_shot个有POS标签的 片段
+             
+>>>>>>> ea2e1c5818fa17a473011d0da45174877a129706
             pcen = extract_feature(audio_path, pcen_extractor,conf) # 提取feature
             mean = np.mean(pcen)
             std = np.std(pcen) # ？？ 有问题
@@ -580,6 +585,7 @@ def feature_transform(conf=None,mode=None,aug=False):
             for i in range(0,index_sup.shape[0]):
                 index = index_sup[i]
                 end_ind = max(0,int(start_time[index]))
+<<<<<<< HEAD
                      
                 if len(unk_sup)>0:
                     unk_index = (unk_sup[:,0]>=str_ind) & (unk_sup[:,1]<=end_ind)
@@ -596,6 +602,9 @@ def feature_transform(conf=None,mode=None,aug=False):
                         patch_pos = pcen[int(str_ind):int(end_ind)]
                 else:
                     patch_pos = pcen[int(str_ind):int(end_ind)]
+=======
+                patch_pos = pcen[int(str_ind):int(end_ind)]
+>>>>>>> ea2e1c5818fa17a473011d0da45174877a129706
                 hf.create_dataset('feat_neg_%s'%idx_neg,shape=(0,patch_pos.shape[0],patch_pos.shape[1]),maxshape=(None,patch_pos.shape[0],patch_pos.shape[1]))
                 hf['feat_neg_%s'%idx_neg].resize((0+1,patch_pos.shape[0],patch_pos.shape[1]))
                 hf['feat_neg_%s'%idx_neg][0] = patch_pos

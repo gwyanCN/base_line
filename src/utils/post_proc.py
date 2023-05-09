@@ -1,7 +1,10 @@
 import csv
 import numpy as np
 import os
+from glob import glob
+import os.path as osp
 import argparse
+import posixpath as path
 
 def post_processing(val_path, evaluation_file, new_evaluation_file, n_shots=5):
     '''Post processing of a prediction file by removing all events that have shorter duration
@@ -16,26 +19,31 @@ def post_processing(val_path, evaluation_file, new_evaluation_file, n_shots=5):
     '''
     dict_duration = {}
     val_path = os.path.realpath(val_path)
-    folders = os.listdir(val_path)
-    for folder in folders:
-        files = os.listdir(os.path.join(val_path,folder))
-        for file in files:
-            if file[-4:] == '.csv':
-                audiofile = file[:-4]+'.wav'
-                annotation = file
-                events = []
-                with open(os.path.join(val_path,folder,annotation)) as csv_file:
-                        csv_reader = csv.reader(csv_file, delimiter=',')
-                        for row in csv_reader:
-                            if row[-1] == 'POS' and len(events) < n_shots:
-                                events.append(row)
-                min_duration = 10000
-                for event in events:
-                    if float(event[2])-float(event[1]) < min_duration: # 计算5个shot中，时间最短的一个shot
-                        min_duration = float(event[2])-float(event[1])
-                dict_duration[audiofile] = min_duration
+   
+    for subfolder in os.listdir(val_path):
+        if osp.isdir(os.path.join(val_path,subfolder)):     
+            folders = os.listdir(os.path.join(val_path,subfolder))
+            for folder in folders:
+                if osp.isdir(os.path.join(val_path,subfolder,folder)):     
+                    files = os.listdir(os.path.join(val_path,subfolder,folder))
+                    for file in files:
+                        if file[-4:] == '.csv':
+                            audiofile = file[:-4]+'.wav'
+                            annotation = file
+                            events = []
+                            with open(os.path.join(val_path,subfolder,folder,annotation)) as csv_file:
+                                    csv_reader = csv.reader(csv_file, delimiter=',')
+                                    for row in csv_reader:
+                                        if row[-1] == 'POS' and len(events) < n_shots:
+                                            events.append(row)
+                            min_duration = 10000
+                            for event in events:
+                                if float(event[2])-float(event[1]) < min_duration: # 计算5个shot中，时间最短的一个shot
+                                    min_duration = float(event[2])-float(event[1])
+                            dict_duration[audiofile] = min_duration
 
     results = []
+    evaluation_file = osp.realpath(evaluation_file)
     with open(evaluation_file, newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         next(reader, None)  # skip the headers
@@ -58,9 +66,9 @@ def post_processing(val_path, evaluation_file, new_evaluation_file, n_shots=5):
 if __name__ == "__main__":
     # print(os.getcwd())
     parser = argparse.ArgumentParser()
-    parser.add_argument('-val_path', type=str, default="../data/Development_Set_21/Validation_Set/",help='path to validation folder with wav and csv files')
-    parser.add_argument('-evaluation_file', type=str,default="src/output_csv/tim/Eval_out_tim.csv", help='path and name of prediction file')
-    parser.add_argument('-new_evaluation_file', type=str, default="src/output_csv/tim/Eval_out_tim_post.csv",help="name of prost processed prediction file to be saved")
+    parser.add_argument('-val_path', type=str, default="../data/Development_Set_23/",help='path to validation folder with wav and csv files')
+    parser.add_argument('-evaluation_file', type=str,default="src/output_csv/tim/Test_out_tim_1.csv", help='path and name of prediction file')
+    parser.add_argument('-new_evaluation_file', type=str, default="src/output_csv/tim/Test_out_tim_post.csv",help="name of prost processed prediction file to be saved")
     
     args = parser.parse_args()
 
